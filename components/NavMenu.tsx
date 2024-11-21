@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 export default function NavMenu() {
   const path = usePathname();
 
+  const pattern = /\/boards\/[a-zA-Z0-9_-]+/;
+
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
@@ -22,32 +24,30 @@ export default function NavMenu() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item dropdown">
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      New note
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      New document
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Backup all data
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className={`nav-item ${path === '/' ? 'active' : ''}`}>
+              {pattern.test(path) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Actions
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        New note
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              <li className={`nav-item ${path === '/boards' ? 'active' : ''}`}>
                 <a
-                  className={`nav-link ${path === '/' ? 'active' : ''}`}
-                  href="./"
+                  className={`nav-link ${path === '/boards' ? 'active' : ''}`}
+                  href="/boards"
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg
@@ -75,7 +75,7 @@ export default function NavMenu() {
               <li className={`nav-item ${path === '/profile' ? 'active' : ''}`}>
                 <a
                   className={`nav-link ${path === '/profile' ? 'active' : ''}`}
-                  href="./profile"
+                  href="/profile"
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg

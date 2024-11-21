@@ -12,8 +12,8 @@ export default function BoardFormModal({ ...props }: BoardFormModalType) {
           <div className="modal-header">
             <h5 className="modal-title">
               {props.mode === 'create'
-                ? 'Create new board'
-                : 'Update new board'}
+                ? 'Create board'
+                : 'Update board'}
             </h5>
             <button
               type="button"

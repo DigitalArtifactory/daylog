@@ -1,6 +1,6 @@
-import BoardFormModal from './modals/BoardFormModal';
+import BoardFormModal from "./modals/BoardFormModal";
 
-export default function Card() {
+export default function Note() {
   return (
     <div className="card d-flex flex-column">
       <a href="#">
@@ -12,7 +12,7 @@ export default function Card() {
       </a>
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
-          <a href="/boards/1/notes">How do you know this is a board?</a>
+          <a href="/boards/1/notes/1">How do you know she is a witch?</a>
         </h3>
         <div className="text-secondary">
           Are you suggesting that coconuts migrate? No, no, no! Yes, yes. A bit.

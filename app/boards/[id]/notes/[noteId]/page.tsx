@@ -1,4 +1,3 @@
-import Card from '@/components/Card';
 import Header from '@/components/Header';
 import BoardFormModal from '@/components/modals/BoardFormModal';
 import NavMenu from '@/components/NavMenu';
@@ -14,7 +13,7 @@ export default function Home() {
       <Header></Header>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home" title="Boards">
+        <PageHeader preTitle="Notes" title="How do you know she is a witch?">
           <div className="btn-list">
             <a
               href="#"
@@ -47,9 +46,13 @@ export default function Home() {
           </div>
         </PageHeader>
         <PageBody>
-          <div className="row row-deck">
-            <div className="col-md-4">
-              <Card></Card>
+          <div className="container-xl">
+            <div className="row justify-content-center">
+              <div className="col-lg-10 col-xl-9">
+                <div className="card card-lg">
+                  <div className="card-body">This is a note</div>
+                </div>
+              </div>
             </div>
           </div>
         </PageBody>
