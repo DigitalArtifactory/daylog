@@ -1,6 +1,6 @@
-import Card from '@/components/Card';
-import Header from '@/components/Header';
-import BoardFormModal from '@/components/modals/BoardFormModal';
+import BoardCard from '@/components/BoardCard';
+import BoardModalForm from '@/components/modals/BoardModalForm';
+import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
 import PageBody from '@/components/PageBody';
@@ -11,7 +11,7 @@ import PageHeader from '@/components/PageHeader';
 export default function Home() {
   return (
     <Page>
-      <Header></Header>
+      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader preTitle="Home" title="Boards">
@@ -40,16 +40,16 @@ export default function Home() {
               </svg>
               Create new board
             </a>
-            <BoardFormModal
+            <BoardModalForm
               modalId="new-board-modal"
               mode="create"
-            ></BoardFormModal>
+            ></BoardModalForm>
           </div>
         </PageHeader>
         <PageBody>
           <div className="row row-deck">
             <div className="col-md-4">
-              <Card></Card>
+              <BoardCard></BoardCard>
             </div>
           </div>
         </PageBody>

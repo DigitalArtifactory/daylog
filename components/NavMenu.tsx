@@ -5,7 +5,11 @@ import { usePathname } from 'next/navigation';
 export default function NavMenu() {
   const path = usePathname();
 
-  const pattern = /\/boards\/[a-zA-Z0-9_-]+/;
+  const adminPattern = /^\/admin\/?$/;
+  const homePattern = /^\/boards\/?$/;
+  const profilePattern = /^\/profile\/?$/;
+  const boardPattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes$/;
+  const notePattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes\/[a-zA-Z0-9_-]+$/;
 
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
@@ -24,7 +28,7 @@ export default function NavMenu() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {pattern.test(path) && (
+              {homePattern.test(path) && (
                 <li className="nav-item dropdown">
                   <a
                     className="nav-link dropdown-toggle"
@@ -37,16 +41,114 @@ export default function NavMenu() {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#new-board-modal"
+                      >
+                        New board
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              {boardPattern.test(path) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Actions
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#new-board-modal"
+                      >
                         New note
                       </a>
                     </li>
                   </ul>
                 </li>
               )}
-              <li className={`nav-item ${path === '/boards' ? 'active' : ''}`}>
+              {notePattern.test(path) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Actions
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button className="dropdown-item">Save changes</button>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              {profilePattern.test(path) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Actions
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button className="dropdown-item">Save changes</button>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              {adminPattern.test(path) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Actions
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button className="dropdown-item">Save changes</button>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              <li
+                className={`nav-item ${
+                  homePattern.test(path) ||
+                  boardPattern.test(path) ||
+                  notePattern.test(path)
+                    ? 'active'
+                    : ''
+                }`}
+              >
                 <a
-                  className={`nav-link ${path === '/boards' ? 'active' : ''}`}
+                  className={`nav-link ${
+                    homePattern.test(path) ||
+                    boardPattern.test(path) ||
+                    notePattern.test(path)
+                      ? 'active'
+                      : ''
+                  }`}
                   href="/boards"
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
@@ -72,9 +174,15 @@ export default function NavMenu() {
                   <span className="nav-link-title">Home</span>
                 </a>
               </li>
-              <li className={`nav-item ${path === '/profile' ? 'active' : ''}`}>
+              <li
+                className={`nav-item ${
+                  profilePattern.test(path) ? 'active' : ''
+                }`}
+              >
                 <a
-                  className={`nav-link ${path === '/profile' ? 'active' : ''}`}
+                  className={`nav-link ${
+                    profilePattern.test(path) ? 'active' : ''
+                  }`}
                   href="/profile"
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
@@ -96,6 +204,41 @@ export default function NavMenu() {
                     </svg>
                   </span>
                   <span className="nav-link-title">Profile</span>
+                </a>
+              </li>
+            </ul>
+            <ul className="navbar-nav mb-2 mb-lg-0">
+              <li
+                className={`nav-item ${
+                  adminPattern.test(path) ? 'active' : ''
+                }`}
+              >
+                <a
+                  className={`nav-link ${
+                    adminPattern.test(path) ? 'active' : ''
+                  }`}
+                  href="/admin"
+                >
+                  <span className="nav-link-icon d-md-none d-lg-inline-block">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="icon icon-tabler icons-tabler-outline icon-tabler-user-shield"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h2" />
+                      <path d="M22 16c0 4 -2.5 6 -3.5 6s-3.5 -2 -3.5 -6c1 0 2.5 -.5 3.5 -1.5c1 1 2.5 1.5 3.5 1.5z" />
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                    </svg>
+                  </span>
+                  <span className="nav-link-title">Admin</span>
                 </a>
               </li>
             </ul>

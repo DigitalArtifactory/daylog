@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
 import PageBody from '@/components/PageBody';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <Page>
-      <Header></Header>
+      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
         <PageBody>

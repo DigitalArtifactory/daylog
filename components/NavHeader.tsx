@@ -1,4 +1,4 @@
-export default function Header() {
+export default function NavHeader() {
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
@@ -25,7 +25,7 @@ export default function Header() {
               ></span>
               <div className="d-none d-xl-block ps-2">
                 <div>David R.</div>
-                <div className="mt-1 small text-secondary">Web Developer</div>
+                <div className="mt-1 small text-secondary">Administrator</div>
               </div>
             </a>
           </div>

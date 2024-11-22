@@ -1,9 +1,9 @@
-import BoardFormModal from "./modals/BoardFormModal";
+import NoteModalForm from "./modals/NoteModalForm";
 
-export default function Note() {
+export default function NoteCard() {
   return (
     <div className="card d-flex flex-column">
-      <a href="#">
+      <a href="/boards/1/notes/1">
         <img
           className="card-img-top"
           src="/samples/photos/search-bg.jpg"
@@ -27,7 +27,7 @@ export default function Note() {
               href="#"
               className="icon d-none d-md-inline-block ms-3 text-secondary"
               data-bs-toggle="modal"
-              data-bs-target="#edit-board-modal"
+              data-bs-target="#edit-note-modal"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,10 +47,10 @@ export default function Note() {
                 <path d="M16 5l3 3" />
               </svg>
             </a>
-            <BoardFormModal
-              modalId="edit-board-modal"
+            <NoteModalForm
+              modalId="edit-note-modal"
               mode="update"
-            ></BoardFormModal>
+            ></NoteModalForm>
             <a
               href="#"
               className="icon d-none d-md-inline-block ms-3 text-secondary"
@@ -106,7 +106,7 @@ export default function Note() {
                     </svg>
                     <h3>Are you sure?</h3>
                     <div className="text-secondary">
-                      Do you really want to remove this board? What you've done
+                      Do you really want to remove this note? What you've done
                       cannot be undone.
                     </div>
                   </div>

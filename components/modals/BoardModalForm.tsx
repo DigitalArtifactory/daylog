@@ -1,10 +1,10 @@
-type BoardFormModalType = {
+type BoardModalFormType = {
   boardId?: number | null;
   modalId: string;
   mode: 'update' | 'create';
 };
 
-export default function BoardFormModal({ ...props }: BoardFormModalType) {
+export default function BoardModalForm({ ...props }: BoardModalFormType) {
   return (
     <div className="modal" id={props.modalId} tabIndex={-1}>
       <div className="modal-dialog" role="document">

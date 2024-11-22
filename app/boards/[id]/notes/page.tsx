@@ -1,7 +1,7 @@
-import Header from '@/components/Header';
-import BoardFormModal from '@/components/modals/BoardFormModal';
+import BoardModalForm from '@/components/modals/BoardModalForm';
+import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
-import Note from '@/components/Note';
+import NoteCard from '@/components/NoteCard';
 import Page from '@/components/Page';
 import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
@@ -13,10 +13,10 @@ export default function Home() {
 
   return (
     <Page>
-      <Header></Header>
+      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home" title="How do you know this is a board?">
+        <PageHeader preTitle="Notes" title="How do you know this is a board?">
           <div className="btn-list">
             <a
               href="#"
@@ -42,17 +42,17 @@ export default function Home() {
               </svg>
               Create new note
             </a>
-            <BoardFormModal
+            <BoardModalForm
               modalId="new-board-modal"
               mode="create"
-            ></BoardFormModal>
+            ></BoardModalForm>
           </div>
         </PageHeader>
         <PageBody>
           <div className="row row-deck">
             {cards.map((i) => (
               <div className="col-md-4 mb-3">
-                <Note></Note>
+                <NoteCard></NoteCard>
               </div>
             ))}
           </div>

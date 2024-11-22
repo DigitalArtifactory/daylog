@@ -1,9 +1,9 @@
-import BoardFormModal from './modals/BoardFormModal';
+import BoardModalForm from './modals/BoardModalForm';
 
-export default function Card() {
+export default function BoardCard() {
   return (
     <div className="card d-flex flex-column">
-      <a href="#">
+      <a href="/boards/1/notes">
         <img
           className="card-img-top"
           src="/samples/photos/search-bg.jpg"
@@ -47,10 +47,10 @@ export default function Card() {
                 <path d="M16 5l3 3" />
               </svg>
             </a>
-            <BoardFormModal
+            <BoardModalForm
               modalId="edit-board-modal"
               mode="update"
-            ></BoardFormModal>
+            ></BoardModalForm>
             <a
               href="#"
               className="icon d-none d-md-inline-block ms-3 text-secondary"
