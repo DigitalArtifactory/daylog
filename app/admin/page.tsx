@@ -1,3 +1,5 @@
+'use client';
+
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -5,9 +7,16 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { useEffect, useState } from 'react';
 import UsersTable from './partials/UsersTable';
 
 export default function Admin() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -21,33 +30,39 @@ export default function Admin() {
                 className="nav nav-tabs card-header-tabs"
                 data-bs-toggle="tabs"
               >
-                <li className="nav-item">
-                  <a
-                    href="#tabs-home-ex1"
-                    className="nav-link active"
-                    data-bs-toggle="tab"
-                  >
-                    Users
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href="#tabs-admin-2"
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                  >
-                    Security
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    href="#tabs-profile-ex1"
-                    className="nav-link"
-                    data-bs-toggle="tab"
-                  >
-                    Database
-                  </a>
-                </li>
+                {isClient ? (
+                  <>
+                    <li className="nav-item">
+                      <a
+                        href="#tabs-home-ex1"
+                        className="nav-link active"
+                        data-bs-toggle="tab"
+                      >
+                        Users
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        href="#tabs-admin-2"
+                        className="nav-link"
+                        data-bs-toggle="tab"
+                      >
+                        Security
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        href="#tabs-profile-ex1"
+                        className="nav-link"
+                        data-bs-toggle="tab"
+                      >
+                        Database
+                      </a>
+                    </li>
+                  </>
+                ) : (
+                    <div style={{'height': '37px'}}></div>
+                )}
               </ul>
             </div>
             <div className="card-body">
@@ -86,7 +101,8 @@ export default function Admin() {
                 <div className="tab-pane" id="tabs-profile-ex1">
                   <h3 className="card-title">Database</h3>
                   <div className="text-secondary">
-                    Choose your database engine or a third party integration connection.
+                    Choose your database engine or a third party integration
+                    connection.
                   </div>
                   <div className="pt-4">
                     <div className="mb-3">
@@ -347,7 +363,8 @@ export default function Admin() {
                             <h3>Are you sure?</h3>
                             <div className="text-secondary">
                               Do you really want to change your database? This
-                              action will copy all users data to the configured database.
+                              action will copy all users data to the configured
+                              database.
                             </div>
                             <div className="mt-4">
                               <input

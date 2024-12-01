@@ -11,14 +11,18 @@
   "dependencies": {
     "@editorjs/editorjs": "^2.30.7",
     "@editorjs/header": "^2.8.8",
+    "@prisma/client": "5.22.0",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028"
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-hook-form": "^7.53.2",
+    "timeago-react": "^3.0.6"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "prisma": "^5.22.0",
     "typescript": "^5"
   }
 }

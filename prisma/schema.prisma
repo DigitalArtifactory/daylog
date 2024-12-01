@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+  role     String  @default("user") // or admin (Don't Use enum in order to be sqlite compatible).
+  boards   Board[]
+}
+
+model Board {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  image       String?
+  favorite    Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  notes       Note[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt @default(now())
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  image     String?
+  favorite  Boolean  @default(false)
+  boards    Board?   @relation(fields: [boardsId], references: [id])
+  boardsId  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+}
