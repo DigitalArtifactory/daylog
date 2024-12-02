@@ -2,17 +2,23 @@
 
 import { createBoard, updateBoard } from '@/app/boards/lib/script';
 import { Board, Prisma } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type BoardModalFormType = {
-  board?: Board | null;
   modalId: string;
+  board?: Board | null;
   mode: 'update' | 'create';
-  onSubmited?: (board: Board) => void;
 };
 
-export default function BoardModalForm({ ...props }: BoardModalFormType) {
+export default function BoardModalForm({
+  modalId,
+  board,
+  mode,
+}: BoardModalFormType) {
+  const router = useRouter();
+
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [submiting, setSubmiting] = useState(false);
@@ -27,9 +33,7 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
   const onSubmit: SubmitHandler<Board> = (data) => {
     setSubmiting(true);
     setTimeout(() => {
-      props.mode == 'create'
-        ? createBoardHandler(data)
-        : updateBoardHandler(data);
+      mode == 'create' ? createBoardHandler(data) : updateBoardHandler(data);
       setSubmiting(false);
       closeModal();
       formRef.current?.reset();
@@ -43,16 +47,16 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
     };
 
     await createBoard(1, board);
-    if (props.onSubmited) props.onSubmited(data);
+    router.refresh();
   };
 
   const updateBoardHandler = async (data: Board) => {
-    if (!props.board?.id) return;
+    if (!board?.id) return;
 
-    data.id = props.board?.id;
+    data.id = board?.id;
 
     await updateBoard(data);
-    if (props.onSubmited) props.onSubmited(data);
+    router.refresh();
   };
 
   const closeModal = () => {
@@ -64,13 +68,13 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
   };
 
   return (
-    <div className="modal" id={props.modalId} tabIndex={-1}>
+    <div className="modal" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">
-                {props.mode === 'create' ? 'Create board' : 'Update board'}
+                {mode === 'create' ? 'Create board' : 'Update board'}
               </h5>
               <button
                 type="button"
@@ -97,7 +101,7 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
                   type="text"
                   className={`form-control ${errors.title && 'is-invalid'}`}
                   placeholder="Your board title"
-                  defaultValue={props.board?.title}
+                  defaultValue={board?.title}
                   {...register('title', { required: true })}
                 />
                 {errors.title && (
@@ -110,7 +114,7 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
                   type="text"
                   className="form-control"
                   placeholder="Type any description"
-                  defaultValue={props.board?.description ?? ''}
+                  defaultValue={board?.description ?? ''}
                   {...register('description')}
                 />
               </div>
@@ -131,7 +135,7 @@ export default function BoardModalForm({ ...props }: BoardModalFormType) {
                   submiting ? 'btn-loading disabled' : null
                 }`}
               >
-                {props.mode === 'create' ? 'Create' : 'Update'}
+                {mode === 'create' ? 'Create' : 'Update'}
               </button>
             </div>
           </div>

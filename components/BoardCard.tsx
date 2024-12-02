@@ -1,44 +1,18 @@
-'use client';
-
-import { deleteBoard, updateBoard } from '@/app/boards/lib/script';
-import { Board } from '@prisma/client';
-import { useRef, useState } from 'react';
-import TimeAgo from 'timeago-react';
+import { getBoard } from '@/app/boards/lib/script';
+import BoardFavoriteButton from './BoardFavoriteButton';
+import BoardModalDelete from './modals/BoardModalDelete';
 import BoardModalForm from './modals/BoardModalForm';
+import TimeDiff from './TimeDiff';
 
 type BoardCardType = {
-  board: Board;
-  onUpdate?: (board: Board) => void;
+  boardId: number;
 };
 
-export default function BoardCard({ board, onUpdate }: BoardCardType) {
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const [deleting, setDeleting] = useState(false);
-
-  const handleFavoriteClick = async () => {
-    board.favorite = !board.favorite;
-    const updatedBoard = await updateBoard(board);
-    if (updatedBoard && onUpdate) onUpdate(updatedBoard);
-  };
-
-  const handleDeleteClick = async () => {
-    setDeleting(true);
-    setTimeout(async () => {
-      const updatedBoard = await deleteBoard(board);
-      if (updatedBoard && onUpdate) onUpdate(updatedBoard);
-      setDeleting(false);
-      closeModal();
-    }, 500);
-  };
-
-  const closeModal = () => {
-    if (closeButtonRef) {
-      closeButtonRef.current?.click();
-    } else {
-      console.error('Close button is not available.');
-    }
-  };
-
+export default async function BoardCard({ boardId }: BoardCardType) {
+  const board = await getBoard(boardId);
+  if (!board) {
+    return <></>;
+  }
   return (
     <div className="card d-flex flex-column">
       {board.favorite && (
@@ -74,7 +48,7 @@ export default function BoardCard({ board, onUpdate }: BoardCardType) {
         <div className="text-secondary">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-secondary">
-            <TimeAgo datetime={board.updatedAt} />
+            <TimeDiff updatedAt={board?.updatedAt} />
           </div>
           <div className="d-block">
             <a
@@ -105,123 +79,9 @@ export default function BoardCard({ board, onUpdate }: BoardCardType) {
               board={board}
               modalId={`edit-board-modal-${board.id}}`}
               mode="update"
-              onSubmited={(b) => {
-                if (onUpdate) onUpdate(b);
-              }}
             ></BoardModalForm>
-            <a
-              href="#"
-              className="icon ms-3 text-secondary"
-              data-bs-toggle="modal"
-              data-bs-target={`#delete-modal-${board.id}`}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M4 7l16 0" />
-                <path d="M10 11l0 6" />
-                <path d="M14 11l0 6" />
-                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-              </svg>
-            </a>
-            <div
-              className="modal"
-              id={`delete-modal-${board.id}`}
-              tabIndex={-1}
-            >
-              <div className="modal-dialog modal-sm" role="document">
-                <div className="modal-content">
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                  <div className="modal-status bg-danger"></div>
-                  <div className="modal-body text-center py-4">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon mb-2 text-danger icon-lg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12 9v2m0 4v.01" />
-                      <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-                    </svg>
-                    <h3>Are you sure?</h3>
-                    <div className="text-danger fw-bold">{board.title}</div>
-                    <div className="text-secondary">
-                      Do you really want to remove this board? What you've done
-                      cannot be undone.
-                    </div>
-                  </div>
-                  <div className="modal-footer">
-                    <div className="w-100">
-                      <div className="row">
-                        <div className="col">
-                          <button
-                            ref={closeButtonRef}
-                            className="btn w-100"
-                            data-bs-dismiss="modal"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                        <div className="col">
-                          <button
-                            disabled={deleting}
-                            className={`btn btn-danger w-100 ${
-                              deleting ? 'btn-loading disabled' : null
-                            }`}
-                            onClick={() => handleDeleteClick()}
-                          >
-                            Yes, delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <a
-              href="#"
-              onClick={() => handleFavoriteClick()}
-              className="icon ms-3 text-secondary"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-heart"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
-              </svg>
-            </a>
+            <BoardModalDelete board={board} />
+            <BoardFavoriteButton board={board} />
           </div>
         </div>
       </div>

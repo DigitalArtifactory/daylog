@@ -42,13 +42,16 @@ export async function deleteBoard(board: Board): Promise<Board | null> {
   return deleted;
 }
 
-
-export async function getBoardsCount(): Promise<number> {
-  const count = await prisma.board.count();
-  return count;
-}
-
 export async function getBoards(): Promise<Board[] | null> {
   const boards = await prisma.board.findMany({ orderBy: { favorite: 'desc' } });
   return boards;
+}
+
+export async function getBoard(boardId: number): Promise<Board | null> {
+  const board = await prisma.board.findFirst({ where: { id: boardId } });
+  return board;
+}
+
+async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
