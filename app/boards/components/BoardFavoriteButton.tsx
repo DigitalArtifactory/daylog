@@ -1,6 +1,6 @@
 'use client';
 
-import { updateBoard } from '@/app/boards/lib/script';
+import { updateBoard } from '@/app/boards/lib/actions';
 import { Board } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 

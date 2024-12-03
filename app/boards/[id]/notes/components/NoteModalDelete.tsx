@@ -1,15 +1,15 @@
 'use client';
 
-import { deleteBoard } from '@/app/boards/lib/script';
-import { Board } from '@prisma/client';
+import { Note } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { deleteNote } from '../lib/actions';
 
-type BoardModalDeleteType = {
-  board: Board;
+type NoteModalDeleteType = {
+  note: Note;
 };
 
-export default function BoardModalDelete({ board }: BoardModalDeleteType) {
+export default function NoteModalDelete({ note }: NoteModalDeleteType) {
   const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [deleting, setDeleting] = useState(false);
@@ -17,13 +17,13 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
   const handleDeleteClick = async () => {
     setDeleting(true);
     setTimeout(async () => {
-      await deleteBoard(board);
+      await deleteNote(note);
       router.refresh();
       setDeleting(false);
       closeModal();
     }, 500);
   };
-  
+
   const closeModal = () => {
     if (closeButtonRef) {
       closeButtonRef.current?.click();
@@ -38,7 +38,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
         href="#"
         className="icon ms-3 text-secondary"
         data-bs-toggle="modal"
-        data-bs-target={`#delete-modal-${board.id}`}
+        data-bs-target={`#delete-modal-${note.id}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
           <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
         </svg>
       </a>
-      <div className="modal" id={`delete-modal-${board.id}`} tabIndex={-1}>
+      <div className="modal" id={`delete-modal-${note.id}`} tabIndex={-1}>
         <div className="modal-dialog modal-sm" role="document">
           <div className="modal-content">
             <button
@@ -88,9 +88,9 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
                 <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
               </svg>
               <h3>Are you sure?</h3>
-              <div className="text-danger fw-bold">{board.title}</div>
+              <div className="text-danger fw-bold">{note.title}</div>
               <div className="text-secondary">
-                Do you really want to remove this board? What you've done cannot
+                Do you really want to remove this note? What you've done cannot
                 be undone.
               </div>
             </div>

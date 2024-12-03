@@ -51,7 +51,3 @@ export async function getBoard(boardId: number): Promise<Board | null> {
   const board = await prisma.board.findFirst({ where: { id: boardId } });
   return board;
 }
-
-async function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

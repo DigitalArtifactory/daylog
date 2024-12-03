@@ -1,22 +1,28 @@
 'use client';
 
-import { createBoard, updateBoard } from '@/app/boards/lib/script';
-import { Board, Prisma } from '@prisma/client';
+import { Note, Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { createNote, updateNote } from '../lib/actions';
 
-type BoardModalFormType = {
+type NoteModalFormType = {
   modalId: string;
-  board?: Board | null;
+  boardId: number | null;
+  note?: Note | null;
   mode: 'update' | 'create';
 };
 
-export default function BoardModalForm({
+export default function NoteModalForm({
   modalId,
-  board,
+  boardId,
+  note,
   mode,
-}: BoardModalFormType) {
+}: NoteModalFormType) {
+  if (!boardId) {
+    return <></>;
+  }
+
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -28,34 +34,34 @@ export default function BoardModalForm({
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Board>();
+  } = useForm<Note>();
 
-  const onSubmit: SubmitHandler<Board> = (data) => {
+  const onSubmit: SubmitHandler<Note> = (data) => {
     setSubmiting(true);
     setTimeout(() => {
-      mode == 'create' ? createBoardHandler(data) : updateBoardHandler(data);
+      mode == 'create' ? createNoteHandler(data) : updateNoteHandler(data);
       setSubmiting(false);
       closeModal();
       formRef.current?.reset();
     }, 500);
   };
 
-  const createBoardHandler = async (data: Board) => {
-    const board: Prisma.BoardCreateWithoutUserInput = {
+  const createNoteHandler = async (data: Note) => {
+    const note: Prisma.NoteCreateWithoutBoardsInput = {
       title: data.title,
-      description: data.description,
+      content: data.content,
     };
 
-    await createBoard(1, board);
+    await createNote(boardId, note);
     router.refresh();
   };
 
-  const updateBoardHandler = async (data: Board) => {
-    if (!board?.id) return;
+  const updateNoteHandler = async (data: Note) => {
+    if (!note?.id) return;
 
-    data.id = board?.id;
+    data.id = note?.id;
 
-    await updateBoard(data);
+    await updateNote(data);
     router.refresh();
   };
 
@@ -74,7 +80,7 @@ export default function BoardModalForm({
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">
-                {mode === 'create' ? 'Create board' : 'Update board'}
+                {mode === 'create' ? 'Create note' : 'Update note'}
               </h5>
               <button
                 type="button"
@@ -100,8 +106,8 @@ export default function BoardModalForm({
                 <input
                   type="text"
                   className={`form-control ${errors.title && 'is-invalid'}`}
-                  placeholder="Your board title"
-                  defaultValue={board?.title}
+                  placeholder="Your note title"
+                  defaultValue={note?.title}
                   {...register('title', { required: true })}
                 />
                 {errors.title && (
@@ -109,13 +115,13 @@ export default function BoardModalForm({
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label">Description</label>
-                <input
-                  type="text"
+                <label className="form-label">Content</label>
+                <textarea
+                  rows={5}
                   className="form-control"
-                  placeholder="Type any description"
-                  defaultValue={board?.description ?? ''}
-                  {...register('description')}
+                  placeholder="Type any simple content"
+                  defaultValue={note?.content ?? ''}
+                  {...register('content')}
                 />
               </div>
             </div>

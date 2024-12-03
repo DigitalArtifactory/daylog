@@ -1,6 +1,6 @@
-import BoardCard from '@/components/BoardCard';
-import CardPlaceholder from '@/components/BoardPlaceholder';
-import BoardModalForm from '@/components/modals/BoardModalForm';
+import BoardCard from '@/app/boards/components/BoardCard';
+import BoardModalForm from '@/app/boards/components/BoardModalForm';
+import CardPlaceholder from '@/app/boards/components/BoardPlaceholder';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -9,7 +9,7 @@ import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { Suspense } from 'react';
-import { getBoards } from './lib/script';
+import { getBoards } from './lib/actions';
 
 export default async function Home() {
   const boards = await getBoards();

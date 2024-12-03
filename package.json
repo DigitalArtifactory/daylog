@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.30.7",
     "@editorjs/header": "^2.8.8",
     "@prisma/client": "5.22.0",
+    "micromark": "^4.0.1",
     "next": "15.0.2",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",

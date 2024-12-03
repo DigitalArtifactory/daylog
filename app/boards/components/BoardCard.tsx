@@ -1,8 +1,8 @@
-import { getBoard } from '@/app/boards/lib/script';
+import { getBoard } from '@/app/boards/lib/actions';
+import TimeDiff from '../../../components/TimeDiff';
 import BoardFavoriteButton from './BoardFavoriteButton';
-import BoardModalDelete from './modals/BoardModalDelete';
-import BoardModalForm from './modals/BoardModalForm';
-import TimeDiff from './TimeDiff';
+import BoardModalDelete from './BoardModalDelete';
+import BoardModalForm from './BoardModalForm';
 
 type BoardCardType = {
   boardId: number;

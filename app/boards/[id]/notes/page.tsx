@@ -1,28 +1,31 @@
-import BoardModalForm from '@/components/modals/BoardModalForm';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
-import NoteCard from '@/components/NoteCard';
 import Page from '@/components/Page';
 import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { Suspense } from 'react';
+import NoteCard from './components/NoteCard';
+import NoteModalForm from './components/NoteModalForm';
+import CardPlaceholder from './components/NotePlaceholder';
+import { getNotes } from './lib/actions';
 
-export default function Home() {
-  const cards = [1, 2, 3, 4, 5];
+export default async function Home({ params }: { params: { id: string } }) {
+  const notes = await getNotes();
 
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Notes" title="How do you know this is a board?">
+        <PageHeader preTitle="Home" title="Notes">
           <div className="btn-list">
             <a
               href="#"
               className="btn btn-primary d-none d-sm-inline-block"
               data-bs-toggle="modal"
-              data-bs-target="#new-board-modal"
+              data-bs-target="#new-note-modal"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -42,19 +45,29 @@ export default function Home() {
               </svg>
               Create new note
             </a>
-            <BoardModalForm
-              modalId="new-board-modal"
+            <NoteModalForm
+              boardId={parseInt(params.id)}
+              modalId="new-note-modal"
               mode="create"
-            ></BoardModalForm>
+            ></NoteModalForm>
           </div>
         </PageHeader>
         <PageBody>
           <div className="row row-deck">
-            {cards.map((i) => (
-              <div className="col-md-4 mb-3">
-                <NoteCard></NoteCard>
+            {notes?.length == 0 ? (
+              <div className="alert alert-info" role="alert">
+                <h4 className="alert-title">Your notes are empty</h4>
+                <div className="text-secondary">You can create a new note</div>
               </div>
-            ))}
+            ) : (
+              notes?.map((b) => (
+                <div key={b.id} className="col-md-4 mb-3">
+                  <Suspense fallback={<CardPlaceholder></CardPlaceholder>}>
+                    <NoteCard noteId={b.id}></NoteCard>
+                  </Suspense>
+                </div>
+              ))
+            )}
           </div>
         </PageBody>
       </PageContainer>
