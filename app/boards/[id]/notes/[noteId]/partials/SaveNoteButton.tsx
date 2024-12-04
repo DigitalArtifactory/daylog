@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { updateNote } from '../../lib/actions';
 
 type SaveNoteChangesType = {
-  note: Note;
+  note?: Note | null;
 };
 
 export default function SaveNoteChanges({ note }: SaveNoteChangesType) {
   const router = useRouter();
 
   const handleSaveChanges = async () => {
+    if (!note) return;
     await updateNote(note);
     router.push('?saved=true');
   };
@@ -20,6 +21,7 @@ export default function SaveNoteChanges({ note }: SaveNoteChangesType) {
     <button
       className="btn btn-primary d-none d-sm-inline-block"
       type="submit"
+      disabled={!note}
       onClick={() => handleSaveChanges()}
     >
       <svg

@@ -1,25 +1,37 @@
 'use client';
 
-import { micromark } from 'micromark';
-import { useRouter } from 'next/navigation';
+import { marked } from 'marked';
 import { useEffect, useState } from 'react';
 import EditorToolbar from './EditorToolbar';
 
-export default function Editor({ content }: { content: string }) {
-  const router = useRouter();
+type EditorType = {
+  content?: string | null | undefined;
+  onUpdate?: (content: string) => void | null;
+};
 
-  const [markdown, setMarkdown] = useState(content);
-  const [htmlContent, setHtmlContent] = useState<string | null>(null);
+export default function Editor({ content, onUpdate }: EditorType) {
+  const [markdown, setMarkdown] = useState<string>('');
 
   const [isClient, setIsClient] = useState(false);
 
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newContent = event.target.value;
+    setMarkdown(newContent);
+    if (onUpdate) onUpdate(newContent); // Llama a la función pasada como prop con el texto plano
+  };
+
   useEffect(() => {
-    setHtmlContent(micromark(markdown));
+    marked.setOptions({ breaks: true });
+    setMarkdown(content ?? '');
     setIsClient(true);
-  }, []);
+  }, [content]);
+
+  const renderMarkdownToHtml = (markdown: string) => {
+    return { __html: marked(markdown) };
+  };
 
   return (
-    <div className="card" style={{ minHeight: 160 }}>
+    <div className="card">
       <div className="card-header">
         <ul className="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
           {isClient ? (
@@ -45,7 +57,12 @@ export default function Editor({ content }: { content: string }) {
               <EditorToolbar />
             </>
           ) : (
-            <div style={{ height: '37px' }}></div>
+            <div
+              className="d-flex align-items-center"
+              style={{ height: '37px' }}
+            >
+              <div className="spinner-border text-secondary"></div>
+            </div>
           )}
         </ul>
       </div>
@@ -53,22 +70,34 @@ export default function Editor({ content }: { content: string }) {
         <div className="tab-content">
           <div className="tab-pane active show" id="tabs-write">
             <div>
-              <textarea
-                rows={4}
-                className="form-control p-3 border-0"
-                placeholder="Here can be your description"
-                defaultValue={markdown}
-                onChange={(e) => {
-                  setMarkdown(e.target.value);
-                  router.refresh();
-                }}
-              />
+              {isClient ? (
+                <textarea
+                  rows={4}
+                  style={{
+                    height: '200px',
+                    fontFamily: 'monospace',
+                    fontSize: '14px',
+                  }}
+                  name="content"
+                  className="form-control p-3 border-0"
+                  placeholder="Here can be your description"
+                  defaultValue={markdown ?? ''}
+                  onChange={handleChange}
+                />
+              ) : (
+                <div
+                  className="d-flex justify-content-center pt-4"
+                  style={{ height: '37px' }}
+                >
+                  <div className="spinner-border text-secondary"></div>
+                </div>
+              )}
             </div>
           </div>
           <div className="tab-pane" id="tabs-preview">
-            <div className="markdown p-3">
+            <div className="markdown p-3" style={{ minHeight: 200 }}>
               <div
-                dangerouslySetInnerHTML={{ __html: htmlContent ?? '' }}
+                dangerouslySetInnerHTML={renderMarkdownToHtml(markdown)}
               ></div>
             </div>
           </div>

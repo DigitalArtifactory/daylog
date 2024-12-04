@@ -11,7 +11,12 @@ import NoteModalForm from './components/NoteModalForm';
 import CardPlaceholder from './components/NotePlaceholder';
 import { getNotes } from './lib/actions';
 
-export default async function Home({ params }: { params: { id: string } }) {
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const notes = await getNotes();
 
   return (
@@ -46,7 +51,7 @@ export default async function Home({ params }: { params: { id: string } }) {
               Create new note
             </a>
             <NoteModalForm
-              boardId={parseInt(params.id)}
+              boardId={parseInt(id)}
               modalId="new-note-modal"
               mode="create"
             ></NoteModalForm>

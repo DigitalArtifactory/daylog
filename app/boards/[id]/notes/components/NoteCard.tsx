@@ -48,7 +48,9 @@ export default async function NoteCard({ noteId }: NoteCardType) {
         <h3 className="card-title">
           <a href={`/boards/${note.id}/notes`}>{note.title}</a>
         </h3>
-        <div className="text-secondary">{note.content}</div>
+        <div className="text-secondary line-clamp-2">
+          {note.content}
+        </div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-secondary">
             <TimeDiff updatedAt={note?.updatedAt} />
