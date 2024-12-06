@@ -32,7 +32,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} theme-dark`}
+        className={`${geistSans.variable} ${geistMono.variable}`}
       >
         {children}
         <script

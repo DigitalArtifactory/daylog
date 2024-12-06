@@ -17,7 +17,7 @@ export default async function Home({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const notes = await getNotes();
+  const notes = await getNotes(parseInt(id));
 
   return (
     <Page>

@@ -5,22 +5,14 @@ import { Board, Prisma, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function createBoard(
-  userId: number,
-  board: Prisma.BoardCreateWithoutUserInput
+  board: Prisma.BoardCreateInput
 ): Promise<number | null> {
-  const user = await prisma.user.update({
-    where: { id: userId },
-    data: {
-      boards: {
-        create: [board],
-      },
-    },
-    include: {
-      boards: true,
-    },
+  const record = await prisma.board.create({
+    data: { ...board },
+    select: { id: true },
   });
 
-  return user.boards.length;
+  return record.id;
 }
 
 export async function updateBoard(board: Board): Promise<Board | null> {
@@ -50,4 +42,21 @@ export async function getBoards(): Promise<Board[] | null> {
 export async function getBoard(boardId: number): Promise<Board | null> {
   const board = await prisma.board.findFirst({ where: { id: boardId } });
   return board;
+}
+
+export async function saveImage(
+  boardId: number,
+  imageBase64: string
+): Promise<string | null> {
+  try {
+    await prisma.board.update({
+      where: { id: boardId },
+      data: { imageUrl: imageBase64 },
+    });
+
+    return imageBase64;
+  } catch (e: any) {
+    console.error(e);
+    return null;
+  }
 }

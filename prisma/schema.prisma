@@ -23,23 +23,23 @@ model Board {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
-  image       String?
+  imageUrl    String?
   favorite    Boolean  @default(false)
   user        User     @relation(fields: [userId], references: [id])
   userId      Int
   notes       Note[]
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 model Note {
   id        Int      @id @default(autoincrement())
   title     String
   content   String?
-  image     String?
+  imageUrl  String?
   favorite  Boolean  @default(false)
   boards    Board?   @relation(fields: [boardsId], references: [id])
   boardsId  Int?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

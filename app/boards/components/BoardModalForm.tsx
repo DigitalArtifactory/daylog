@@ -1,6 +1,7 @@
 'use client';
 
-import { createBoard, updateBoard } from '@/app/boards/lib/actions';
+import { createBoard, saveImage, updateBoard } from '@/app/boards/lib/actions';
+import { resizeImage } from '@/utils/image';
 import { Board, Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -21,7 +22,9 @@ export default function BoardModalForm({
 
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   const [submiting, setSubmiting] = useState(false);
+  const [imageFile, setImageFile] = useState<File>();
 
   const {
     register,
@@ -40,13 +43,25 @@ export default function BoardModalForm({
     }, 500);
   };
 
+  async function uploadImage(boardId: number | null) {
+    if (!imageFile || !boardId) return;
+    resizeImage(imageFile, 420, 140, async (resizedDataUrl) => {
+      await saveImage(boardId, resizedDataUrl);
+      router.refresh();
+    });
+  }
+
   const createBoardHandler = async (data: Board) => {
-    const board: Prisma.BoardCreateWithoutUserInput = {
+    const board: Prisma.BoardCreateInput = {
       title: data.title,
       description: data.description,
+      user: { connect: { id: 1 } },
     };
 
-    await createBoard(1, board);
+    const boardId = await createBoard(board);
+
+    await uploadImage(boardId);
+
     router.refresh();
   };
 
@@ -56,6 +71,8 @@ export default function BoardModalForm({
     data.id = board?.id;
 
     await updateBoard(data);
+    await uploadImage(data.id);
+    
     router.refresh();
   };
 
@@ -87,10 +104,11 @@ export default function BoardModalForm({
               <div className="mb-3">
                 <label className="form-label">Image</label>
                 <input
-                  defaultValue={''}
                   type="file"
                   className="form-control"
                   name="image"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0])}
                 />
               </div>
             </div>

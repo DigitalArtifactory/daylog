@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useState } from 'react';
 import TimeAgo from 'timeago-react';
 
 type TimeDiffType = {
@@ -6,5 +7,10 @@ type TimeDiffType = {
 };
 
 export default function TimeDiff({ updatedAt }: TimeDiffType) {
-  return <TimeAgo datetime={updatedAt}></TimeAgo>;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient ? <TimeAgo datetime={updatedAt}></TimeAgo> : <div className='placeholder'></div>;
 }

@@ -34,23 +34,23 @@ export default async function NoteCard({ noteId }: NoteCardType) {
           </svg>
         </div>
       )}
-      <a
-        className="ratio ratio-21x9"
-        href={`/boards/${note.boardsId}/notes/${note.id}`}
-      >
-        <img
-          className="card-img-top"
-          src="/samples/photos/search-bg.jpg"
-          alt="Book on the grass"
-        />
-      </a>
+      {note?.imageUrl && (
+        <a
+          className="ratio ratio-21x9"
+          href={`/boards/${note.boardsId}/notes/${note.id}`}
+        >
+          <img
+            style={{ objectFit: 'cover' }}
+            src={note.imageUrl ?? '/samples/photos/search-bg.jpg'}
+            alt="Book on the grass"
+          />
+        </a>
+      )}
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
-          <a href={`/boards/${note.id}/notes`}>{note.title}</a>
+          <a href={`/boards/${note.boardsId}/notes/${note.id}`}>{note.title}</a>
         </h3>
-        <div className="text-secondary line-clamp-2">
-          {note.content}
-        </div>
+        <div className="text-secondary line-clamp-2">{note.content}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-secondary">
             <TimeDiff updatedAt={note?.updatedAt} />

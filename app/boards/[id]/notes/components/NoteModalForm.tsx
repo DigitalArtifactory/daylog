@@ -1,10 +1,11 @@
 'use client';
 
+import { resizeImage } from '@/utils/image';
 import { Note, Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { createNote, updateNote } from '../lib/actions';
+import { createNote, saveImage, updateNote } from '../lib/actions';
 
 type NoteModalFormType = {
   modalId: string;
@@ -27,7 +28,9 @@ export default function NoteModalForm({
 
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   const [submiting, setSubmiting] = useState(false);
+  const [imageFile, setImageFile] = useState<File>();
 
   const {
     register,
@@ -46,13 +49,24 @@ export default function NoteModalForm({
     }, 500);
   };
 
+  async function uploadImage(noteId: number | null) {
+    if (!imageFile || !noteId) return;
+    resizeImage(imageFile, 720, 720, async (resizedDataUrl) => {
+      await saveImage(noteId, resizedDataUrl);
+      router.refresh();
+    });
+  }
+
   const createNoteHandler = async (data: Note) => {
-    const note: Prisma.NoteCreateWithoutBoardsInput = {
+    const note: Prisma.NoteCreateInput = {
       title: data.title,
       content: data.content,
+      boards: { connect: { id: boardId } },
     };
 
-    await createNote(boardId, note);
+    const noteId = await createNote(note);
+    await uploadImage(noteId);
+
     router.refresh();
   };
 
@@ -61,7 +75,9 @@ export default function NoteModalForm({
 
     data.id = note?.id;
 
-    await updateNote(data);
+    await updateNote(note);
+    await uploadImage(data.id);
+
     router.refresh();
   };
 
@@ -93,10 +109,11 @@ export default function NoteModalForm({
               <div className="mb-3">
                 <label className="form-label">Image</label>
                 <input
-                  defaultValue={''}
                   type="file"
                   className="form-control"
                   name="image"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0])}
                 />
               </div>
             </div>

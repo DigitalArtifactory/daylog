@@ -13,6 +13,19 @@ export default async function BoardCard({ boardId }: BoardCardType) {
   if (!board) {
     return <></>;
   }
+  function stringToColor(str: string) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return `hsl(${hash % 360}, 100%, 80%)`;
+  }
+
+  function setBackgroundImage(str: string): string {
+    const color = stringToColor(str);
+    return color;
+  }
+
   return (
     <div className="card d-flex flex-column">
       {board.favorite && (
@@ -34,13 +47,27 @@ export default async function BoardCard({ boardId }: BoardCardType) {
           </svg>
         </div>
       )}
-      <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
-        <img
-          className="card-img-top"
-          src="/samples/photos/search-bg.jpg"
-          alt="Book on the grass"
-        />
-      </a>
+      {board?.imageUrl ? (
+        <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
+          <img
+            style={{ objectFit: 'cover' }}
+            src={board.imageUrl ?? '/samples/photos/search-bg.jpg'}
+            alt={`Image of ${board.title}`}
+          />
+        </a>
+      ) : (
+        <a
+          className="ratio ratio-21x9"
+          href={`/boards/${board.id}/notes`}
+          style={{ backgroundColor: setBackgroundImage(board.title) }}
+        >
+          {/* <img
+            style={{ objectFit: 'cover' }}
+            src={board.imageUrl ?? '/samples/photos/search-bg.jpg'}
+            alt={`Image of ${board.title}`}
+          /> */}
+        </a>
+      )}
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
           <a href={`/boards/${board.id}/notes`}>{board.title}</a>

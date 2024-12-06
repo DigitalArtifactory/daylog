@@ -50,13 +50,16 @@ export default function Home({
               <div className="col-lg-10 col-xl-9">
                 <Alerts />
                 <div className="card">
-                  <div className="card-body p-0 shadow-sm">
-                    <img
-                      className="card-img-top"
-                      src="/samples/photos/search-bg.jpg"
-                      alt="Book on the grass"
-                    />
-                  </div>
+                  {note?.imageUrl && (
+                    <div className="card-body p-0 shadow-sm">
+                      <img
+                        className="card-img-top"
+                        style={{ objectFit: 'cover', maxHeight: 420 }}
+                        src={note.imageUrl}
+                        alt="Book on the grass"
+                      />
+                    </div>
+                  )}
                   <div className="card-body p-0 border-0 h-auto">
                     <Editor
                       content={note?.content}
