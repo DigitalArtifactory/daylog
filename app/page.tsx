@@ -6,14 +6,14 @@ import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
         <PageBody>
-          <Link href={"/boards"}>Go to your boards</Link>
+          <Link href={'/boards'}>Go to your boards</Link>
         </PageBody>
       </PageContainer>
       <PageFooter></PageFooter>

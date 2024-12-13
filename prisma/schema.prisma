@@ -11,12 +11,21 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
   password String
   name     String?
-  role     String  @default("user") // or admin (Don't Use enum in order to be sqlite compatible).
+  role     String    @default("user") // or admin (Don't Use enum in order to be sqlite compatible).
+  terms    String   @default("pending")
   boards   Board[]
+  sessions Session[]
+}
+
+model Session {
+  id        String   @id
+  userId    Int
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model Board {

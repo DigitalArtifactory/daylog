@@ -1,34 +1,65 @@
-export default function NavHeader() {
+import signout from '@/app/lib/actions';
+import { getCurrentSession } from '@/app/login/lib/actions';
+import { redirect } from 'next/navigation';
+
+export default async function NavHeader() {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="#">
+          <a href="/boards">
             <img
               src="/logo.svg"
               width="110"
               height="32"
-              alt="Tabler"
+              alt="daylog"
               className="navbar-brand-image"
             />
           </a>
         </h1>
         <div className="navbar-nav flex-row order-md-last">
-          <div className="nav-item">
-            <a href="#" className="nav-link d-flex lh-1 text-reset p-0">
+          <li className="nav-item dropdown">
+            <a
+              href="#"
+              className="nav-link dropdown-toggle d-flex lh-1 text-reset p-0"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <span
                 className="avatar avatar-sm rounded-circle"
                 style={{
-                  backgroundImage:
-                    'url(https://ui-avatars.com/api/?rounded=true&name=David+R)',
+                  backgroundImage: `url(https://ui-avatars.com/api/?rounded=true&name=${encodeURI(
+                    user.name ?? ''
+                  )})`,
                 }}
               ></span>
               <div className="d-none d-xl-block ps-2">
-                <div>David R.</div>
-                <div className="mt-1 small text-secondary">Administrator</div>
+                <div>
+                  {user.name}
+                </div>
+                <div className="mt-1 small text-secondary text-capitalize">
+                  {user.role}
+                </div>
               </div>
             </a>
-          </div>
+            <ul className="dropdown-menu">
+              <li>
+                <a className="dropdown-item" href="/profile">
+                  Profile
+                </a>
+              </li>
+              <li>
+                <form action={signout}>
+                  <button className="dropdown-item">Sign out</button>
+                </form>
+              </li>
+            </ul>
+          </li>
         </div>
       </div>
     </header>
