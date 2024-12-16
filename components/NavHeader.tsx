@@ -1,12 +1,25 @@
+'use client';
+
 import signout from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { redirect } from 'next/navigation';
+import { User } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
-export default async function NavHeader() {
-  const { user } = await getCurrentSession();
-  if (user === null) {
-    return redirect('/login');
-  }
+export default function NavHeader() {
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const { user } = await getCurrentSession();
+
+      if (user !== null) {
+        setUser(user);
+      }
+    };
+
+    loadUser();
+  }, []);
+
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
@@ -30,21 +43,37 @@ export default async function NavHeader() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <span
-                className="avatar avatar-sm rounded-circle"
-                style={{
-                  backgroundImage: `url(https://ui-avatars.com/api/?rounded=true&name=${encodeURI(
-                    user.name ?? ''
-                  )})`,
-                }}
-              ></span>
+              {user?.name ? (
+                <span
+                  className="avatar avatar-sm rounded-circle"
+                  style={{
+                    backgroundImage: `url(https://ui-avatars.com/api/?rounded=true&name=${encodeURI(
+                      user?.name ?? ''
+                    )})`,
+                  }}
+                ></span>
+              ) : (
+                <div className="placeholder-glow">
+                  <span className="avatar avatar-sm rounded-circle placeholder"></span>
+                </div>
+              )}
               <div className="d-none d-xl-block ps-2">
-                <div>
-                  {user.name}
-                </div>
-                <div className="mt-1 small text-secondary text-capitalize">
-                  {user.role}
-                </div>
+                {user ? (
+                  <>
+                    <div>{user?.name}</div>
+                    <div className="mt-1 small text-secondary text-capitalize">
+                      {user?.role}
+                    </div>{' '}
+                  </>
+                ) : (
+                  <div className="d-flex flex-column placeholder-glow">
+                    <div
+                      className="placeholder mb-1"
+                      style={{ width: 75 }}
+                    ></div>
+                    <div className="placeholder" style={{ width: 40 }}></div>
+                  </div>
+                )}
               </div>
             </a>
             <ul className="dropdown-menu">

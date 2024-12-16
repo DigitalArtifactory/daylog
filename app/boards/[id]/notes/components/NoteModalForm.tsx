@@ -1,7 +1,7 @@
 'use client';
 
 import { resizeImage } from '@/utils/image';
-import { Note, Prisma } from '@prisma/client';
+import { Note } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,7 +9,7 @@ import { createNote, saveImage, updateNote } from '../lib/actions';
 
 type NoteModalFormType = {
   modalId: string;
-  boardId: number | null;
+  boardId: number;
   note?: Note | null;
   mode: 'update' | 'create';
 };
@@ -42,7 +42,9 @@ export default function NoteModalForm({
   const onSubmit: SubmitHandler<Note> = (data) => {
     setSubmiting(true);
     setTimeout(() => {
-      mode == 'create' ? createNoteHandler(data) : updateNoteHandler(data);
+      mode == 'create'
+        ? createNoteHandler(data, boardId)
+        : updateNoteHandler(data);
       setSubmiting(false);
       closeModal();
       formRef.current?.reset();
@@ -57,25 +59,15 @@ export default function NoteModalForm({
     });
   }
 
-  const createNoteHandler = async (data: Note) => {
-    const note: Prisma.NoteCreateInput = {
-      title: data.title,
-      content: data.content,
-      boards: { connect: { id: boardId } },
-    };
-
-    const noteId = await createNote(note);
+  const createNoteHandler = async (data: Note, boardId: number) => {
+    const noteId = await createNote(data, boardId);
     await uploadImage(noteId);
 
     router.refresh();
   };
 
   const updateNoteHandler = async (data: Note) => {
-    if (!note?.id) return;
-
-    data.id = note?.id;
-
-    await updateNote(note);
+    await updateNote(data);
     await uploadImage(data.id);
 
     router.refresh();
@@ -92,6 +84,13 @@ export default function NoteModalForm({
   return (
     <div className="modal" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+        {mode === 'update' && (
+          <input
+            type="hidden"
+            defaultValue={note?.id}
+            {...register('id', { required: true, valueAsNumber: true })}
+          ></input>
+        )}
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">

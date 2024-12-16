@@ -1,10 +1,9 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 import { signup } from './lib/actions';
 
 export default function Home() {
-  const [success, setSuccess] = useState(false);
   const [state, action, pending] = useActionState(signup, undefined);
 
   return (
