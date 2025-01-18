@@ -26,6 +26,20 @@ export async function signup(state: FormState, formData: FormData) {
   try {
     // Changes the "on" value of checkbox to "accept"
     result.data.terms = 'accept';
+
+    // Check if the user already exists
+    const user = await prisma.user.findUnique({
+      where: {
+        email: result.data.email,
+      },
+    });
+    if (user) {
+      return {
+        message: 'User already exists.',
+        success: false,
+      };
+    }
+
     await prisma.user.create({ data: result.data });
 
     return {

@@ -8,10 +8,16 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+import { getCurrentSession } from '../login/lib/actions';
 import { getBoards } from './lib/actions';
 
 export default async function Home() {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
   const boards = await getBoards();
 
   return (

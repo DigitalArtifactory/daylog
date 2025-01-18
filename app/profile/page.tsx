@@ -5,8 +5,14 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { redirect } from 'next/navigation';
+import { getCurrentSession } from '../login/lib/actions';
 
-export default function Profile() {
+export default async function Profile() {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
   return (
     <Page>
       <NavHeader></NavHeader>

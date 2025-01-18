@@ -2,29 +2,40 @@
 
 import { marked } from 'marked';
 import { useEffect, useState } from 'react';
+import { getNote } from '../../lib/actions';
 import EditorToolbar from './EditorToolbar';
 
 type EditorType = {
-  content?: string | null | undefined;
-  onUpdate?: (content: string) => void | null;
+  noteId: number;
+  onUpdate?: (content: string, callback: () => void) => void;
 };
 
-export default function Editor({ content, onUpdate }: EditorType) {
-  const [markdown, setMarkdown] = useState<string>('');
-
+export default function Editor({ noteId, onUpdate }: EditorType) {
+  const [markdown, setMarkdown] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = event.target.value;
     setMarkdown(newContent);
-    if (onUpdate) onUpdate(newContent); // Llama a la función pasada como prop con el texto plano
+    setIsSaving(true);
+    if (onUpdate)
+      onUpdate(newContent, () => {
+        setIsSaving(false);
+      });
   };
 
   useEffect(() => {
-    marked.setOptions({ breaks: true });
-    setMarkdown(content ?? '');
-    setIsClient(true);
-  }, [content]);
+    const loadNote = async () => {
+      const note = await getNote(noteId);
+      if (note) {
+        marked.setOptions({ breaks: true });
+        setMarkdown(note.content);
+      }
+      setIsClient(true);
+    };
+    loadNote();
+  }, [noteId]);
 
   const renderMarkdownToHtml = (markdown: string) => {
     return { __html: marked(markdown) };
@@ -75,7 +86,7 @@ export default function Editor({ content, onUpdate }: EditorType) {
                   rows={4}
                   style={{
                     height: '200px',
-                    fontFamily: 'monospace',
+                    fontFamily: 'geistMono',
                     fontSize: '14px',
                   }}
                   name="content"
@@ -97,13 +108,13 @@ export default function Editor({ content, onUpdate }: EditorType) {
           <div className="tab-pane" id="tabs-preview">
             <div className="markdown p-3" style={{ minHeight: 200 }}>
               <div
-                dangerouslySetInnerHTML={renderMarkdownToHtml(markdown)}
+                dangerouslySetInnerHTML={renderMarkdownToHtml(markdown ?? '')}
               ></div>
             </div>
           </div>
         </div>
       </div>
-      <div className="card-footer p-1">
+      <div className="d-flex card-footer p-1 justify-content-between">
         <a
           href="https://commonmark.org/help/"
           className="btn btn-ghost-secondary btn-sm"
@@ -128,6 +139,12 @@ export default function Editor({ content, onUpdate }: EditorType) {
           </svg>
           Markdown is supported
         </a>
+        {isSaving && (
+          <span className="d-flex badge bg-blue-lt align-items-center">
+            <div className="spinner-border spinner-border-sm text-blue me-1" role="status"/>Saving
+            changes...
+          </span>
+        )}
       </div>
     </div>
   );
