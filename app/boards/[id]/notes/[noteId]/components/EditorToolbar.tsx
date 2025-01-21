@@ -1,12 +1,39 @@
-export default function EditorToolbar() {
+'use client';
+
+type EditorToolbarType = {
+  onExecute: (prefix: string, postfix: string) => void;
+};
+
+export default function EditorToolbar({ ...props }: EditorToolbarType) {
+  const executeCommand = (
+    comm:
+      | 'heading'
+      | 'bold'
+      | 'itallic'
+      | 'quote'
+      | 'code'
+      | 'link'
+      | 'num-list'
+      | 'list'
+      | 'check-list'
+      | 'image'
+  ) => {
+    switch (comm) {
+      case 'heading':
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <li className="nav-item ms-auto">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Heading"
+          onClick={() => executeCommand('heading')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +56,7 @@ export default function EditorToolbar() {
             <path d="M5 19h4" />
             <path d="M5 5h4" />
           </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item">
         <a
