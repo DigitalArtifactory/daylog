@@ -1,3 +1,4 @@
+import { getCurrentSession } from '@/app/login/lib/actions';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -5,6 +6,7 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
@@ -16,6 +18,10 @@ export default async function Home({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
   const { id } = await params;
   const notes = await getNotes(parseInt(id));
 
@@ -24,7 +30,7 @@ export default async function Home({
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home" title="Notes">
+        <PageHeader preTitle="Home > Notes" title="Notes">
           <div className="btn-list">
             <a
               href="#"

@@ -9,6 +9,7 @@ import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from '@oslojs/encoding';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
@@ -87,31 +88,41 @@ export async function signin(state: FormState, formData: FormData) {
     email: formData.get('email'),
     password: formData.get('password'),
   });
+  try {
+    if (!result.success) {
+      return {
+        data: result.data,
+        errors: result.error.flatten().fieldErrors,
+      };
+    }
 
-  if (!result.success) {
+    const record = await prisma.user.findFirst({
+      where: { email: result.data.email, password: result.data.password },
+    });
+
+    if (!record) {
+      return {
+        data: result.data,
+        message: 'An error occurred while validating your credentials.',
+      };
+    }
+
+    const token = await generateSessionToken();
+    const session = await createSession(token, record!.id);
+    await setSessionTokenCookie(
+      token,
+      new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    );
+  } catch (e) {
+    console.error(e);
     return {
-      errors: result.error.flatten().fieldErrors,
-    };
-  }
-
-  const record = await prisma.user.findFirst({
-    where: { email: result.data.email, password: result.data.password },
-  });
-
-  if (!record) {
-    return {
+      data: result.data,
       message: 'An error occurred while sing in to your account.',
     };
   }
 
-  const token = await generateSessionToken();
-  const session = await createSession(token, record!.id);
-  await setSessionTokenCookie(
-    token,
-    new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
-  );
-
-  redirect('/');
+  revalidatePath('/boards');
+  redirect('/boards');
 }
 
 export const getCurrentSession = cache(

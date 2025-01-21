@@ -40,6 +40,7 @@ export default function Home() {
                 <input
                   type="email"
                   name="email"
+                  defaultValue={state?.data?.email?.toString()}
                   className={`form-control ${
                     state?.errors?.email && 'is-invalid'
                   }`}

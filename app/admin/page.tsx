@@ -1,5 +1,3 @@
-'use client';
-
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -7,15 +5,16 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
-import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
+import { getCurrentSession } from '../login/lib/actions';
+import AdminTabs from './partials/AdminTabs';
 import UsersTable from './partials/UsersTable';
 
-export default function Admin() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+export default async function Admin() {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
 
   return (
     <Page>
@@ -26,44 +25,7 @@ export default function Admin() {
         <PageBody>
           <div className="card">
             <div className="card-header">
-              <ul
-                className="nav nav-tabs card-header-tabs"
-                data-bs-toggle="tabs"
-              >
-                {isClient ? (
-                  <>
-                    <li className="nav-item">
-                      <a
-                        href="#tabs-home-ex1"
-                        className="nav-link active"
-                        data-bs-toggle="tab"
-                      >
-                        Users
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        href="#tabs-admin-2"
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                      >
-                        Security
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        href="#tabs-profile-ex1"
-                        className="nav-link"
-                        data-bs-toggle="tab"
-                      >
-                        Database
-                      </a>
-                    </li>
-                  </>
-                ) : (
-                    <div style={{'height': '37px'}}></div>
-                )}
-              </ul>
+              <AdminTabs />
             </div>
             <div className="card-body">
               <div className="tab-content">
