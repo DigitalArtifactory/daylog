@@ -18,59 +18,7 @@ export default async function Profile() {
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Profile" title="User">
-          <div className="btn-list">
-            <a
-              href="#"
-              className="btn btn-primary d-none d-sm-inline-block"
-              data-bs-toggle="modal"
-              data-bs-target="#modal-report"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
-                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                <path d="M14 4l0 4l-6 0l0 -4" />
-              </svg>
-              Save changes
-            </a>
-            <a
-              href="#"
-              className="btn btn-primary d-sm-none btn-icon"
-              data-bs-toggle="modal"
-              data-bs-target="#modal-report"
-              aria-label="Create new report"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </a>
-          </div>
-        </PageHeader>
+        <PageHeader preTitle="Profile" title="User"></PageHeader>
         <PageBody>
           <div className="card">
             <div className="card-body">
@@ -103,6 +51,28 @@ export default async function Profile() {
                 </div>
                 <div className="ms-auto"></div>
               </div>
+            </div>
+            <div className="card-body">
+              <button className="btn btn-primary">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="icon icon-tabler icons-tabler-outline icon-tabler-device-floppy"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                  <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M14 4l0 4l-6 0l0 -4" />
+                </svg>
+                Save Changes
+              </button>
             </div>
           </div>
           <div className="card mt-3">
