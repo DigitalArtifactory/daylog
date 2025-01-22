@@ -1,12 +1,66 @@
-export default function EditorToolbar() {
+'use client';
+
+type EditorToolbarType = {
+  onExecute: (prefix: string, postfix: string,  comm: string) => void;
+};
+
+export default function EditorToolbar({ ...props }: EditorToolbarType) {
+  const executeCommand = (
+    comm:
+      | 'heading'
+      | 'bold'
+      | 'italic'
+      | 'strikethrough'
+      | 'quote'
+      | 'code'
+      | 'link'
+      | 'unordered-list'
+      | 'ordered-list'
+      | 'image'
+  ) => {
+    switch (comm) {
+      case 'heading':
+        props.onExecute('# ', '', comm);
+        break;
+      case 'bold':
+        props.onExecute('**', '**', comm);
+        break;
+      case 'italic':
+        props.onExecute('_', '_', comm);
+        break;
+      case 'strikethrough':
+        props.onExecute('~~', '~~', comm);
+        break;
+      case 'quote':
+        props.onExecute('> ', '', comm);
+        break;
+      case 'code':
+        props.onExecute('`', '`', comm);
+        break;
+      case 'link':
+        props.onExecute('[', '](url)', comm);
+        break;
+      case 'unordered-list':
+        props.onExecute('- ', '', comm);
+        break;
+      case 'ordered-list':
+        props.onExecute('1. ', '', comm);
+        break;
+      case 'image':
+        props.onExecute('![', '](url)', comm);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <li className="nav-item ms-auto">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Heading"
+          onClick={() => executeCommand('heading')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,14 +83,13 @@ export default function EditorToolbar() {
             <path d="M5 19h4" />
             <path d="M5 5h4" />
           </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Bold"
+          onClick={() => executeCommand('bold')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,14 +107,13 @@ export default function EditorToolbar() {
             <path d="M7 5h6a3.5 3.5 0 0 1 0 7h-6z" />
             <path d="M13 12h1a3.5 3.5 0 0 1 0 7h-7v-7" />
           </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Italic"
+          onClick={() => executeCommand('italic')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,14 +132,37 @@ export default function EditorToolbar() {
             <path d="M7 19l6 0" />
             <path d="M14 5l-4 14" />
           </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Strikethrough"
+          onClick={() => executeCommand('strikethrough')}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-strikethrough"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 12l14 0" />
+            <path d="M16 6.5a4 2 0 0 0 -4 -1.5h-1a3.5 3.5 0 0 0 0 7h2a3.5 3.5 0 0 1 0 7h-1.5a4 2 0 0 1 -4 -1.5" />
+          </svg>
+        </button>
+      </li>
+      <li className="nav-item">
+        <button
+          className="nav-link"
+          title="Quote"
+          onClick={() => executeCommand('quote')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,14 +184,13 @@ export default function EditorToolbar() {
             <path d="M9 9h1a1 1 0 1 1 -1 1v-2.5a2 2 0 0 1 2 -2" />
             <path d="M3 9h1a1 1 0 1 1 -1 1v-2.5a2 2 0 0 1 2 -2" />
           </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Code"
+          onClick={() => executeCommand('code')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -135,14 +209,13 @@ export default function EditorToolbar() {
             <path d="M17 8l4 4l-4 4" />
             <path d="M14 4l-4 16" />
           </svg>
-        </a>
+        </button>
       </li>
-      <li className="nav-item  border-end">
+      <li className="nav-item border-end">
         <a
-          href="#tabs-settings-ex2"
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Link"
+          onClick={() => executeCommand('link')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -164,11 +237,10 @@ export default function EditorToolbar() {
         </a>
       </li>
       <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Ordered List"
+          onClick={() => executeCommand('ordered-list')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -189,14 +261,13 @@ export default function EditorToolbar() {
             <path d="M4 16a2 2 0 1 1 4 0c0 .591 -.5 1 -1 1.5l-3 2.5h4" />
             <path d="M6 10v-6l-2 2" />
           </svg>
-        </a>
+        </button>
       </li>
-      <li className="nav-item">
-        <a
-          href="#tabs-settings-ex2"
+      <li className="nav-item border-end">
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Unordered List"
+          onClick={() => executeCommand('unordered-list')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -218,43 +289,13 @@ export default function EditorToolbar() {
             <path d="M5 12l0 .01" />
             <path d="M5 18l0 .01" />
           </svg>
-        </a>
-      </li>
-      <li className="nav-item border-end">
-        <a
-          href="#tabs-settings-ex2"
-          className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="icon icon-tabler icons-tabler-outline icon-tabler-list-details"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M13 5h8" />
-            <path d="M13 9h5" />
-            <path d="M13 15h8" />
-            <path d="M13 19h5" />
-            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-          </svg>
-        </a>
+        </button>
       </li>
       <li className="nav-item ">
-        <a
-          href="#tabs-settings-ex2"
+        <button
           className="nav-link"
-          title="Settings"
-          data-bs-toggle="tab"
+          title="Image"
+          onClick={() => executeCommand('image')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +315,7 @@ export default function EditorToolbar() {
             <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
             <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
           </svg>
-        </a>
+        </button>
       </li>
     </>
   );

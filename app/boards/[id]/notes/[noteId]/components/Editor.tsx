@@ -1,7 +1,7 @@
 'use client';
 
 import { marked } from 'marked';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getNote } from '../../lib/actions';
 import EditorToolbar from './EditorToolbar';
 
@@ -11,6 +11,8 @@ type EditorType = {
 };
 
 export default function Editor({ noteId, onUpdate }: EditorType) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -65,7 +67,41 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
                   Preview
                 </a>
               </li>
-              <EditorToolbar />
+              <EditorToolbar
+                onExecute={(prefix, postfix, comm) => {
+                  const textarea = textareaRef.current;
+                  if (textarea) {
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    const text = textarea.value.substring(start, end);
+                    let newText = text;
+
+                    if (comm === 'unordered-list') {
+                          newText = text
+                            .split('\n')
+                            .map((line) => `- ${line}`)
+                            .join('\n');
+                    } else if (comm === 'ordered-list') {
+                          newText = text
+                            .split('\n')
+                            .map((line, index) => `${index + 1}. ${line}`)
+                            .join('\n');
+                    } else {
+                      newText = `${prefix}${text}${postfix}`;
+                    }
+
+                    textarea.value =
+                      textarea.value.substring(0, start) +
+                      newText +
+                      textarea.value.substring(end);
+
+                    // Update the cursor position to the start of the new text
+                    textarea.selectionStart = textarea.selectionEnd = start;
+
+                    textarea.focus();
+                  }
+                }}
+              />
             </>
           ) : (
             <div
@@ -83,6 +119,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
             <div>
               {isClient ? (
                 <textarea
+                  ref={textareaRef}
                   rows={4}
                   style={{
                     height: '200px',
@@ -141,8 +178,11 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
         </a>
         {isSaving && (
           <span className="d-flex badge bg-blue-lt align-items-center">
-            <div className="spinner-border spinner-border-sm text-blue me-1" role="status"/>Saving
-            changes...
+            <div
+              className="spinner-border spinner-border-sm text-blue me-1"
+              role="status"
+            />
+            Saving changes...
           </span>
         )}
       </div>
