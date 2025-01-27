@@ -15,7 +15,7 @@ export default function Backup({ profile }: BackupType) {
   const [state, action, pending] = useActionState(backupData, undefined);
   return (
     <form action={action}>
-      <input type="hidden" name="id" value={profile.id} />
+      <input type="hidden" name="userId" defaultValue={profile.id} />
       <div className="card mt-3">
         <div className="card-body">
           <h3 className="card-title">Backup</h3>
@@ -36,6 +36,23 @@ export default function Backup({ profile }: BackupType) {
                 aria-label="close"
               ></a>
             </div>
+          )}
+          {state?.success && state.data && (
+            <>
+              <textarea
+                className="form-control mt-2"
+                disabled
+                rows={5}
+                defaultValue={state.data}
+              />
+              <button
+                type="button"
+                className="btn btn-sm w-full mt-1"
+                onClick={() => navigator.clipboard.writeText(state.data)}
+              >
+                Copy JSON
+              </button>
+            </>
           )}
         </div>
         <div className="card-body">

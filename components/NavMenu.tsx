@@ -1,8 +1,25 @@
 'use client';
 
+import { getCurrentSession } from '@/app/login/lib/actions';
+import { User } from '@prisma/client';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function NavMenu() {
+const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const { user } = await getCurrentSession();
+
+      if (user !== null) {
+        setUser(user);
+      }
+    };
+
+    loadUser();
+  }, []);
+
   const path = usePathname();
 
   const adminPattern = /^\/admin\/?$/;
@@ -79,7 +96,7 @@ export default function NavMenu() {
                   className={`nav-link ${
                     profilePattern.test(path) ? 'active' : ''
                   }`}
-                  href="/profile"
+                  href={`/profile/${user?.id}`}
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     <svg

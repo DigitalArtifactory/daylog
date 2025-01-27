@@ -34,7 +34,7 @@ model Board {
   description String?
   imageUrl    String?
   favorite    Boolean  @default(false)
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   notes       Note[]
   createdAt   DateTime @default(now())
@@ -47,7 +47,7 @@ model Note {
   content   String?
   imageUrl  String?
   favorite  Boolean  @default(false)
-  boards    Board?   @relation(fields: [boardsId], references: [id])
+  boards    Board?   @relation(fields: [boardsId], references: [id], onDelete: Cascade)
   boardsId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

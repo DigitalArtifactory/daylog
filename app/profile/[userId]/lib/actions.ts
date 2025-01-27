@@ -4,13 +4,16 @@ import {
   getCurrentSession,
   validateSessionToken,
 } from '@/app/login/lib/actions';
+import { deleteSessionTokenCookie } from '@/app/login/lib/cookies';
 import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { permanentRedirect, redirect } from 'next/navigation';
 import {
   BackupFormSchema,
   BackupFormState,
+  DeleteAccountFormSchema,
+  DeleteAccountFormState,
   PasswordFormSchema,
   PasswordFormState,
   ProfileFormSchema,
@@ -113,7 +116,7 @@ export default async function updatePassword(
       where: { id: data.id },
     });
 
-    if(!record) {
+    if (!record) {
       throw new Error('User not found.');
     }
 
@@ -176,7 +179,17 @@ export async function backupData(state: BackupFormState, formData: FormData) {
       where: {
         id: result.data.userId,
       },
+      select: {
+        name: true,
+        email: true,
+        boards: {
+          include: {
+            notes: true,
+          },
+        },
+      },
     });
+
     if (!user) {
       return {
         message: 'User not found.',
@@ -184,17 +197,78 @@ export async function backupData(state: BackupFormState, formData: FormData) {
       };
     }
 
-    // Backup data
-    // ...
+    const data = JSON.stringify(user);
 
     return {
       success: true,
-      message: 'Data backed up successfully.',
+      data: data,
     };
   } catch (e) {
     return {
       data: result.data,
       message: 'An error occurred while backing up data.',
+    };
+  }
+}
+
+export async function deleteAccount(
+  state: DeleteAccountFormState,
+  formData: FormData
+) {
+  const data = {
+    userId: Number(formData.get('userId')),
+    password: formData.get('password'),
+  };
+
+  const result = DeleteAccountFormSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+      success: false,
+    };
+  }
+
+  let accountDeleted = true;
+  try {
+    // Check if the user exists
+    const user = await prisma.user.findUnique({
+      where: {
+        id: result.data.userId,
+        password: result.data.password,
+      },
+    });
+
+    if (!user) {
+      return {
+        message: 'You are not allowed to perform this action.',
+        success: false,
+      };
+    }
+
+    console.log('Deleting...');
+
+    const deleteUser = await prisma.user.delete({
+      where: { email: user.email },
+    });
+
+    if (deleteUser) {
+      accountDeleted = true;
+    }
+  } catch (e) {
+    return {
+      data: result.data,
+      message: 'An error occurred while deleting your account.',
+    };
+  }
+
+  if (accountDeleted) {
+    await deleteSessionTokenCookie();
+    permanentRedirect('/login');
+  } else {
+    return {
+      message: 'User could not be delete.',
+      success: false,
     };
   }
 }

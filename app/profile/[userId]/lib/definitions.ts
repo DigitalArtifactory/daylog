@@ -22,6 +22,11 @@ export const PasswordFormSchema = z.object({
 
 export const BackupFormSchema = z.object({ userId: z.number() });
 
+export const DeleteAccountFormSchema = z.object({
+  userId: z.number(),
+  password: z.string().min(1, { message: 'Your password is required.' }).trim(),
+});
+
 export type PasswordFormState =
   | {
       errors?: {
@@ -47,6 +52,16 @@ export type BackupFormState =
   | {
       errors?: {
         userId?: string[];
+      };
+      message?: string;
+    }
+  | undefined;
+
+export type DeleteAccountFormState =
+  | {
+      errors?: {
+        userId?: string[];
+        password?: string[];
       };
       message?: string;
     }

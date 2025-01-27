@@ -78,7 +78,7 @@ export default function NavHeader() {
             </a>
             <ul className="dropdown-menu">
               <li>
-                <a className="dropdown-item" href="/profile">
+                <a className="dropdown-item" href={`/profile/${user?.id}`}>
                   Profile
                 </a>
               </li>

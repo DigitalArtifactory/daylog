@@ -1,10 +1,16 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { signin } from './lib/actions';
 
 export default function Home() {
   const [state, action, pending] = useActionState(signin, undefined);
+
+  useEffect(() => {
+    // Resolves Bootstrap modal issue when redirects to login from a modal.
+    const modal = document.getElementsByClassName('modal-backdrop');
+    if(modal.length > 0) modal[0].remove();
+  },[])
 
   return (
     <div className="page page-center">
