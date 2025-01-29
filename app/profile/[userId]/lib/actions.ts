@@ -86,8 +86,8 @@ export async function updateProfile(
     };
   }
 
-  revalidatePath('/profile');
-  return redirect('/profile');
+  revalidatePath(`/profile/${data.id}`);
+  return redirect(`/profile/${data.id}`);
 }
 
 export default async function updatePassword(

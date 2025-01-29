@@ -28,7 +28,11 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                     type="text"
                     name="name"
                     className="form-control"
-                    defaultValue={profile.name ?? ''}
+                    defaultValue={
+                      typeof state?.data?.name === 'string'
+                        ? state.data.name
+                        : profile.name ?? ''
+                    }
                     placeholder="Enter your nickname, name or fullname"
                   />
                   {state?.errors?.name && (
@@ -43,7 +47,11 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                     type="email"
                     name="email"
                     className="form-control"
-                    defaultValue={profile.email ?? ''}
+                    defaultValue={
+                      typeof state?.data?.email === 'string'
+                        ? state.data.email
+                        : profile.email ?? ''
+                    }
                     placeholder="Enter your email for password recovery"
                   />
                   {state?.errors?.email &&

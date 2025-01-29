@@ -15,6 +15,9 @@ export default async function Admin() {
   if (user === null) {
     return redirect('/login');
   }
+  if (user.role !== 'admin') {
+    return redirect('/');
+  }
 
   return (
     <Page>
@@ -35,7 +38,7 @@ export default async function Admin() {
                     Manage user accounts, and roles with ease.
                   </div>
                   <div className="pt-4">
-                    <UsersTable></UsersTable>
+                    <UsersTable currentUserId={user.id}></UsersTable>
                   </div>
                 </div>
                 <div className="tab-pane" id="tabs-admin-2">

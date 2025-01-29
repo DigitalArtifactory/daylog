@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function NavMenu() {
-const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -120,41 +120,43 @@ const [user, setUser] = useState<User>();
                 </a>
               </li>
             </ul>
-            <ul className="navbar-nav mb-2 mb-lg-0">
-              <li
-                className={`nav-item ${
-                  adminPattern.test(path) ? 'active' : ''
-                }`}
-              >
-                <a
-                  className={`nav-link ${
+            {user?.role === 'admin' && (
+              <ul className="navbar-nav mb-2 mb-lg-0">
+                <li
+                  className={`nav-item ${
                     adminPattern.test(path) ? 'active' : ''
                   }`}
-                  href="/admin"
                 >
-                  <span className="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-user-shield"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M6 21v-2a4 4 0 0 1 4 -4h2" />
-                      <path d="M22 16c0 4 -2.5 6 -3.5 6s-3.5 -2 -3.5 -6c1 0 2.5 -.5 3.5 -1.5c1 1 2.5 1.5 3.5 1.5z" />
-                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                    </svg>
-                  </span>
-                  <span className="nav-link-title">Admin</span>
-                </a>
-              </li>
-            </ul>
+                  <a
+                    className={`nav-link ${
+                      adminPattern.test(path) ? 'active' : ''
+                    }`}
+                    href="/admin"
+                  >
+                    <span className="nav-link-icon d-md-none d-lg-inline-block">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="icon icon-tabler icons-tabler-outline icon-tabler-user-shield"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h2" />
+                        <path d="M22 16c0 4 -2.5 6 -3.5 6s-3.5 -2 -3.5 -6c1 0 2.5 -.5 3.5 -1.5c1 1 2.5 1.5 3.5 1.5z" />
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                      </svg>
+                    </span>
+                    <span className="nav-link-title">Admin</span>
+                  </a>
+                </li>
+              </ul>
+            )}
             <form className="d-flex" role="search">
               <div className="input-icon">
                 <input

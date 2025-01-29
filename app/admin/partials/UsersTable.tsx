@@ -2,18 +2,28 @@
 
 import { User } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import { getUsers } from '../lib/script';
+import { getUsers, setAdmin as setRole } from '../lib/script';
 
-export default function UsersTable() {
+export default function UsersTable({
+  currentUserId,
+}: {
+  currentUserId: number;
+}) {
   const [users, setUsers] = useState<User[] | null>();
 
+  const loadData = async () => {
+    const users = await getUsers();
+    setUsers(users);
+  };
+
   useEffect(() => {
-    const loadData = async () => {
-      const users = await getUsers();
-      setUsers(users);
-    };
     loadData();
   }, []);
+
+  const handleClickRole = async (userId: number, role: string) => {
+    await setRole(userId, role === 'user' ? 'admin' : 'user');
+    await loadData();
+  };
 
   return (
     <div className="table-responsive">
@@ -22,6 +32,7 @@ export default function UsersTable() {
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th></th>
             <th>Role</th>
             <th className="w-1"></th>
           </tr>
@@ -35,9 +46,28 @@ export default function UsersTable() {
                   {u.email}
                 </a>
               </td>
+              <td>
+                {u.role === 'user' ? (
+                  <button
+                    onClick={() => handleClickRole(u.id, u.role)}
+                    className="btn btn-link"
+                  >
+                    Set as Admin
+                  </button>
+                ) : (
+                  u.id !== currentUserId && (
+                    <button
+                      onClick={() => handleClickRole(u.id, u.role)}
+                      className="btn btn-link"
+                    >
+                      Set as User
+                    </button>
+                  )
+                )}
+              </td>
               <td className="text-secondary text-capitalize">{u.role}</td>
               <td>
-                <a href="#">Edit</a>
+                <a href={`/profile/${u.id}`}>Edit</a>
               </td>
             </tr>
           ))}
