@@ -42,3 +42,6 @@ next-env.d.ts
 # database
 /prisma/database
 /prisma/migrations
+
+# settings
+settings.json

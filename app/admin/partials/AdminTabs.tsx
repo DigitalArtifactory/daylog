@@ -27,15 +27,6 @@ export default function AdminTabs() {
               Security
             </a>
           </li>
-          <li className="nav-item">
-            <a
-              href="#tabs-profile-ex1"
-              className="nav-link"
-              data-bs-toggle="tab"
-            >
-              Database
-            </a>
-          </li>
         </>
       ) : (
         <div style={{ height: '37px' }}></div>
