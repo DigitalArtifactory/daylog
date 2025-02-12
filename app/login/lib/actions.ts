@@ -4,6 +4,7 @@ import type { Session, User } from '@prisma/client';
 
 import { PrismaClient } from '@prisma/client';
 
+import { validateTOTP } from '@/utils/totp';
 import { sha256 } from '@oslojs/crypto/sha2';
 import {
   encodeBase32LowerCaseNoPadding,
@@ -14,7 +15,12 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { setSessionTokenCookie } from './cookies';
-import { FormState, SigninFormSchema } from './definitions';
+import {
+  FormState,
+  SigninFormSchema,
+  ValidateMFAFormSchema,
+  ValidateMFAFormState,
+} from './definitions';
 
 const prisma = new PrismaClient();
 
@@ -88,6 +94,9 @@ export async function signin(state: FormState, formData: FormData) {
     email: formData.get('email'),
     password: formData.get('password'),
   });
+
+  let goMFA = false;
+  let userId: number | null = null;
   try {
     if (!result.success) {
       return {
@@ -107,12 +116,12 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
-    const token = await generateSessionToken();
-    const session = await createSession(token, record!.id);
-    await setSessionTokenCookie(
-      token,
-      new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
-    );
+    if (!record.mfa) {
+      await generateUserSession(record);
+    }
+
+    goMFA = record.mfa;
+    userId = record.id;
   } catch (e) {
     console.error(e);
     return {
@@ -120,9 +129,13 @@ export async function signin(state: FormState, formData: FormData) {
       message: 'An error occurred while sing in to your account.',
     };
   }
-
-  revalidatePath('/boards');
-  redirect('/boards');
+  if (goMFA && userId !== null) {
+    revalidatePath(`/login/otp/${userId}`);
+    redirect(`/login/otp/${userId}`);
+  } else {
+    revalidatePath('/boards');
+    redirect('/boards');
+  }
 }
 
 export const getCurrentSession = cache(
@@ -136,3 +149,89 @@ export const getCurrentSession = cache(
     return result;
   }
 );
+
+export async function validateMFA(
+  state: ValidateMFAFormState,
+  formData: FormData
+) {
+  const data = {
+    id: Number(formData.get('id')),
+    password: formData.get('password'),
+  };
+
+  const result = ValidateMFAFormSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+      data: data,
+      success: false,
+    };
+  }
+
+  try {
+    const record = await prisma.user.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!record) {
+      throw new Error('User not found.');
+    }
+
+    const secret = record.secret;
+    if (!secret) {
+      throw new Error('Secret not found');
+    }
+
+    if (!validateTOTP(secret, result.data.password)) {
+      return {
+        data: result.data,
+        message: 'OTP is not valid or is expired.',
+      };
+    }
+
+    await generateUserSession(record);
+  } catch (e) {
+    return {
+      data: result.data,
+      message: 'An error occurred while validating your OTP.',
+    };
+  }
+
+  revalidatePath('/boards');
+  redirect('/boards');
+}
+
+async function generateUserSession(record: {
+  name: string | null;
+  id: number;
+  email: string;
+  password: string;
+  secret: string | null;
+  mfa: boolean;
+  role: string;
+  terms: string;
+}) {
+  const token = await generateSessionToken();
+  const session = await createSession(token, record!.id);
+  await setSessionTokenCookie(
+    token,
+    new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+  );
+}
+
+export async function getUserMFA(userId: number) {
+  try {
+    const record = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!record) {
+      throw new Error('User not found.');
+    }
+
+    return record.mfa;
+  } catch (e) {
+    return false;
+  }
+}

@@ -1,8 +1,8 @@
 'use client';
 
+import OTPInputWrapper from '@/components/OTPInputWrapper';
 import { generateTOTPSecret, generateTOTPUrl } from '@/utils/totp';
 import { User } from '@prisma/client';
-import { OTPInput, SlotProps } from 'input-otp';
 import { QRCodeSVG } from 'qrcode.react';
 import { useActionState, useEffect, useState } from 'react';
 import { deleteMFA, updateMFA } from '../lib/actions';
@@ -28,14 +28,6 @@ export default function MultiFAAuth({ profile }: ProfileInfoType) {
     </div>
   );
 }
-
-const Slot = (props: SlotProps) => {
-  return (
-    <div className="d-flex h-3 border py-3 w-4 justify-content-center align-items-center rounded">
-      {props.char !== null && <div>{props.char}</div>}
-    </div>
-  );
-};
 
 const ModalDelete = ({ profile }: ProfileInfoType) => {
   const [password, setPassword] = useState<string>('');
@@ -130,23 +122,9 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
                             type="hidden"
                             value={password}
                           />
-                          <OTPInput
-                            value={password}
-                            maxLength={6}
-                            containerClassName="w-full"
+                          <OTPInputWrapper
                             onChange={(value) => setPassword(value)}
-                            render={({ slots }) => (
-                              <div className="d-flex justify-content-center align-items-center gap-2">
-                                {slots.slice(0, 3).map((s, idx) => (
-                                  <Slot key={idx} {...s}></Slot>
-                                ))}
-                                <div>-</div>
-                                {slots.slice(3).map((s, idx) => (
-                                  <Slot key={idx} {...s}></Slot>
-                                ))}
-                              </div>
-                            )}
-                          />
+                          ></OTPInputWrapper>
                         </div>
                       </div>
                       {state?.errors?.password && (
@@ -350,22 +328,9 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
                       <div className="input-group gap-3">
                         <input name="secret" type="hidden" value={secret} />
                         <input name="password" type="hidden" value={password} />
-                        <OTPInput
-                          maxLength={6}
-                          containerClassName="w-full"
+                        <OTPInputWrapper
                           onChange={(value) => setPassword(value)}
-                          render={({ slots }) => (
-                            <div className="d-flex justify-content-center align-items-center gap-2">
-                              {slots.slice(0, 3).map((s, idx) => (
-                                <Slot key={idx} {...s}></Slot>
-                              ))}
-                              <div>-</div>
-                              {slots.slice(3).map((s, idx) => (
-                                <Slot key={idx} {...s}></Slot>
-                              ))}
-                            </div>
-                          )}
-                        />
+                        ></OTPInputWrapper>
                       </div>
                     </div>
                     {state?.errors?.password && (
