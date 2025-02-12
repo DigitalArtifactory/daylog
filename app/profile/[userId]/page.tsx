@@ -1,3 +1,4 @@
+import { loadSettings } from '@/app/admin/lib/script';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -38,6 +39,8 @@ export default async function Profile({
     );
   }
 
+  const settings = await loadSettings();
+
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -47,7 +50,7 @@ export default async function Profile({
         <PageBody>
           <ProfileInfo profile={profile} />
           <UpdatePass userId={user.id} profile={profile} />
-          <MultiFAAuth profile={profile}></MultiFAAuth>
+          {settings?.mfa && <MultiFAAuth profile={profile}></MultiFAAuth>}
           <Backup profile={profile} />
           <DangerZone profile={profile}></DangerZone>
         </PageBody>

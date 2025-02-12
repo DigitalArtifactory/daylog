@@ -4,6 +4,7 @@ import type { Session, User } from '@prisma/client';
 
 import { PrismaClient } from '@prisma/client';
 
+import { loadSettings } from '@/app/admin/lib/script';
 import { validateTOTP } from '@/utils/totp';
 import { sha256 } from '@oslojs/crypto/sha2';
 import {
@@ -116,12 +117,13 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
-    if (!record.mfa) {
+    const settings = await loadSettings();
+    if (record.mfa && settings?.mfa) {
+      goMFA = record.mfa;
+      userId = record.id;
+    } else {
       await generateUserSession(record);
     }
-
-    goMFA = record.mfa;
-    userId = record.id;
   } catch (e) {
     console.error(e);
     return {

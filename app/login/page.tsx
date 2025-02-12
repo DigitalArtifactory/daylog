@@ -9,8 +9,8 @@ export default function Home() {
   useEffect(() => {
     // Resolves Bootstrap modal issue when redirects to login from a modal.
     const modal = document.getElementsByClassName('modal-backdrop');
-    if(modal.length > 0) modal[0].remove();
-  },[])
+    if (modal.length > 0) modal[0].remove();
+  }, []);
 
   return (
     <div className="page page-center">
@@ -64,7 +64,9 @@ export default function Home() {
                 <label className="form-label">
                   Password
                   <span className="form-label-description">
-                    <a href="./login/reset">I forgot password</a>
+                    <a tabIndex={-1} href="./login/reset">
+                      I forgot password
+                    </a>
                   </span>
                 </label>
                 <div className="input-group input-group-flat">
@@ -88,6 +90,7 @@ export default function Home() {
                       data-bs-toggle="tooltip"
                       aria-label="Show password"
                       data-bs-original-title="Show password"
+                      tabIndex={-1}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
