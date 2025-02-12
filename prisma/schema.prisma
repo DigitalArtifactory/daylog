@@ -14,9 +14,11 @@ model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique
   password String
+  secret   String?
+  mfa      Boolean   @default(false)
   name     String?
   role     String    @default("user") // or admin (Don't Use enum in order to be sqlite compatible).
-  terms    String   @default("pending")
+  terms    String    @default("pending")
   boards   Board[]
   sessions Session[]
 }

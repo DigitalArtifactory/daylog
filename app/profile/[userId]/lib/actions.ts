@@ -15,12 +15,14 @@ import {
   BackupFormState,
   DeleteAccountFormSchema,
   DeleteAccountFormState,
-  MFAFormSchema,
-  MFAFormState,
+  DeleteMFAFormSchema,
+  MFAValidationFormState as DeleteMFAFormState,
   PasswordFormSchema,
   PasswordFormState,
   ProfileFormSchema,
   ProfileFormState,
+  UpdateMFAFormSchema,
+  MFAFormState as UpdateMFAFormState,
 } from './definitions';
 
 const prisma = new PrismaClient();
@@ -297,14 +299,14 @@ export async function getProfile(userId: number) {
   }
 }
 
-export async function updateMFA(state: MFAFormState, formData: FormData) {
+export async function updateMFA(state: UpdateMFAFormState, formData: FormData) {
   const data = {
     id: Number(formData.get('id')),
     secret: formData.get('secret'),
-    password: formData.getAll('password[]'),
+    password: formData.get('password'),
   };
 
-  const result = MFAFormSchema.safeParse(data);
+  const result = UpdateMFAFormSchema.safeParse(data);
 
   if (!result.success) {
     return {
@@ -314,8 +316,7 @@ export async function updateMFA(state: MFAFormState, formData: FormData) {
     };
   }
 
-  const otp = result.data.password.join('');
-  if (!validateTOTP(result.data.secret, otp)) {
+  if (!validateTOTP(result.data.secret, result.data.password)) {
     return {
       data: result.data,
       message: 'OTP is not valid.',
@@ -331,21 +332,80 @@ export async function updateMFA(state: MFAFormState, formData: FormData) {
       throw new Error('User not found.');
     }
 
-    // await prisma.user.update({
-    //   where: { id: data.id },
-    //   data: {
-    //     password: result.data.password,
-    //   },
-    // });
+    await prisma.user.update({
+      where: { id: data.id },
+      data: {
+        mfa: true,
+        secret: result.data.secret,
+      },
+    });
 
     return {
       success: true,
-      message: 'MFA device updated successfully.',
+      message:
+        'MFA device has been updated successfully you can refresh this page.',
     };
   } catch (e) {
     return {
       data: result.data,
       message: 'An error occurred while updating your MFA.',
+    };
+  }
+}
+
+export async function deleteMFA(state: DeleteMFAFormState, formData: FormData) {
+  const data = {
+    id: Number(formData.get('id')),
+    password: formData.get('password'),
+  };
+
+  const result = DeleteMFAFormSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+      data: data,
+      success: false,
+    };
+  }
+
+  try {
+    const record = await prisma.user.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!record) {
+      throw new Error('User not found.');
+    }
+
+    const secret = record.secret;
+    if (!secret) {
+      throw new Error('Secret not found');
+    }
+
+    if (!validateTOTP(secret, result.data.password)) {
+      return {
+        data: result.data,
+        message: 'OTP is not valid.',
+      };
+    }
+
+    await prisma.user.update({
+      where: { id: data.id },
+      data: {
+        mfa: false,
+        secret: null,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Your device has been deleted you can refresh this page.',
+    };
+  } catch (e) {
+    return {
+      data: result.data,
+      message: 'An error occurred while deleting your MFA.',
     };
   }
 }

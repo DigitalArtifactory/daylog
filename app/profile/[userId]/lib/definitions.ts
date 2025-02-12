@@ -20,9 +20,16 @@ export const PasswordFormSchema = z.object({
     .trim(),
 });
 
-export const MFAFormSchema = z.object({
-  secret: z.string().trim().min(1, {message: 'Secret has not been generated.'}),
-  password: z.array(z.string().trim().min(1, { message: 'TOTP is required.' })),
+export const UpdateMFAFormSchema = z.object({
+  secret: z
+    .string()
+    .trim()
+    .min(1, { message: 'Secret has not been generated.' }),
+  password: z.string().trim().min(1, { message: 'TOTP is required.' }),
+});
+
+export const DeleteMFAFormSchema = z.object({
+  password: z.string().trim().min(1, { message: 'TOTP is required.' }),
 });
 
 export const BackupFormSchema = z.object({ userId: z.number() });
@@ -76,6 +83,15 @@ export type MFAFormState =
   | {
       errors?: {
         secret?: string[];
+        password?: string[];
+      };
+      message?: string;
+    }
+  | undefined;
+
+export type MFAValidationFormState =
+  | {
+      errors?: {
         password?: string[];
       };
       message?: string;
