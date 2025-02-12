@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import updatePassword from '../lib/actions';
+import { updatePassword } from '../lib/actions';
 
 type UpdatePassType = {
   userId: number | null;

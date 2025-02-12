@@ -10,6 +10,7 @@ import { getCurrentSession } from '../../login/lib/actions';
 import { getProfile } from './lib/actions';
 import Backup from './partials/Backup';
 import DangerZone from './partials/DangerZone';
+import MultiFAAuth from './partials/MultiFAAuth';
 import ProfileInfo from './partials/ProfileInfo';
 import UpdatePass from './partials/UpdatePass';
 
@@ -46,6 +47,7 @@ export default async function Profile({
         <PageBody>
           <ProfileInfo profile={profile} />
           <UpdatePass userId={user.id} profile={profile} />
+          <MultiFAAuth profile={profile}></MultiFAAuth>
           <Backup profile={profile} />
           <DangerZone profile={profile}></DangerZone>
         </PageBody>

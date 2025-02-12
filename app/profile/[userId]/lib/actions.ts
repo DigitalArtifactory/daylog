@@ -5,6 +5,7 @@ import {
   validateSessionToken,
 } from '@/app/login/lib/actions';
 import { deleteSessionTokenCookie } from '@/app/login/lib/cookies';
+import { validateTOTP } from '@/utils/totp';
 import { PrismaClient } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -14,6 +15,8 @@ import {
   BackupFormState,
   DeleteAccountFormSchema,
   DeleteAccountFormState,
+  MFAFormSchema,
+  MFAFormState,
   PasswordFormSchema,
   PasswordFormState,
   ProfileFormSchema,
@@ -90,7 +93,7 @@ export async function updateProfile(
   return redirect(`/profile/${data.id}`);
 }
 
-export default async function updatePassword(
+export async function updatePassword(
   state: PasswordFormState,
   formData: FormData
 ) {
@@ -291,5 +294,58 @@ export async function getProfile(userId: number) {
     return record;
   } else {
     return null;
+  }
+}
+
+export async function updateMFA(state: MFAFormState, formData: FormData) {
+  const data = {
+    id: Number(formData.get('id')),
+    secret: formData.get('secret'),
+    password: formData.getAll('password[]'),
+  };
+
+  const result = MFAFormSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+      data: data,
+      success: false,
+    };
+  }
+
+  const otp = result.data.password.join('');
+  if (!validateTOTP(result.data.secret, otp)) {
+    return {
+      data: result.data,
+      message: 'OTP is not valid.',
+    };
+  }
+
+  try {
+    const record = await prisma.user.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!record) {
+      throw new Error('User not found.');
+    }
+
+    // await prisma.user.update({
+    //   where: { id: data.id },
+    //   data: {
+    //     password: result.data.password,
+    //   },
+    // });
+
+    return {
+      success: true,
+      message: 'MFA device updated successfully.',
+    };
+  } catch (e) {
+    return {
+      data: result.data,
+      message: 'An error occurred while updating your MFA.',
+    };
   }
 }
