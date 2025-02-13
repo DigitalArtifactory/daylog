@@ -46,7 +46,7 @@ export default async function Profile({
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Profile" title="User"></PageHeader>
+        <PageHeader preTitle="Profile" title="User data"></PageHeader>
         <PageBody>
           <ProfileInfo profile={profile} />
           <UpdatePass userId={user.id} profile={profile} />

@@ -135,8 +135,8 @@ export async function signin(state: FormState, formData: FormData) {
     revalidatePath(`/login/otp/${userId}`);
     redirect(`/login/otp/${userId}`);
   } else {
-    revalidatePath('/boards');
-    redirect('/boards');
+    revalidatePath('/');
+    redirect('/');
   }
 }
 
@@ -200,8 +200,8 @@ export async function validateMFA(
     };
   }
 
-  revalidatePath('/boards');
-  redirect('/boards');
+  revalidatePath('/');
+  redirect('/');
 }
 
 async function generateUserSession(record: {

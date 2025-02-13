@@ -25,7 +25,7 @@ export default async function Home() {
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home" title="Boards">
+        <PageHeader preTitle="Boards" title="All boards">
           <div className="btn-list">
             <a
               href="#"
