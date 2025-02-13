@@ -21,12 +21,11 @@ export default function NavMenu() {
   }, []);
 
   const path = usePathname();
-
   const adminPattern = /^\/admin\/?$/;
-  const homePattern = /^\/boards\/?$/;
+  const homePattern = /^\/$/;
   const profilePattern = /^\/profile\/?$/;
-  const boardPattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes$/;
-  const notePattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes\/[a-zA-Z0-9_-]+$/;
+  const boardPattern = /^\/boards(\/[a-zA-Z0-9_-]+)?\/?$/;
+  const notePattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes(\/[a-zA-Z0-9_-]+)?\/?$/;
 
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
@@ -46,19 +45,46 @@ export default function NavMenu() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li
+                className={`nav-item ${homePattern.test(path) ? 'active' : ''}`}
+              >
+                <a
+                  className={`nav-link ${
+                    homePattern.test(path) ? 'active' : ''
+                  }`}
+                  href="/"
+                >
+                  <span className="nav-link-icon d-md-none d-lg-inline-block">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="icon icon-tabler icons-tabler-outline icon-tabler-home"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                      <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                      <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                    </svg>
+                  </span>
+                  <span className="nav-link-title">Home</span>
+                </a>
+              </li>
+              <li
                 className={`nav-item ${
-                  homePattern.test(path) ||
-                  boardPattern.test(path) ||
-                  notePattern.test(path)
+                  boardPattern.test(path) || notePattern.test(path)
                     ? 'active'
                     : ''
                 }`}
               >
                 <a
                   className={`nav-link ${
-                    homePattern.test(path) ||
-                    boardPattern.test(path) ||
-                    notePattern.test(path)
+                    boardPattern.test(path) || notePattern.test(path)
                       ? 'active'
                       : ''
                   }`}
@@ -84,7 +110,7 @@ export default function NavMenu() {
                       <path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1" />
                     </svg>
                   </span>
-                  <span className="nav-link-title">Home</span>
+                  <span className="nav-link-title">Boards</span>
                 </a>
               </li>
               <li
