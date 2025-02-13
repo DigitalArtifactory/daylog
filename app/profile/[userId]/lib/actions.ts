@@ -251,8 +251,6 @@ export async function deleteAccount(
       };
     }
 
-    console.log('Deleting...');
-
     const deleteUser = await prisma.user.delete({
       where: { email: user.email },
     });
