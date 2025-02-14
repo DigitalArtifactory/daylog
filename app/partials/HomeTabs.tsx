@@ -42,7 +42,7 @@ export default function HomeTabs() {
       const board = boards[selectedIndex];
       if (board) getBoardNotes(board.id);
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, boards]);
 
   return loading ? (
     <Loader caption="Loading boards..." />
