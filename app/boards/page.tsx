@@ -29,7 +29,7 @@ export default async function Home() {
           <div className="btn-list">
             <a
               href="#"
-              className="btn btn-primary d-none d-sm-inline-block"
+              className="btn btn-primary d-sm-inline-block"
               data-bs-toggle="modal"
               data-bs-target="#new-board-modal"
             >
