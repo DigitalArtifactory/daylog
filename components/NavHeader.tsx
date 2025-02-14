@@ -1,4 +1,4 @@
-import signout from '@/app/lib/actions';
+import { signout } from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
