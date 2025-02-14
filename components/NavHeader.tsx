@@ -1,30 +1,19 @@
-'use client';
-
 import signout from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { User } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-export default function NavHeader() {
-  const [user, setUser] = useState<User>();
-
-  useEffect(() => {
-    const loadUser = async () => {
-      const { user } = await getCurrentSession();
-
-      if (user !== null) {
-        setUser(user);
-      }
-    };
-
-    loadUser();
-  }, []);
+export default async function NavHeader() {
+  const { user } = await getCurrentSession();
+  if (user === null) {
+    return redirect('/login');
+  }
 
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="/">
+          <Link href="/">
             <img
               src="/logo.svg"
               width="110"
@@ -32,11 +21,11 @@ export default function NavHeader() {
               alt="daylog"
               className="navbar-brand-image"
             />
-          </a>
+          </Link>
         </h1>
         <div className="navbar-nav flex-row order-md-last">
           <li className="nav-item dropdown">
-            <a
+            <Link
               href="#"
               className="nav-link dropdown-toggle d-flex lh-1 text-reset p-0"
               role="button"
@@ -75,12 +64,12 @@ export default function NavHeader() {
                   </div>
                 )}
               </div>
-            </a>
+            </Link>
             <ul className="dropdown-menu">
               <li>
-                <a className="dropdown-item" href={`/profile/${user?.id}`}>
+                <Link className="dropdown-item" href={`/profile/${user?.id}`}>
                   Profile
-                </a>
+                </Link>
               </li>
               <li>
                 <form action={signout}>

@@ -1,5 +1,6 @@
 'use client';
 
+import Loader from '@/components/Loader';
 import { User } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { getUsers, setAdmin as setRole } from '../lib/script';
@@ -10,10 +11,12 @@ export default function UsersTable({
   currentUserId: number;
 }) {
   const [users, setUsers] = useState<User[] | null>();
+  const [loading, setLoading] = useState(true);
 
   const loadData = async () => {
     const users = await getUsers();
     setUsers(users);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -25,7 +28,9 @@ export default function UsersTable({
     await loadData();
   };
 
-  return (
+  return loading ? (
+    <Loader caption="Loading users..." />
+  ) : (
     <div className="table-responsive">
       <table className="table table-vcenter card-table">
         <thead>

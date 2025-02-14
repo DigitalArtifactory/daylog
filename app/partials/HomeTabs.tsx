@@ -1,5 +1,6 @@
 'use client';
 
+import Loader from '@/components/Loader';
 import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
@@ -44,14 +45,7 @@ export default function HomeTabs() {
   }, [selectedIndex]);
 
   return loading ? (
-    <div className="d-flex w-full justify-content-center mt-3">
-      <div className="text-center w-50" style={{ maxWidth: '200px' }}>
-        <div className="text-secondary mb-3">Loading boards...</div>
-        <div className="progress progress-sm">
-          <div className="progress-bar progress-bar-indeterminate"></div>
-        </div>
-      </div>
-    </div>
+    <Loader caption="Loading boards..." />
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
       <svg
