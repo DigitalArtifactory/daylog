@@ -24,7 +24,7 @@ export default function NavHeader() {
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
       <div className="container-xl">
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="/boards">
+          <a href="/">
             <img
               src="/logo.svg"
               width="110"

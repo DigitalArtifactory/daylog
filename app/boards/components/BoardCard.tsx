@@ -1,4 +1,6 @@
 import { getBoard } from '@/app/boards/lib/actions';
+import { stringToColor } from '@/utils/color';
+import { truncateWord } from '@/utils/text';
 import TimeDiff from '../../../components/TimeDiff';
 import BoardFavoriteButton from './BoardFavoriteButton';
 import BoardModalDelete from './BoardModalDelete';
@@ -12,13 +14,6 @@ export default async function BoardCard({ boardId }: BoardCardType) {
   const board = await getBoard(boardId);
   if (!board) {
     return <></>;
-  }
-  function stringToColor(str: string) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return `hsl(${hash % 360}, 100%, 80%)`;
   }
 
   function setBackgroundImage(str: string): string {
@@ -60,17 +55,11 @@ export default async function BoardCard({ boardId }: BoardCardType) {
           className="ratio ratio-21x9"
           href={`/boards/${board.id}/notes`}
           style={{ backgroundColor: setBackgroundImage(board.title) }}
-        >
-          {/* <img
-            style={{ objectFit: 'cover' }}
-            src={board.imageUrl ?? '/samples/photos/search-bg.jpg'}
-            alt={`Image of ${board.title}`}
-          /> */}
-        </a>
+        ></a>
       )}
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
-          <a href={`/boards/${board.id}/notes`}>{board.title}</a>
+          <a href={`/boards/${board.id}/notes`}>{truncateWord(board.title, 35)}</a>
         </h3>
         <div className="text-secondary">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
