@@ -80,7 +80,7 @@ export default function HomeTabs() {
         {isClient &&
           boards.map((board, index) => (
             <li
-              className={'nav-item rounded py-2 px-5 shadow'}
+              className={'nav-item rounded shadow'}
               key={board.id}
               style={
                 board.imageUrl
@@ -99,12 +99,12 @@ export default function HomeTabs() {
               }
             >
               <Link
-                className={`nav-link justify-content-center ${
+                className={`nav-link justify-content-center px-5 py-3 ${
                   index === selectedIndex
                     ? 'active text-white border-white'
                     : 'text-light'
                 }`}
-                style={{ minWidth: '80px', textShadow: '1px 1px 3px black' }}
+                style={{ minWidth: '150px', textShadow: '1px 1px 3px black' }}
                 id={`tab-${board.id}`}
                 data-bs-toggle="tab"
                 href={`#board-${board.id}`}
