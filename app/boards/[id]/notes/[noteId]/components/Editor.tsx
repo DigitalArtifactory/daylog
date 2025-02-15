@@ -19,13 +19,17 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = event.target.value;
-    setMarkdown(newContent);
+    saveContent(newContent);
+  };
+
+  function saveContent(content: string) {
+    setMarkdown(content);
     setIsSaving(true);
     if (onUpdate)
-      onUpdate(newContent, () => {
+      onUpdate(content, () => {
         setIsSaving(false);
       });
-  };
+  }
 
   useEffect(() => {
     const loadNote = async () => {
@@ -77,15 +81,15 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
                     let newText = text;
 
                     if (comm === 'unordered-list') {
-                          newText = text
-                            .split('\n')
-                            .map((line) => `- ${line}`)
-                            .join('\n');
+                      newText = text
+                        .split('\n')
+                        .map((line) => `- ${line}`)
+                        .join('\n');
                     } else if (comm === 'ordered-list') {
-                          newText = text
-                            .split('\n')
-                            .map((line, index) => `${index + 1}. ${line}`)
-                            .join('\n');
+                      newText = text
+                        .split('\n')
+                        .map((line, index) => `${index + 1}. ${line}`)
+                        .join('\n');
                     } else {
                       newText = `${prefix}${text}${postfix}`;
                     }
@@ -99,6 +103,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
                     textarea.selectionStart = textarea.selectionEnd = start;
 
                     textarea.focus();
+                    saveContent(textarea.value);
                   }
                 }}
               />
