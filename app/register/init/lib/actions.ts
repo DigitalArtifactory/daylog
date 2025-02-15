@@ -2,19 +2,22 @@
 
 import { PrismaClient } from '@prisma/client';
 import { createHash } from 'crypto';
-import { FormState, SignupFormSchema } from './definitions';
+import { InitFormState, InitSignupFormSchema } from './definitions';
 
 const prisma = new PrismaClient();
 
-export async function signup(state: FormState, formData: FormData) {
+export async function getUsersCount() {
+  return await prisma.user.count();
+}
+
+export async function signupInit(state: InitFormState, formData: FormData) {
   const data = {
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
-    terms: formData.get('terms'),
   };
 
-  const result = SignupFormSchema.safeParse(data);
+  const result = InitSignupFormSchema.safeParse(data);
 
   if (!result.success) {
     return {
@@ -25,13 +28,11 @@ export async function signup(state: FormState, formData: FormData) {
   }
 
   try {
-    // Changes the "on" value of checkbox to "accept"
-    result.data.terms = 'accept';
-
-    // Check if the user already exists
+    // Check if the admin user already exists
     const user = await prisma.user.findUnique({
       where: {
         email: result.data.email,
+        AND: { role: 'admin' },
       },
     });
     if (user) {
@@ -46,7 +47,15 @@ export async function signup(state: FormState, formData: FormData) {
       .digest('hex');
     result.data.password = hashedPassword;
 
-    await prisma.user.create({ data: result.data });
+    await prisma.user.create({
+      data: {
+        name: result.data.name,
+        email: result.data.email,
+        password: hashedPassword,
+        terms: 'accept',
+        role: 'admin',
+      },
+    });
 
     return {
       success: true,
@@ -54,7 +63,7 @@ export async function signup(state: FormState, formData: FormData) {
   } catch (e) {
     return {
       data: result.data,
-      message: 'An error occurred while creating your account.',
+      message: 'An error occurred while creating your admin account.',
     };
   }
 }

@@ -23,7 +23,10 @@ export default function Page() {
         {state?.success && (
           <div className="alert alert-success alert-dismissible" role="alert">
             <h3 className="mb-1">Account reseted</h3>
-            <p>Your account has been reseted successfuly</p>
+            <p>
+              Your account has been reseted successfuly, check your email inbox
+              and follow the instructions.
+            </p>
             <div className="btn-list">
               <a href="/login" className="btn btn-success">
                 Go to login

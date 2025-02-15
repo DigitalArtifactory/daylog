@@ -11,6 +11,7 @@ import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
 } from '@oslojs/encoding';
+import { createHash } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -106,8 +107,11 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
+    const hashedPassword = createHash('sha256')
+      .update(result.data.password)
+      .digest('hex');
     const record = await prisma.user.findFirst({
-      where: { email: result.data.email, password: result.data.password },
+      where: { email: result.data.email, password: hashedPassword },
     });
 
     if (!record) {

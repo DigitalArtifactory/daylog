@@ -3,6 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import { FormState, ResetFormSchema } from './definitions';
 
+import { createHash, randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
@@ -31,10 +32,13 @@ export default async function reset(state: FormState, formData: FormData) {
       };
     }
 
-    const newPassword = '123123#';
+    const newPassword = randomBytes(8).toString('hex');
+    const hashedPassword = createHash('sha256')
+      .update(newPassword)
+      .digest('hex');
     await prisma.user.update({
       where: { id: record.id },
-      data: { password: newPassword },
+      data: { password: hashedPassword },
     });
 
     const options = new SMTPTransport({

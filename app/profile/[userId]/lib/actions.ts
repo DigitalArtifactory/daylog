@@ -7,6 +7,7 @@ import {
 import { deleteSessionTokenCookie } from '@/app/login/lib/cookies';
 import { validateTOTP } from '@/utils/totp';
 import { PrismaClient } from '@prisma/client';
+import { createHash } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { permanentRedirect, redirect } from 'next/navigation';
@@ -135,20 +136,28 @@ export async function updatePassword(
       };
     }
 
-    if (record?.password !== result.data.current) {
+
+    const currentHashedPassword = createHash('sha256')
+      .update(result.data.current)
+      .digest('hex');
+
+    if (record?.password !== currentHashedPassword) {
       return {
-        message: 'Current password is incorrect.',
-        data: {
-          password: result.data.password,
-        },
-        success: false,
+      message: 'Current password is incorrect.',
+      data: {
+        password: result.data.password,
+      },
+      success: false,
       };
     }
 
+    const hashedPassword = createHash('sha256')
+      .update(result.data.password)
+      .digest('hex');
     await prisma.user.update({
       where: { id: data.id },
       data: {
-        password: result.data.password,
+        password: hashedPassword,
       },
     });
 
