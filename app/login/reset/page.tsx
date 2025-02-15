@@ -15,7 +15,7 @@ export default function Page() {
               src="/logo.svg"
               width="220"
               height="64"
-              alt="daylog"
+              alt={process.env.NEXT_PUBLIC_APP_NAME}
               className="navbar-brand-image"
             />
           </a>

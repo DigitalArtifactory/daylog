@@ -15,7 +15,7 @@ export default function Home() {
               src="/logo.svg"
               width="110"
               height="32"
-              alt="daylog"
+              alt={process.env.NEXT_PUBLIC_APP_NAME}
               className="navbar-brand-image"
             />
           </a>
@@ -130,7 +130,11 @@ export default function Home() {
 
               {state?.errors?.password &&
                 state.errors.password.map((e, i) => (
-                  <div key={i} className="invalid-feedback d-block" role="alert">
+                  <div
+                    key={i}
+                    className="invalid-feedback d-block"
+                    role="alert"
+                  >
                     {e}
                   </div>
                 ))}
