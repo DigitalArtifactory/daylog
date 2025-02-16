@@ -1,7 +1,9 @@
 import PageFooterSponsor from './PageFooterSponsor';
 
 export default function PageFooter() {
-  const showSponsor = process.env.NEXT_PUBLIC_SHOW_SPONSOR === 'false';
+  const showSponsor =
+    !process.env.NEXT_PUBLIC_SHOW_SPONSOR ||
+    process.env.NEXT_PUBLIC_SHOW_SPONSOR === 'true';
   return showSponsor ? (
     <PageFooterSponsor />
   ) : (

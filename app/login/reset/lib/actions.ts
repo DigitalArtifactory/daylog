@@ -52,7 +52,7 @@ export default async function reset(state: FormState, formData: FormData) {
 
     const transporter = nodemailer.createTransport(options);
     const info = await transporter.sendMail({
-      from: `"${process.env.NEXT_PUBLIC_APP_NAME} accounts" <${process.env.SMTP_SERVER_USER}>`,
+      from: `"${'daylog'} accounts" <${process.env.SMTP_SERVER_USER}>`,
       to: record.email,
       subject: 'Account password reset',
       text: `Your account password has been reset, use ${newPassword} to login. Remember to change your password in profile section.`,

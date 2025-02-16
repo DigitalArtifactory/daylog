@@ -222,7 +222,7 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
       const url = generateTOTPUrl(
         secret,
         profile.email,
-        process.env.NEXT_PUBLIC_APP_NAME ?? 'SET_NEXT_PUBLIC_APP_NAME_IN_ENV'
+        'daylog'
       );
       setUrl(url);
       setSecret(secret);

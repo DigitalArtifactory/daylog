@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME,
+  title: 'daylog',
   description: 'Your personal note taking and markdown editor web app.',
 };
 

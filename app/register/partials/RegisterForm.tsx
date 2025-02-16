@@ -15,7 +15,7 @@ export default function RegisterForm() {
               src="/logo.svg"
               width="110"
               height="32"
-              alt={process.env.NEXT_PUBLIC_APP_NAME}
+              alt={'daylog'}
               className="navbar-brand-image"
             />
           </a>
