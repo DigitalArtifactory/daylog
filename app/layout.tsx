@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import '../public/css/tabler.1.0.0.min.css';
 import './globals.css';
+import MainLayout from './partials/MainLayout';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -28,7 +29,7 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body className={`${geistSans.className} ${geistMono.variable}`}>
-        {children}
+        <MainLayout children={children} />
         <script src="/js/tabler.1.0.0.min.js" defer></script>
       </body>
     </html>

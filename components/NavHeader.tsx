@@ -2,6 +2,7 @@ import { signout } from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import NavThemeToggle from './NavThemeToggle';
 
 export default async function NavHeader() {
   const { user } = await getCurrentSession();
@@ -24,6 +25,7 @@ export default async function NavHeader() {
           </Link>
         </h1>
         <div className="navbar-nav flex-row order-md-last">
+          <NavThemeToggle />
           <li className="nav-item dropdown">
             <Link
               href="#"
