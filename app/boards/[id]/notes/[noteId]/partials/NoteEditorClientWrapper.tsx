@@ -35,7 +35,6 @@ export default function NoteEditorClientWrapper({
     if (!note) return;
     note.content = content;
     if (note) await updateNote(note);
-    router.push('?notify=saved');
   };
 
   return (
