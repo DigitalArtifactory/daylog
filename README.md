@@ -31,23 +31,32 @@ To install and run daylog in a production environment, follow these steps:
   Create a `.env` file in the root directory and configure the necessary environment variables. Refer to `.env.example` for the required variables. 
   **Important:** by default daylog uses SQLite, you can change your conection string to a postgress or any other database engine supported by Prisma ORM. You can follow their [guide](https://www.prisma.io/docs/orm/reference/connection-urls) to achieve this step.
 
+4. **Edit the Prisma schema:**
+  Open the `prisma/schema.prisma` file and update the `datasource` provider to your desired database engine. For example, to use PostgreSQL, modify the provider and connection URL as follows:
+  ```prisma
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
+  ```
+  Ensure that the `DATABASE_URL` environment variable in your `.env` file is set to the correct connection string for your database.
 
-4. **Initialize the Prisma database:**
+5. **Initialize the Prisma database:**
   ```bash
   npx prisma migrate deploy
   ```
 
-5. **Build the application:**
+6. **Build the application:**
   ```bash
   npm run build
   ```
 
-6. **Start the application:**
+7. **Start the application:**
   ```bash
   npm start
   ```
 
-7. **Configure a process manager:**
+8. **Configure a process manager:**
   Use a process manager like PM2 to keep your application running:
   ```bash
   npm install -g pm2
@@ -56,10 +65,10 @@ To install and run daylog in a production environment, follow these steps:
   pm2 startup
   ```
 
-8. **Set up a reverse proxy:**
+9. **Set up a reverse proxy:**
   Configure a reverse proxy using Nginx or another web server to forward requests to your Node.js application.
 
-9. **Secure your application:**
+10. **Secure your application:**
   Ensure your application is served over HTTPS and configure appropriate security headers.
 
 Your daylog application should now be running in a production environment.
