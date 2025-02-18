@@ -82,7 +82,7 @@ Your daylog application should now be running in a production environment.
 
 - qrcode.react
 - timeago-react
-- input-ot
+- input-otp
 
 ### Local Development
 
@@ -127,7 +127,7 @@ This project is provided "as is" without warranty of any kind, express or implie
 This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) file for details.
 
 
-### About the author
+### About The Author
 Hi! I'm David, and I'm glad to have you in this repo. This is my first open-source project, and there's still a lot of work to do to enhance the user experience and implement new features I have in mind.
 
 Feel free to use it as your personal note-taking app or share it with your friends, colleagues, and family. I’d truly appreciate any feedback to improve the code in this repo or any kind of collaboration.
