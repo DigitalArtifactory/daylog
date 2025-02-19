@@ -9,7 +9,7 @@ import { createNote, saveImage, updateNote } from '../lib/actions';
 
 type NoteModalFormType = {
   modalId: string;
-  boardId: number;
+  boardId: number | null;
   note?: Note | null;
   mode: 'update' | 'create';
 };
