@@ -39,10 +39,11 @@ To install and run daylog in a production environment, follow these steps:
     url      = env("DATABASE_URL")
   }
   ```
-  Ensure that the `DATABASE_URL` environment variable in your `.env` file is set to the correct connection string for your database.
+  Ensure that you removed `prisma/migrations` directory and changed the `DATABASE_URL` environment variable in your `.env` file is set to the correct connection string for your database.
 
 5. **Initialize the Prisma database:**
   ```bash
+  npx prisma migrate dev --name init
   npx prisma migrate deploy
   ```
 
