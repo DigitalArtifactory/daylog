@@ -1,4 +1,4 @@
-import { loadSettings } from '@/app/admin/lib/script';
+import { loadSettings } from '@/app/admin/lib/actions';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';

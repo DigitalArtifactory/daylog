@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentSession } from '../login/lib/actions';
 import AdminTabs from './partials/AdminTabs';
 import SecurityTab from './partials/SecurityTab';
+import UserModal from './partials/UserModal';
 import UsersTable from './partials/UsersTable';
 
 export default async function Admin() {
@@ -34,9 +35,16 @@ export default async function Admin() {
             <div className="card-body">
               <div className="tab-content">
                 <div className="tab-pane active show" id="tabs-home-ex1">
-                  <h3 className="card-title">Users</h3>
-                  <div className="text-secondary">
-                    Manage user accounts, and roles with ease.
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <h3 className="card-title">Users</h3>
+                      <div className="text-secondary">
+                        Manage user accounts, and roles with ease.
+                      </div>
+                    </div>
+                    <div>
+                      <UserModal />
+                    </div>
                   </div>
                   <div className="pt-4">
                     <UsersTable currentUserId={user.id}></UsersTable>

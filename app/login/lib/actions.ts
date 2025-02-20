@@ -4,7 +4,7 @@ import type { Session, User } from '@prisma/client';
 
 import { PrismaClient } from '@prisma/client';
 
-import { loadSettings } from '@/app/admin/lib/script';
+import { loadSettings } from '@/app/admin/lib/actions';
 import { validateTOTP } from '@/utils/totp';
 import { sha256 } from '@oslojs/crypto/sha2';
 import {

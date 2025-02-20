@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from 'react';
 import { signin } from '../lib/actions';
 
-export default function LoginForm() {
+export default function LoginForm({ allowReg }: { allowReg: boolean }) {
   const [state, action, pending] = useActionState(signin, undefined);
 
   useEffect(() => {
@@ -135,12 +135,14 @@ export default function LoginForm() {
             </form>
           </div>
         </div>
-        <div className="text-center text-secondary mt-3">
-          Don't have account yet?{' '}
-          <a href="./register" tabIndex={-1}>
-            Sign up
-          </a>
-        </div>
+        {allowReg && (
+          <div className="text-center text-secondary mt-3">
+            Don't have account yet?{' '}
+            <a href="./register" tabIndex={-1}>
+              Sign up
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
