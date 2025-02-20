@@ -26,6 +26,11 @@ import {
 
 const prisma = new PrismaClient();
 
+export async function validateAdminUserNotExists() {
+  const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
+  if (!admin) redirect('/register/init');
+}
+
 export async function generateSessionToken(): Promise<string> {
   const bytes = new Uint8Array(20);
   crypto.getRandomValues(bytes);
