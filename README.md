@@ -2,7 +2,7 @@
 
 ![daylog_portrait](resources/readme_portrait.jpg)
 
-A board based note taking and markdown editor web app.
+✨ A board based note taking and markdown editor web app.
 
 ### Features
 
@@ -15,6 +15,7 @@ A board based note taking and markdown editor web app.
 ### Production Installation
 
 To install and run daylog in a production environment, follow these steps:
+*(I'm currently working in simplifying this steps)*
 
 1. **Clone the repository:**
   ```bash
@@ -75,12 +76,14 @@ To install and run daylog in a production environment, follow these steps:
 Your daylog application should now be running in a production environment.
 
 ### TODOs
-- [ ] Improve MD editor
-- [ ] Improve user security (data encryption, account recovery)
-- [ ] Create breadcrumbs navigation
-- [ ] Create public link sharing option
-- [ ] Create shared boards
-- [ ] Many cool feature more in the future...
+- [ ] Improve grammar 📖
+- [ ] Enhance MD editor 🖊
+- [ ] Improve user security (data encryption, account recovery, email verification) 🔐
+- [ ] Create breadcrumbs navigation 🚢
+- [ ] Create public link sharing option ✉
+- [ ] Create shared boards 📰
+- [ ] Improve production deployment instructions 🛠
+- [ ] And many more cool features in the future 🚀...
 
 
 ### Build with
@@ -117,6 +120,11 @@ To set up a local development environment for daylog, follow these steps:
 
 3. **Set up environment variables:**
   Create a `.env` file in the root directory and configure the necessary environment variables. Refer to `.env.example` for the required variables.
+
+5. **Initialize the Prisma dev database:**
+  ```bash
+  npx prisma migrate dev
+  ```
 
 4. **Run the development server:**
   ```bash
