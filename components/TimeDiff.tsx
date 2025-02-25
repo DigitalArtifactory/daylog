@@ -1,16 +1,21 @@
 'use client';
-import { useEffect, useState } from 'react';
-import TimeAgo from 'timeago-react';
+
+import '@github/relative-time-element';
+import { useEffect, useRef } from 'react';
 
 type TimeDiffType = {
   updatedAt: Date;
 };
 
 export default function TimeDiff({ updatedAt }: TimeDiffType) {
-  const [isClient, setIsClient] = useState(false);
+  const relativeTimeRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-  return isClient ? <TimeAgo datetime={updatedAt}></TimeAgo> : <div className='placeholder'></div>;
+    if (relativeTimeRef.current) {
+      relativeTimeRef.current.setAttribute('datetime', updatedAt.toISOString());
+    }
+  }, [updatedAt, relativeTimeRef]);
+
+  // @ts-expect-error: relative-time is a web component
+  return <relative-time ref={relativeTimeRef}></relative-time>;
 }

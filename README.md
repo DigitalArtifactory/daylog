@@ -100,7 +100,7 @@ Your daylog application should now be running in a production environment.
 ### External components
 
 - qrcode.react
-- timeago-react
+- relative-time-element
 - input-otp
 
 ### Local Development
