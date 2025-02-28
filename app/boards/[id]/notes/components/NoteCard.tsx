@@ -40,7 +40,7 @@ export default async function NoteCard({ noteId }: NoteCardType) {
           href={`/boards/${note.boardsId}/notes/${note.id}`}
         >
           <img
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', objectPosition: 'top' }}
             src={note.imageUrl ?? '/samples/photos/search-bg.jpg'}
             alt="Book on the grass"
           />

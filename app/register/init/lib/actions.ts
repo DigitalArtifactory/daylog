@@ -2,12 +2,15 @@
 
 import { PrismaClient } from '@prisma/client';
 import { createHash } from 'crypto';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { InitFormState, InitSignupFormSchema } from './definitions';
 
 const prisma = new PrismaClient();
 
-export async function getUsersCount() {
-  return await prisma.user.count();
+export async function validateAdminUserExists() {
+  const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
+  if (admin) redirect('/login');
 }
 
 export async function signupInit(state: InitFormState, formData: FormData) {
@@ -56,6 +59,8 @@ export async function signupInit(state: InitFormState, formData: FormData) {
         role: 'admin',
       },
     });
+
+    revalidatePath('/', 'layout');
 
     return {
       success: true,

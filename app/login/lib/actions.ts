@@ -4,7 +4,7 @@ import type { Session, User } from '@prisma/client';
 
 import { PrismaClient } from '@prisma/client';
 
-import { loadSettings } from '@/app/admin/lib/script';
+import { loadSettings } from '@/app/admin/lib/actions';
 import { validateTOTP } from '@/utils/totp';
 import { sha256 } from '@oslojs/crypto/sha2';
 import {
@@ -25,6 +25,11 @@ import {
 } from './definitions';
 
 const prisma = new PrismaClient();
+
+export async function validateAdminUserNotExists() {
+  const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
+  if (!admin) redirect('/register/init');
+}
 
 export async function generateSessionToken(): Promise<string> {
   const bytes = new Uint8Array(20);

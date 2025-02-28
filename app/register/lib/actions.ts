@@ -1,7 +1,9 @@
 'use server';
 
+import { loadSettings } from '@/app/admin/lib/actions';
 import { PrismaClient } from '@prisma/client';
 import { createHash } from 'crypto';
+import { redirect } from 'next/navigation';
 import { FormState, SignupFormSchema } from './definitions';
 
 const prisma = new PrismaClient();
@@ -57,4 +59,10 @@ export async function signup(state: FormState, formData: FormData) {
       message: 'An error occurred while creating your account.',
     };
   }
+}
+
+export async function validateAllowRegistration() {
+  const settings = await loadSettings();
+  const allowReg = settings?.allowReg ?? false;
+  if (!allowReg) redirect('login');
 }

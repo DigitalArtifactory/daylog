@@ -45,7 +45,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
       {board?.imageUrl ? (
         <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <img
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: 'cover', objectPosition: 'top' }}
             src={board.imageUrl ?? '/samples/photos/search-bg.jpg'}
             alt={`Image of ${board.title}`}
           />

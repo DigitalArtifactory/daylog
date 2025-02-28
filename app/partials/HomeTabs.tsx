@@ -85,7 +85,8 @@ export default function HomeTabs() {
               style={
                 board.imageUrl
                   ? {
-                      objectFit: 'cover',
+                      backgroundSize: '180px',
+                      backgroundPosition: 'top',
                       backgroundRepeat: 'no-repeat',
                       backgroundImage: `${
                         index === selectedIndex
@@ -121,71 +122,75 @@ export default function HomeTabs() {
           ))}
       </ul>
       <div className="tab-content mt-3" id="boardTabsContent">
-        {notes !== null && notes.length > 0 ? (
-          notes.map((note, index) => (
+        {boards !== null &&
+          boards.length > 0 &&
+          boards.map((board, index) => (
             <div
               className={`tab-pane fade ${index === 0 ? 'show active' : ''}`}
-              id={`board-${note.id}`}
+              id={`board-${board.id}`}
               role="tabpanel"
-              aria-labelledby={`tab-${note.id}`}
-              key={note.id}
+              aria-labelledby={`tab-${board.id}`}
+              key={board.id}
             >
               <div className="row">
-                {notes.map((board) => (
-                  <div className="col-md-3" key={board.id}>
-                    <div className="card">
-                      {board.imageUrl && (
-                        <Link
-                          href={`/boards/${board.id}/notes/${note.id}`}
-                          className="stretched-link text-secondary"
-                        >
-                          <img
-                            src={board.imageUrl}
-                            className="card-img-top"
-                            alt={board.title}
-                          />
-                        </Link>
-                      )}
-                      <div className="card-body">
-                        <Link
-                          href={`/boards/${board.id}/notes/${note.id}`}
-                          className="stretched-link text-secondary"
-                        >
-                          {board.title}
-                        </Link>
+                {notes && notes.length > 0 ? (
+                  notes.map((note) => (
+                    <div className="col-md-3" key={note.id}>
+                      <div className="card">
+                        {note.imageUrl && (
+                          <Link
+                            href={`/boards/${note.id}/notes/${note.id}`}
+                            className="stretched-link text-secondary"
+                          >
+                            <img
+                              src={note.imageUrl}
+                              className="card-img-top"
+                              alt={note.title}
+                            />
+                          </Link>
+                        )}
+                        <div className="card-body">
+                          <Link
+                            href={`/boards/${note.id}/notes/${note.id}`}
+                            className="stretched-link text-secondary"
+                          >
+                            {note.title}
+                          </Link>
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center mt-5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-surprised mb-1"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                      <path d="M9 9l.01 0" />
+                      <path d="M15 9l.01 0" />
+                      <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    </svg>
+                    <div className="text-secondary">
+                      You don't have notes yet...
+                    </div>
+                    <Link href={`/boards/${boards[selectedIndex].id}/notes`}>
+                      Go to this board and create one.
+                    </Link>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-          ))
-        ) : (
-          <div className="text-center mt-5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-surprised mb-1"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-              <path d="M9 9l.01 0" />
-              <path d="M15 9l.01 0" />
-              <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-            </svg>
-            <div className="text-secondary">You don't have notes yet...</div>
-            <Link href={`/boards/${boards[selectedIndex].id}/notes`}>
-              Go to this board and create one.
-            </Link>
-          </div>
-        )}
+          ))}
       </div>
     </>
   );

@@ -75,3 +75,15 @@ export async function saveImage(
     return null;
   }
 }
+
+export async function deleteImage(noteId: number): Promise<void> {
+  try {
+    const { user } = await getCurrentSession();
+    await prisma.note.update({
+      where: { id: noteId, boards: { userId: user?.id } },
+      data: { imageUrl: null },
+    });
+  } catch (e: any) {
+    console.error(e);
+  }
+}

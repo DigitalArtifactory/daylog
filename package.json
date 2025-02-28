@@ -1,5 +1,5 @@
 {
-  "name": "out",
+  "name": "daylog",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,26 +9,26 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/header": "^2.8.8",
+    "@github/relative-time-element": "^4.4.5",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@prisma/client": "5.22.0",
     "input-otp": "^1.4.2",
     "marked": "^15.0.3",
-    "next": "15.0.2",
+    "next": "15.1.7",
+    "next-themes": "^0.4.4",
     "nodemailer": "^6.9.16",
     "qrcode.react": "^4.2.0",
-    "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028",
-    "react-hook-form": "^7.53.2",
-    "timeago-react": "^3.0.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "^7.54.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "prisma": "^5.22.0",
     "typescript": "^5"
   }

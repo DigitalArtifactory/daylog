@@ -3,7 +3,13 @@
 import Loader from '@/components/Loader';
 import { User } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import { getUsers, setAdmin as setRole } from '../lib/script';
+import { deleteUser, getUsers, setAdmin as setRole } from '../lib/actions';
+
+declare global {
+  interface Window {
+    bootstrap: any;
+  }
+}
 
 export default function UsersTable({
   currentUserId,
@@ -72,7 +78,102 @@ export default function UsersTable({
               </td>
               <td className="text-secondary text-capitalize">{u.role}</td>
               <td>
-                <a href={`/profile/${u.id}`}>Edit</a>
+                <div className="d-flex gap-3">
+                  <a href={`/profile/${u.id}`}>Edit</a>
+                  {u.id !== currentUserId && (
+                    <>
+                      <a
+                        role="button"
+                        className="text-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#delete-modal-${u.id}`}
+                      >
+                        Delete
+                      </a>
+                      <div
+                        className="modal"
+                        id={`delete-modal-${u.id}`}
+                        tabIndex={-1}
+                      >
+                        <div className="modal-dialog modal-sm" role="document">
+                          <div className="modal-content">
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                            <div className="modal-status bg-danger"></div>
+                            <div className="modal-body text-center py-4">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="icon mb-2 text-danger icon-lg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                fill="none"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path
+                                  stroke="none"
+                                  d="M0 0h24v24H0z"
+                                  fill="none"
+                                />
+                                <path d="M12 9v2m0 4v.01" />
+                                <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                              </svg>
+                              <h3>Are you sure?</h3>
+                              <div className="w-full bg-light p-3 rounded mb-3">
+                                <div className="badge bg-danger text-light mb-1">
+                                  Delete
+                                </div>
+                                <div className="text-secondary">{u.name}</div>
+                                <div>{u.email}</div>
+                              </div>
+                              <div className="text-secondary">
+                                Do you really want to delete this user? What
+                                you've done cannot be undone.
+                              </div>
+                            </div>
+                            <div className="modal-footer">
+                              <div className="w-100">
+                                <div className="row">
+                                  <div className="col">
+                                    <a
+                                      href="#"
+                                      className="btn w-100"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      Cancel
+                                    </a>
+                                  </div>
+                                  <div className="col">
+                                    <button
+                                      onClick={async () => {
+                                        const deleted = await deleteUser(u.id);
+                                        if (deleted) {
+                                          window.location.reload();
+                                        }
+                                        await loadData();
+                                      }}
+                                      type="submit"
+                                      className="btn btn-danger w-full"
+                                    >
+                                      Yes, delete
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
               </td>
             </tr>
           ))}

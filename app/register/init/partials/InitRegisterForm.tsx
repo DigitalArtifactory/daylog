@@ -31,22 +31,6 @@ export default function InitRegisterForm() {
             ></a>
           </div>
         )}
-        {state?.success && (
-          <div className="alert alert-success alert-dismissible" role="alert">
-            <h3 className="mb-1">Account created</h3>
-            <p>Your admin account has been created successfuly</p>
-            <div className="btn-list">
-              <a href="/login" className="btn btn-success">
-                Go to login
-              </a>
-            </div>
-            <a
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="close"
-            ></a>
-          </div>
-        )}
         <form autoComplete="off" className="card card-md" action={action}>
           <div className="card-body">
             <h2 className="card-title text-center mb-4">

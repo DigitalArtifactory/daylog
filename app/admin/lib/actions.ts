@@ -1,5 +1,6 @@
 'use server';
 
+import { getCurrentSession } from '@/app/login/lib/actions';
 import { PrismaClient, User } from '@prisma/client';
 import * as fs from 'fs';
 import { SettingsFormState } from './definitions';
@@ -24,6 +25,7 @@ export async function setAdmin(
 
 export type SettingsType = {
   mfa: boolean;
+  allowReg: boolean;
 };
 
 export async function loadSettings() {
@@ -40,9 +42,8 @@ export async function saveSettings(
   state: SettingsFormState,
   formData: FormData
 ) {
-  console.log(formData.get('mfa'));
   const mfa = formData.get('mfa') === 'active';
-  console.log('mfa', mfa);
+  const allowReg = formData.get('allowRegistration') === 'active';
 
   if (!fs.existsSync('./settings.json')) {
     fs.writeFileSync('./settings.json', JSON.stringify({ mfa: mfa }), 'utf-8');
@@ -53,6 +54,7 @@ export async function saveSettings(
   const settings = JSON.parse(fileContent) as SettingsType;
 
   settings.mfa = mfa;
+  settings.allowReg = allowReg;
 
   fs.writeFileSync('./settings.json', JSON.stringify(settings));
 
@@ -61,4 +63,13 @@ export async function saveSettings(
     data: settings,
     message: 'Settings saved correctly.',
   };
+}
+
+export async function deleteUser(userId: number) {
+  const session = await getCurrentSession();
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (user && user.id !== session.user?.id) {
+    await prisma.user.delete({ where: { id: user.id } });
+  }
+  return user;
 }
