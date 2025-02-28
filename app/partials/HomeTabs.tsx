@@ -85,7 +85,8 @@ export default function HomeTabs() {
               style={
                 board.imageUrl
                   ? {
-                      objectFit: 'cover',
+                      backgroundSize: '180px',
+                      backgroundPosition: 'top',
                       backgroundRepeat: 'no-repeat',
                       backgroundImage: `${
                         index === selectedIndex
