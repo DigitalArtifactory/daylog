@@ -12,7 +12,7 @@ export default function Page() {
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
             <img
-              src="/logo.svg"
+              src="/daylog.svg"
               width="220"
               height="64"
               alt={'daylog'}

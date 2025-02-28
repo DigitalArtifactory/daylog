@@ -18,7 +18,7 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
             <img
-              src="/logo.svg"
+              src="/daylog.svg"
               width="220"
               height="64"
               alt={process.env.NEXT_PUBLIC_APP_NAME}
