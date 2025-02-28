@@ -78,3 +78,16 @@ export async function saveImage(
     return null;
   }
 }
+
+export async function deleteImage(boardId: number): Promise<void> {
+  try {
+    const { user } = await getCurrentSession();
+
+    await prisma.board.update({
+      where: { id: boardId, userId: user?.id },
+      data: { imageUrl: null },
+    });
+  } catch (e: any) {
+    console.error(e);
+  }
+}

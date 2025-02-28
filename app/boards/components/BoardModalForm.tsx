@@ -1,10 +1,15 @@
 'use client';
 
-import { createBoard, saveImage, updateBoard } from '@/app/boards/lib/actions';
+import {
+  createBoard,
+  deleteImage,
+  saveImage,
+  updateBoard,
+} from '@/app/boards/lib/actions';
 import { resizeImage } from '@/utils/image';
 import { Board, Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type BoardModalFormType = {
@@ -25,6 +30,7 @@ export default function BoardModalForm({
 
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
+  const [removeImage, setRemoveImage] = useState(false);
 
   const {
     register,
@@ -71,8 +77,9 @@ export default function BoardModalForm({
     data.id = board?.id;
 
     await updateBoard(data);
-    await uploadImage(data.id);
-    
+    if (!removeImage) await uploadImage(data.id);
+    else await deleteImage(data.id);
+
     router.refresh();
   };
 
@@ -83,6 +90,15 @@ export default function BoardModalForm({
       console.error('Close button is not available.');
     }
   };
+
+  useEffect(() => {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      modalElement.addEventListener('hidden.bs.modal', () => {
+        setRemoveImage(false);
+      });
+    }
+  }, []);
 
   return (
     <div className="modal" id={modalId} tabIndex={-1}>
@@ -101,6 +117,47 @@ export default function BoardModalForm({
               ></button>
             </div>
             <div className="modal-body">
+              {mode === 'update' &&
+                board?.id &&
+                board.imageUrl &&
+                !removeImage && (
+                  <div className="mb-3">
+                    <div className="rounded overflow-hidden border border-secondary">
+                      <img
+                        className="w-100 img-fluid"
+                        alt={board?.title}
+                        src={board.imageUrl}
+                      ></img>
+                    </div>
+                    <button
+                      className="btn btn-sm btn-link text-danger float-end mt-1"
+                      onClick={() => {
+                        setRemoveImage(true);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 7l16 0" />
+                        <path d="M10 11l0 6" />
+                        <path d="M14 11l0 6" />
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                      </svg>
+                      Remove image
+                    </button>
+                  </div>
+                )}
               <div className="mb-3">
                 <label className="form-label">Image</label>
                 <input
