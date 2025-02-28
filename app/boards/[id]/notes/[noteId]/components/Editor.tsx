@@ -127,7 +127,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
                   ref={textareaRef}
                   rows={4}
                   style={{
-                    height: '200px',
+                    height: '400px',
                     fontFamily: 'geistMono',
                     fontSize: '14px',
                   }}
