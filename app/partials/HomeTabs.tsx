@@ -160,7 +160,7 @@ export default function HomeTabs() {
                   notes.map((note, i) => (
                     <div className="col-md-3" key={note.id}>
                       <div className="card">
-                        {noteImages[i].image && (
+                        {noteImages[i] && noteImages[i].image && (
                           <Link
                             href={`/boards/${note.id}/notes/${note.id}`}
                             className="stretched-link text-secondary"
