@@ -106,7 +106,7 @@ export default function HomeTabs() {
               className={'nav-item rounded shadow'}
               key={board.id}
               style={
-                boardImages[index].image
+                boardImages[index] && boardImages[index].image
                   ? {
                       backgroundSize: '180px',
                       backgroundPosition: 'top',
