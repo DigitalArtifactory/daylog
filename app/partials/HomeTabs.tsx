@@ -16,12 +16,8 @@ export default function HomeTabs() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notes, setNotes] = useState<Note[] | null>([]);
   const [boards, setBoards] = useState<Board[] | null>([]);
-  const [boardImages, setBoardImages] = useState<
-    { index: number; image: string | null }[]
-  >([]);
-  const [noteImages, setNoteImages] = useState<
-    { index: number; image: string | null }[]
-  >([]);
+  const [boardImages, setBoardImages] = useState<(string | null)[]>([]);
+  const [noteImages, setNoteImages] = useState<(string | null)[]>([]);
 
   function setBackgroundImage(str: string): string {
     const color = stringToColor(str);
@@ -35,10 +31,12 @@ export default function HomeTabs() {
         setBoards(result);
 
         if (result) {
-          for (const [index, board] of result.entries()) {
+          const images = [];
+          for (const board of result) {
             const image = await getFileToBase64(board.imageUrl);
-            setBoardImages([...boardImages, { index, image }]);
+            images.push(image);
           }
+          setBoardImages(images);
         }
 
         setLoading(false);
@@ -54,10 +52,12 @@ export default function HomeTabs() {
         const result = await getNotes(boardId);
 
         if (result) {
-          for (const [index, board] of result.entries()) {
-            const image = await getFileToBase64(board.imageUrl);
-            setNoteImages([...noteImages, { index, image }]);
+          const images = [];
+          for (const note of result) {
+            const image = await getFileToBase64(note.imageUrl);
+            images.push(image);
           }
+          setNoteImages(images);
         }
 
         setNotes(result);
@@ -106,7 +106,7 @@ export default function HomeTabs() {
               className={'nav-item rounded shadow'}
               key={board.id}
               style={
-                boardImages[index] && boardImages[index].image
+                boardImages[index] && boardImages[index]
                   ? {
                       backgroundSize: '180px',
                       backgroundPosition: 'top',
@@ -115,7 +115,7 @@ export default function HomeTabs() {
                         index === selectedIndex
                           ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
                           : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                      }, url(${boardImages[index].image})`,
+                      }, url(${boardImages[index]})`,
                     }
                   : {
                       backgroundColor: setBackgroundImage(board.title),
@@ -160,13 +160,13 @@ export default function HomeTabs() {
                   notes.map((note, i) => (
                     <div className="col-md-3" key={note.id}>
                       <div className="card">
-                        {noteImages[i] && noteImages[i].image && (
+                        {noteImages && noteImages[i] && (
                           <Link
                             href={`/boards/${note.id}/notes/${note.id}`}
                             className="stretched-link text-secondary"
                           >
                             <img
-                              src={noteImages[i].image}
+                              src={noteImages[i]}
                               className="card-img-top"
                               alt={note.title}
                             />
