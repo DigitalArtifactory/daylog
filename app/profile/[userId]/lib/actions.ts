@@ -1,12 +1,12 @@
 'use server';
 
+import prisma from '@/app/lib/prisma';
 import {
   getCurrentSession,
   validateSessionToken,
 } from '@/app/login/lib/actions';
 import { deleteSessionTokenCookie } from '@/app/login/lib/cookies';
 import { validateTOTP } from '@/utils/totp';
-import { PrismaClient } from '@prisma/client';
 import { createHash } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -25,8 +25,6 @@ import {
   UpdateMFAFormSchema,
   MFAFormState as UpdateMFAFormState,
 } from './definitions';
-
-const prisma = new PrismaClient();
 
 export async function updateProfile(
   state: ProfileFormState,

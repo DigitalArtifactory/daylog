@@ -1,9 +1,9 @@
 'use server';
 
+import prisma from '@/app/lib/prisma';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { Note, Prisma, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { removeFile, saveBase64File } from '@/utils/storage';
+import { Note, Prisma } from '@prisma/client';
 
 export async function createNote(
   data: Prisma.NoteCreateInput,
@@ -60,13 +60,15 @@ export async function getNote(noteId: number): Promise<Note | null> {
 
 export async function saveImage(
   noteId: number,
-  imageBase64: string
+  imageBase64: string,
+  existentFileName?: string | null
 ): Promise<string | null> {
   try {
     const { user } = await getCurrentSession();
+    const filepath = saveBase64File(imageBase64, existentFileName);
     await prisma.note.update({
       where: { id: noteId, boards: { userId: user?.id } },
-      data: { imageUrl: imageBase64 },
+      data: { imageUrl: filepath },
     });
 
     return imageBase64;
@@ -76,13 +78,19 @@ export async function saveImage(
   }
 }
 
-export async function deleteImage(noteId: number): Promise<void> {
+export async function deleteImage(
+  noteId: number,
+  filePath?: string | null
+): Promise<void> {
   try {
     const { user } = await getCurrentSession();
-    await prisma.note.update({
-      where: { id: noteId, boards: { userId: user?.id } },
-      data: { imageUrl: null },
-    });
+    const removed = removeFile(filePath);
+    if (removed) {
+      await prisma.note.update({
+        where: { id: noteId, boards: { userId: user?.id } },
+        data: { imageUrl: null },
+      });
+    }
   } catch (e: any) {
     console.error(e);
   }

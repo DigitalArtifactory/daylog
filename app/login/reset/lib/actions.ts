@@ -1,13 +1,11 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
 import { FormState, ResetFormSchema } from './definitions';
 
+import prisma from '@/app/lib/prisma';
 import { createHash, randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-
-const prisma = new PrismaClient();
 
 export default async function reset(state: FormState, formData: FormData) {
   const result = ResetFormSchema.safeParse({

@@ -1,4 +1,5 @@
 import { getBoard } from '@/app/boards/lib/actions';
+import { getFileToBase64 } from '@/utils/base64';
 import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
 import TimeDiff from '../../../components/TimeDiff';
@@ -46,7 +47,10 @@ export default async function BoardCard({ boardId }: BoardCardType) {
         <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <img
             style={{ objectFit: 'cover', objectPosition: 'top' }}
-            src={board.imageUrl ?? '/samples/photos/search-bg.jpg'}
+            src={
+              (await getFileToBase64(board.imageUrl)) ??
+              '/samples/photos/search-bg.jpg'
+            }
             alt={`Image of ${board.title}`}
           />
         </a>
@@ -59,7 +63,9 @@ export default async function BoardCard({ boardId }: BoardCardType) {
       )}
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
-          <a href={`/boards/${board.id}/notes`}>{truncateWord(board.title, 35)}</a>
+          <a href={`/boards/${board.id}/notes`}>
+            {truncateWord(board.title, 35)}
+          </a>
         </h3>
         <div className="text-secondary">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">

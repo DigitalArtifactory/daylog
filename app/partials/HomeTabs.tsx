@@ -1,6 +1,7 @@
 'use client';
 
 import Loader from '@/components/Loader';
+import { getFileToBase64 } from '@/utils/base64';
 import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
@@ -15,6 +16,12 @@ export default function HomeTabs() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notes, setNotes] = useState<Note[] | null>([]);
   const [boards, setBoards] = useState<Board[] | null>([]);
+  const [boardImages, setBoardImages] = useState<
+    { index: number; image: string | null }[]
+  >([]);
+  const [noteImages, setNoteImages] = useState<
+    { index: number; image: string | null }[]
+  >([]);
 
   function setBackgroundImage(str: string): string {
     const color = stringToColor(str);
@@ -24,8 +31,16 @@ export default function HomeTabs() {
   useEffect(() => {
     const loadBoards = async () => {
       if (boards == null || boards.length === 0) {
-        const boards = await getBoards();
-        setBoards(boards);
+        const result = await getBoards();
+        setBoards(result);
+
+        if (result) {
+          for (const [index, board] of result.entries()) {
+            const image = await getFileToBase64(board.imageUrl);
+            setBoardImages([...boardImages, { index, image }]);
+          }
+        }
+
         setLoading(false);
       }
     };
@@ -37,6 +52,14 @@ export default function HomeTabs() {
     if (boards !== null) {
       const getBoardNotes = async (boardId: number) => {
         const result = await getNotes(boardId);
+
+        if (result) {
+          for (const [index, board] of result.entries()) {
+            const image = await getFileToBase64(board.imageUrl);
+            setNoteImages([...noteImages, { index, image }]);
+          }
+        }
+
         setNotes(result);
       };
       const board = boards[selectedIndex];
@@ -83,7 +106,7 @@ export default function HomeTabs() {
               className={'nav-item rounded shadow'}
               key={board.id}
               style={
-                board.imageUrl
+                boardImages[index].image
                   ? {
                       backgroundSize: '180px',
                       backgroundPosition: 'top',
@@ -92,7 +115,7 @@ export default function HomeTabs() {
                         index === selectedIndex
                           ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
                           : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                      }, url(${board.imageUrl})`,
+                      }, url(${boardImages[index].image})`,
                     }
                   : {
                       backgroundColor: setBackgroundImage(board.title),
@@ -134,16 +157,16 @@ export default function HomeTabs() {
             >
               <div className="row">
                 {notes && notes.length > 0 ? (
-                  notes.map((note) => (
+                  notes.map((note, i) => (
                     <div className="col-md-3" key={note.id}>
                       <div className="card">
-                        {note.imageUrl && (
+                        {noteImages[i].image && (
                           <Link
                             href={`/boards/${note.id}/notes/${note.id}`}
                             className="stretched-link text-secondary"
                           >
                             <img
-                              src={note.imageUrl}
+                              src={noteImages[i].image}
                               className="card-img-top"
                               alt={note.title}
                             />

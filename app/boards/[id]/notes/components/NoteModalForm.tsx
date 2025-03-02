@@ -1,5 +1,6 @@
 'use client';
 
+import { getFileToBase64 } from '@/utils/base64';
 import { resizeImage } from '@/utils/image';
 import { Note } from '@prisma/client';
 import { useRouter } from 'next/navigation';
@@ -29,6 +30,7 @@ export default function NoteModalForm({
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
+  const [image, setImage] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
   const [removeImage, setRemoveImage] = useState(false);
@@ -54,8 +56,8 @@ export default function NoteModalForm({
 
   async function uploadImage(noteId: number | null) {
     if (!imageFile || !noteId) return;
-    resizeImage(imageFile, 720, 720, async (resizedDataUrl) => {
-      await saveImage(noteId, resizedDataUrl);
+    resizeImage(imageFile, 1920, 1080, async (resizedDataUrl) => {
+      await saveImage(noteId, resizedDataUrl, note?.imageUrl);
       router.refresh();
     });
   }
@@ -71,7 +73,7 @@ export default function NoteModalForm({
     await updateNote(data);
 
     if (!removeImage) await uploadImage(data.id);
-    else await deleteImage(data.id);
+    else await deleteImage(data.id, data.imageUrl);
 
     router.refresh();
   };
@@ -86,11 +88,25 @@ export default function NoteModalForm({
 
   useEffect(() => {
     const modalElement = document.getElementById(modalId);
+    const loadImage = async () => {
+      if (note?.imageUrl) {
+        const image = await getFileToBase64(note?.imageUrl);
+        setImage(image);
+      }
+    };
+
     if (modalElement) {
       modalElement.addEventListener('hidden.bs.modal', () => {
+        setImage(null);
         setRemoveImage(false);
       });
+
+      modalElement.addEventListener('show.bs.modal', () => {
+        loadImage();
+      });
     }
+
+    loadImage();
   }, []);
 
   return (
@@ -118,47 +134,44 @@ export default function NoteModalForm({
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                {mode === 'update' &&
-                  note?.id &&
-                  note.imageUrl &&
-                  !removeImage && (
-                    <div className="mb-3">
-                      <div className="rounded overflow-hidden border border-secondary">
-                        <img
-                          className="w-100 img-fluid"
-                          alt={note?.title}
-                          src={note.imageUrl}
-                        ></img>
-                      </div>
-                      <button
-                        className="btn btn-sm btn-link text-danger float-end mt-1"
-                        onClick={() => {
-                          setRemoveImage(true);
-                        }}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M4 7l16 0" />
-                          <path d="M10 11l0 6" />
-                          <path d="M14 11l0 6" />
-                          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                        </svg>
-                        Remove image
-                      </button>
+                {mode === 'update' && note?.id && image && !removeImage && (
+                  <div className="mb-3">
+                    <div className="rounded overflow-hidden border border-secondary">
+                      <img
+                        className="w-100 img-fluid"
+                        alt={note?.title}
+                        src={image}
+                      ></img>
                     </div>
-                  )}
+                    <button
+                      className="btn btn-sm btn-link text-danger float-end mt-1"
+                      onClick={() => {
+                        setRemoveImage(true);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 7l16 0" />
+                        <path d="M10 11l0 6" />
+                        <path d="M14 11l0 6" />
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                      </svg>
+                      Remove image
+                    </button>
+                  </div>
+                )}
                 <label className="form-label">Image</label>
                 <input
                   type="file"

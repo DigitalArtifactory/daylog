@@ -1,10 +1,8 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { deleteSessionTokenCookie } from '../login/lib/cookies';
-
-const prisma = new PrismaClient();
+import prisma from './prisma';
 
 export async function signout() {
   await deleteSessionTokenCookie();

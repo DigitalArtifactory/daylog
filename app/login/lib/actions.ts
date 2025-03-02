@@ -2,9 +2,9 @@
 
 import type { Session, User } from '@prisma/client';
 
-import { PrismaClient } from '@prisma/client';
 
 import { loadSettings } from '@/app/admin/lib/actions';
+import prisma from '@/app/lib/prisma';
 import { validateTOTP } from '@/utils/totp';
 import { sha256 } from '@oslojs/crypto/sha2';
 import {
@@ -23,8 +23,6 @@ import {
   ValidateMFAFormSchema,
   ValidateMFAFormState,
 } from './definitions';
-
-const prisma = new PrismaClient();
 
 export async function validateAdminUserNotExists() {
   const admin = await prisma.user.findFirst({ where: { role: 'admin' } });

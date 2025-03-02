@@ -1,4 +1,5 @@
 import TimeDiff from '@/components/TimeDiff';
+import { getFileToBase64 } from '@/utils/base64';
 import { getNote } from '../lib/actions';
 import NoteFavoriteButton from './NoteFavoriteButton';
 import NoteModalDelete from './NoteModalDelete';
@@ -41,7 +42,10 @@ export default async function NoteCard({ noteId }: NoteCardType) {
         >
           <img
             style={{ objectFit: 'cover', objectPosition: 'top' }}
-            src={note.imageUrl ?? '/samples/photos/search-bg.jpg'}
+            src={
+              (await getFileToBase64(note.imageUrl)) ??
+              '/samples/photos/search-bg.jpg'
+            }
             alt="Book on the grass"
           />
         </a>

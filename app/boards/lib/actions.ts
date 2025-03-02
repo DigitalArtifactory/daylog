@@ -1,9 +1,9 @@
 'use server';
 
+import prisma from '@/app/lib/prisma';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { Board, Prisma, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { removeFile, saveBase64File } from '@/utils/storage';
+import { Board, Prisma } from '@prisma/client';
 
 export async function createBoard(
   board: Prisma.BoardCreateInput
@@ -62,14 +62,15 @@ export async function getBoard(boardId: number): Promise<Board | null> {
 
 export async function saveImage(
   boardId: number,
-  imageBase64: string
+  imageBase64: string,
+  existentFileName?: string | null
 ): Promise<string | null> {
   try {
     const { user } = await getCurrentSession();
-
+    const filepath = saveBase64File(imageBase64, existentFileName);
     await prisma.board.update({
       where: { id: boardId, userId: user?.id },
-      data: { imageUrl: imageBase64 },
+      data: { imageUrl: filepath },
     });
 
     return imageBase64;
@@ -79,14 +80,19 @@ export async function saveImage(
   }
 }
 
-export async function deleteImage(boardId: number): Promise<void> {
+export async function deleteImage(
+  boardId: number,
+  filePath?: string | null
+): Promise<void> {
   try {
     const { user } = await getCurrentSession();
-
-    await prisma.board.update({
-      where: { id: boardId, userId: user?.id },
-      data: { imageUrl: null },
-    });
+    const removed = removeFile(filePath);
+    if (removed) {
+      await prisma.board.update({
+        where: { id: boardId, userId: user?.id },
+        data: { imageUrl: null },
+      });
+    }
   } catch (e: any) {
     console.error(e);
   }

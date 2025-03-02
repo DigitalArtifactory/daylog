@@ -1,12 +1,10 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/app/lib/prisma';
 import { createHash } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { InitFormState, InitSignupFormSchema } from './definitions';
-
-const prisma = new PrismaClient();
 
 export async function validateAdminUserExists() {
   const admin = await prisma.user.findFirst({ where: { role: 'admin' } });

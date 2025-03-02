@@ -1,11 +1,10 @@
 'use server';
 
+import prisma from '@/app/lib/prisma';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import * as fs from 'fs';
 import { SettingsFormState } from './definitions';
-
-const prisma = new PrismaClient();
 
 export async function getUsers(): Promise<User[] | null> {
   const users = await prisma.user.findMany();

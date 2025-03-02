@@ -45,3 +45,13 @@ export const resizeImage = (
 
   reader.readAsDataURL(file);
 };
+
+export function base64ToArrayBuffer(base64: string) {
+  const buffer: Buffer = Buffer.from(base64, 'base64');
+  return new Uint8Array(buffer).buffer;
+}
+
+export function bytesToBase64(bytes?: Uint8Array): string | null {
+  if (!bytes) return null;
+  return Buffer.from(bytes).toString('base64');
+}
