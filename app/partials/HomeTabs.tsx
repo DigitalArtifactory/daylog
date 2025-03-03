@@ -176,7 +176,7 @@ export default function HomeTabs() {
                 ) : notes && notes.length > 0 ? (
                   notes.map((note, i) => (
                     <div className="col-md-3" key={note.id}>
-                      <div className="card">
+                      <div className="card mb-2">
                         {noteImages && noteImages[i] && (
                           <Link
                             href={`/boards/${note.id}/notes/${note.id}`}
