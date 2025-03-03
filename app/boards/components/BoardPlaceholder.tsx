@@ -1,4 +1,4 @@
-export default function CardPlaceholder() {
+export default function BoardCardPlaceholder() {
   return (
     <>
       <div className="card placeholder-glow">

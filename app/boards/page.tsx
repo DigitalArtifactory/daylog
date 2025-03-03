@@ -1,6 +1,6 @@
 import BoardCard from '@/app/boards/components/BoardCard';
 import BoardModalForm from '@/app/boards/components/BoardModalForm';
-import CardPlaceholder from '@/app/boards/components/BoardPlaceholder';
+import BoardCardPlaceholder from '@/app/boards/components/BoardPlaceholder';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -67,7 +67,7 @@ export default async function Home() {
             ) : (
               boards?.map((b) => (
                 <div key={b.id} className="col-md-4 mb-3">
-                  <Suspense fallback={<CardPlaceholder></CardPlaceholder>}>
+                  <Suspense fallback={<BoardCardPlaceholder></BoardCardPlaceholder>}>
                     <BoardCard boardId={b.id}></BoardCard>
                   </Suspense>
                 </div>

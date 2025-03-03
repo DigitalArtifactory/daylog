@@ -7,11 +7,13 @@ import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import NoteCardPlaceholderSimple from '../boards/[id]/notes/components/NotePlaceholderSimple';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 
 export default function HomeTabs() {
   const [loading, setLoading] = useState(true);
+  const [loadingNotes, setLoadingNotes] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [notes, setNotes] = useState<Note[] | null>([]);
@@ -49,6 +51,7 @@ export default function HomeTabs() {
   useEffect(() => {
     if (boards !== null) {
       const getBoardNotes = async (boardId: number) => {
+        setLoadingNotes(true);
         const result = await getNotes(boardId);
 
         if (result) {
@@ -61,6 +64,7 @@ export default function HomeTabs() {
         }
 
         setNotes(result);
+        setLoadingNotes(false);
       };
       const board = boards[selectedIndex];
       if (board) getBoardNotes(board.id);
@@ -136,6 +140,7 @@ export default function HomeTabs() {
                 aria-controls={`board-${board.id}`}
                 aria-selected={index === 0 ? 'true' : 'false'}
                 onClick={() => {
+                  setNotes([]);
                   setSelectedIndex(index);
                 }}
               >
@@ -156,7 +161,19 @@ export default function HomeTabs() {
               key={board.id}
             >
               <div className="row">
-                {notes && notes.length > 0 ? (
+                {loadingNotes ? (
+                  <>
+                    <div className="col-md-3">
+                      <NoteCardPlaceholderSimple />
+                    </div>
+                    <div className="col-md-3">
+                      <NoteCardPlaceholderSimple />
+                    </div>
+                    <div className="col-md-3">
+                      <NoteCardPlaceholderSimple />
+                    </div>
+                  </>
+                ) : notes && notes.length > 0 ? (
                   notes.map((note, i) => (
                     <div className="col-md-3" key={note.id}>
                       <div className="card">

@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
-import CardPlaceholder from './components/NotePlaceholder';
+import NoteCardPlaceholder from './components/NotePlaceholder';
 import { getNotes } from './lib/actions';
 
 export default async function Home({
@@ -73,7 +73,7 @@ export default async function Home({
             ) : (
               notes?.map((b) => (
                 <div key={b.id} className="col-md-4 mb-3">
-                  <Suspense fallback={<CardPlaceholder></CardPlaceholder>}>
+                  <Suspense fallback={<NoteCardPlaceholder></NoteCardPlaceholder>}>
                     <NoteCard noteId={b.id}></NoteCard>
                   </Suspense>
                 </div>
