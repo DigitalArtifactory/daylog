@@ -1,8 +1,8 @@
 'use server';
 
 import { loadSettings } from '@/app/admin/lib/actions';
-import prisma from '@/app/lib/prisma';
-import { createHash } from 'crypto';
+import { prisma } from '@/prisma/client';
+import { hashPassword } from '@/utils/crypto';
 import { redirect } from 'next/navigation';
 import { FormState, SignupFormSchema } from './definitions';
 
@@ -41,9 +41,8 @@ export async function signup(state: FormState, formData: FormData) {
       };
     }
 
-    const hashedPassword = createHash('sha256')
-      .update(result.data.password, 'utf8')
-      .digest('hex');
+    const hashedPassword = hashPassword(result.data.password);
+
     result.data.password = hashedPassword;
 
     await prisma.user.create({ data: result.data });
@@ -53,6 +52,7 @@ export async function signup(state: FormState, formData: FormData) {
     };
   } catch (e) {
     return {
+      success: false,
       data: result.data,
       message: 'An error occurred while creating your account.',
     };

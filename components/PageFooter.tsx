@@ -1,3 +1,5 @@
+'use client';
+
 import PageFooterSponsor from './PageFooterSponsor';
 
 export default function PageFooter() {

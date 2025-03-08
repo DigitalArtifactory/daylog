@@ -5,14 +5,14 @@ type PageHeader = {
   title?: string | null;
 };
 
-export default function PageHeader({
+export default async function PageHeader({
   ...props
 }: PropsWithChildren<PageHeader>) {
   return (
     <div className="page-header">
       <div className="row align-items-center">
         <div className="col">
-          <div className="page-pretitle">{props.preTitle}</div>
+          <h1 className="page-pretitle">{props.preTitle}</h1>
           <h2 className="page-title">
             {props.title ?? (
               <div className='text-secondary'>

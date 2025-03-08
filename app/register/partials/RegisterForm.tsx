@@ -49,10 +49,13 @@ export default function RegisterForm() {
         )}
         <form autoComplete="off" className="card card-md" action={action}>
           <div className="card-body">
-            <h2 className="card-title text-center mb-4">Create new account</h2>
+            <h2 className="card-title text-center mb-4">Account registration</h2>
             <div className="mb-3">
-              <label className="form-label">Name</label>
+              <label className="form-label" htmlFor="name">
+                Name
+              </label>
               <input
+                id="name"
                 name="name"
                 defaultValue={state?.data?.name?.toString()}
                 className={`form-control ${
@@ -67,8 +70,11 @@ export default function RegisterForm() {
               )}
             </div>
             <div className="mb-3">
-              <label className="form-label">Email address</label>
+              <label className="form-label" htmlFor="email">
+                Email address
+              </label>
               <input
+                id="email"
                 name="email"
                 defaultValue={state?.data?.email?.toString()}
                 className={`form-control ${
@@ -84,9 +90,12 @@ export default function RegisterForm() {
                 ))}
             </div>
             <div className="mb-3">
-              <label className="form-label">Password</label>
+              <label className="form-label" htmlFor="password">
+                Password
+              </label>
               <div className="input-group input-group-flat">
                 <input
+                  id="password"
                   type="password"
                   name="password"
                   defaultValue={state?.data?.password?.toString()}

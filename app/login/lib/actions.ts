@@ -2,16 +2,15 @@
 
 import type { Session, User } from '@prisma/client';
 
-
 import { loadSettings } from '@/app/admin/lib/actions';
-import prisma from '@/app/lib/prisma';
-import { validateTOTP } from '@/utils/totp';
-import { sha256 } from '@oslojs/crypto/sha2';
+import { prisma } from '@/prisma/client';
 import {
   encodeBase32LowerCaseNoPadding,
   encodeHexLowerCase,
-} from '@oslojs/encoding';
-import { createHash } from 'crypto';
+  encodeSHA256,
+  hashPassword,
+} from '@/utils/crypto';
+import { validateTOTP } from '@/utils/totp';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -40,7 +39,9 @@ export async function createSession(
   token: string,
   userId: number
 ): Promise<Session> {
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  const sessionId = encodeHexLowerCase(
+    encodeSHA256(new TextEncoder().encode(token))
+  );
   const session: Session = {
     id: sessionId,
     userId,
@@ -55,7 +56,9 @@ export async function createSession(
 export async function validateSessionToken(
   token: string
 ): Promise<SessionValidationResult> {
-  const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  const sessionId = encodeHexLowerCase(
+    encodeSHA256(new TextEncoder().encode(token))
+  );
   const result = await prisma.session.findUnique({
     where: {
       id: sessionId,
@@ -110,9 +113,7 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
-    const hashedPassword = createHash('sha256')
-      .update(result.data.password)
-      .digest('hex');
+    const hashedPassword = hashPassword(result.data.password);
     const record = await prisma.user.findFirst({
       where: { email: result.data.email, password: hashedPassword },
     });

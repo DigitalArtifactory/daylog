@@ -1,7 +1,7 @@
 'use server';
 
-import prisma from '@/app/lib/prisma';
-import { createHash } from 'crypto';
+import { prisma } from '@/prisma/client';
+import { hashPassword } from '@/utils/crypto';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { InitFormState, InitSignupFormSchema } from './definitions';
@@ -43,9 +43,7 @@ export async function signupInit(state: InitFormState, formData: FormData) {
       };
     }
 
-    const hashedPassword = createHash('sha256')
-      .update(result.data.password, 'utf8')
-      .digest('hex');
+    const hashedPassword = hashPassword(result.data.password);
     result.data.password = hashedPassword;
 
     await prisma.user.create({

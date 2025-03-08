@@ -1,7 +1,7 @@
 'use server';
 
-import prisma from '@/app/lib/prisma';
 import { getCurrentSession } from '@/app/login/lib/actions';
+import { prisma } from '@/prisma/client';
 import { removeFile, saveBase64File } from '@/utils/storage';
 import { Note, Prisma } from '@prisma/client';
 

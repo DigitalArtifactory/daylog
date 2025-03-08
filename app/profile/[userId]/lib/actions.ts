@@ -1,13 +1,13 @@
 'use server';
 
-import prisma from '@/app/lib/prisma';
 import {
   getCurrentSession,
   validateSessionToken,
 } from '@/app/login/lib/actions';
 import { deleteSessionTokenCookie } from '@/app/login/lib/cookies';
+import { prisma } from '@/prisma/client';
+import { hashPassword } from '@/utils/crypto';
 import { validateTOTP } from '@/utils/totp';
-import { createHash } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { permanentRedirect, redirect } from 'next/navigation';
@@ -134,24 +134,19 @@ export async function updatePassword(
       };
     }
 
-
-    const currentHashedPassword = createHash('sha256')
-      .update(result.data.current)
-      .digest('hex');
+    const currentHashedPassword = hashPassword(result.data.current);
 
     if (record?.password !== currentHashedPassword) {
       return {
-      message: 'Current password is incorrect.',
-      data: {
-        password: result.data.password,
-      },
-      success: false,
+        message: 'Current password is incorrect.',
+        data: {
+          password: result.data.password,
+        },
+        success: false,
       };
     }
 
-    const hashedPassword = createHash('sha256')
-      .update(result.data.password)
-      .digest('hex');
+    const hashedPassword = hashPassword(result.data.password);
     await prisma.user.update({
       where: { id: data.id },
       data: {

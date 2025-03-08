@@ -14,7 +14,7 @@ export default async function Home() {
   if (user === null) {
     return redirect('/login');
   }
-  
+
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -22,7 +22,7 @@ export default async function Home() {
       <PageContainer>
         <PageHeader preTitle="Home" title={`Welcome ${user.name}`}></PageHeader>
         <PageBody>
-          <HomeTabs/>
+          <HomeTabs />
         </PageBody>
       </PageContainer>
       <PageFooter></PageFooter>
