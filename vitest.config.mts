@@ -8,5 +8,8 @@ export default defineConfig({
     clearMocks: true,
     environment: 'jsdom',
     setupFiles: ['./prisma/singleton.ts'],
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
   },
 });
