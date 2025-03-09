@@ -84,6 +84,7 @@ export async function updateProfile(
       };
     }
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while updating your account.',
@@ -159,6 +160,7 @@ export async function updatePassword(
       message: 'Password updated successfully.',
     };
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while updating your password.',
@@ -211,6 +213,7 @@ export async function backupData(state: BackupFormState, formData: FormData) {
       data: data,
     };
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while backing up data.',
@@ -261,6 +264,7 @@ export async function deleteAccount(
       accountDeleted = true;
     }
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while deleting your account.',
@@ -346,6 +350,7 @@ export async function updateMFA(state: UpdateMFAFormState, formData: FormData) {
         'MFA device has been updated successfully you can refresh this page.',
     };
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while updating your MFA.',
@@ -403,6 +408,7 @@ export async function deleteMFA(state: DeleteMFAFormState, formData: FormData) {
       message: 'Your device has been deleted you can refresh this page.',
     };
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while deleting your MFA.',
