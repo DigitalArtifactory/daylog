@@ -4,12 +4,7 @@ import type { Session, User } from '@prisma/client';
 
 import { loadSettings } from '@/app/admin/lib/actions';
 import { prisma } from '@/prisma/client';
-import {
-  encodeBase32LowerCaseNoPadding,
-  encodeHexLowerCase,
-  encodeSHA256,
-  hashPassword,
-} from '@/utils/crypto';
+import { encodeBase32, encodeHex, hashPassword } from '@/utils/crypto';
 import { validateTOTP } from '@/utils/totp';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -31,7 +26,7 @@ export async function validateAdminUserNotExists() {
 export async function generateSessionToken(): Promise<string> {
   const bytes = new Uint8Array(20);
   crypto.getRandomValues(bytes);
-  const token = encodeBase32LowerCaseNoPadding(bytes);
+  const token = encodeBase32(bytes);
   return token;
 }
 
@@ -39,9 +34,7 @@ export async function createSession(
   token: string,
   userId: number
 ): Promise<Session> {
-  const sessionId = encodeHexLowerCase(
-    encodeSHA256(new TextEncoder().encode(token))
-  );
+  const sessionId = encodeHex(token);
   const session: Session = {
     id: sessionId,
     userId,
@@ -56,9 +49,7 @@ export async function createSession(
 export async function validateSessionToken(
   token: string
 ): Promise<SessionValidationResult> {
-  const sessionId = encodeHexLowerCase(
-    encodeSHA256(new TextEncoder().encode(token))
-  );
+  const sessionId = encodeHex(token);
   const result = await prisma.session.findUnique({
     where: {
       id: sessionId,
