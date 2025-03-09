@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import prisma from '../../prisma/client';
+import { prisma } from '../../prisma/client';
 import { deleteSessionTokenCookie } from '../login/lib/cookies';
 
 export async function signout() {

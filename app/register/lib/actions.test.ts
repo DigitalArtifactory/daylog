@@ -5,7 +5,7 @@ import { signup, validateAllowRegistration } from './actions';
 
 const mocks = vi.hoisted(() => ({
   loadSettings: vi.fn(),
-  hashPassword: vi.fn(),
+  hashPassword: vi.fn().mockReturnValue('mocked-hash'),
   SignupFormSchema: vi.fn(),
   redirect: vi.fn(),
 }));
@@ -103,8 +103,6 @@ describe('signup', () => {
       data: formData,
     });
     prismaMock.user.findUnique.mockResolvedValue(null);
-
-    mocks.hashPassword.mockReturnValue('mocked-hash');
 
     const result = await signup({}, formData);
 
