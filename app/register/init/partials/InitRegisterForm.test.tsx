@@ -1,4 +1,3 @@
-cleanup();
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import InitRegisterForm from './InitRegisterForm';
@@ -26,7 +25,6 @@ describe('InitRegisterForm', () => {
     cleanup();
   });
 
-  cleanup();
   it('renders the form correctly', () => {
     mocks.useActionState.mockReturnValueOnce([
       { data: {}, errors: {}, message: '', success: false },

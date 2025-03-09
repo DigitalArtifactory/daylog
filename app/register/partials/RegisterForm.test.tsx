@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RegisterForm from './RegisterForm';
 
 const state = { message: 'Error creating account', success: false };
@@ -17,6 +17,10 @@ vi.mock('../lib/actions', () => ({ signup: mocks.signup }));
 vi.mock('react', () => ({ useActionState: mocks.useActionState }));
 
 describe('RegisterForm', () => {
+  beforeEach(() => {
+    cleanup();
+  });
+
   it('renders form elements correctly', () => {
     render(<RegisterForm />);
 
@@ -31,7 +35,6 @@ describe('RegisterForm', () => {
   });
 
   it('shows error message when account creation fails', () => {
-    cleanup();
     render(<RegisterForm />);
     fireEvent.submit(
       screen.getByRole('button', { name: /create new account/i })
@@ -44,7 +47,6 @@ describe('RegisterForm', () => {
   it('shows success message when account is created', () => {
     state.success = true;
 
-    cleanup();
     render(<RegisterForm />);
     fireEvent.submit(
       screen.getByRole('button', { name: /create new account/i })
@@ -60,7 +62,6 @@ describe('RegisterForm', () => {
   it('disables submit button when pending', () => {
     pending = true;
 
-    cleanup();
     render(<RegisterForm />);
 
     const submitButton = screen.getByRole('button', {

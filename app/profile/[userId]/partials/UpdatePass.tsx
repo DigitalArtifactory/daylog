@@ -28,8 +28,11 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                 <input type="hidden" name="id" value={profile.id} />
                 {profile.id === userId && (
                   <div className="mb-3">
-                    <label className="form-label">Current Password</label>
+                    <label className="form-label" htmlFor="current">
+                      Current Password
+                    </label>
                     <input
+                      id="current"
                       type="password"
                       name="current"
                       className="form-control"
@@ -43,8 +46,11 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                   </div>
                 )}
                 <div className="mb-3">
-                  <label className="form-label">New Password</label>
+                  <label className="form-label" htmlFor="password">
+                    New Password
+                  </label>
                   <input
+                    id="password"
                     type="password"
                     name="password"
                     className="form-control"
@@ -58,8 +64,11 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                   )}
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Pasword Confirmation</label>
+                  <label className="form-label" htmlFor="confirm">
+                    Pasword Confirmation
+                  </label>
                   <input
+                    id="confirm"
                     type="password"
                     name="confirm"
                     className="form-control"

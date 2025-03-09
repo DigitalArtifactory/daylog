@@ -23,8 +23,11 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
               <div className="col-md-4 ms-3">
                 <input type="hidden" name="id" value={profile.id ?? 0} />
                 <div className="mb-3">
-                  <label className="form-label">Name</label>
+                  <label className="form-label" htmlFor="name">
+                    Name
+                  </label>
                   <input
+                    id="name"
                     type="text"
                     name="name"
                     className="form-control"
@@ -42,8 +45,11 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                   )}
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">E-mail</label>
+                  <label className="form-label" htmlFor="email">
+                    E-mail
+                  </label>
                   <input
+                    id="email"
                     type="email"
                     name="email"
                     className="form-control"
@@ -68,6 +74,19 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
           {!state?.success && state?.message && (
             <div
               className="alert alert-important alert-danger alert-dismissible"
+              role="alert"
+            >
+              <div>{state.message}</div>
+              <a
+                className="btn-close btn-close-white"
+                data-bs-dismiss="alert"
+                aria-label="close"
+              ></a>
+            </div>
+          )}
+          {state?.success && state?.message && (
+            <div
+              className="alert alert-important alert-sucess alert-dismissible"
               role="alert"
             >
               <div>{state.message}</div>

@@ -67,7 +67,7 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
             <path d="M11 5h2" />
             <path d="M12 17v.01" />
           </svg>
-          Delete TOTP Device
+          Delete Device
         </button>
         <div className="modal" id="totpModal" tabIndex={-1}>
           <form action={action}>
@@ -108,7 +108,7 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
                     <path d="M11 5h2" />
                     <path d="M12 17v.01" />
                   </svg>
-                  <h3>Delete TOTP Device</h3>
+                  <h3>Delete your OTP Device</h3>
                   {!state?.success && (
                     <>
                       <div className="text-secondary">
@@ -194,7 +194,7 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
                               pending ? 'btn-loading disabled' : null
                             }`}
                           >
-                            Delete TOTP device
+                            Delete
                           </button>
                         </div>
                       )}
