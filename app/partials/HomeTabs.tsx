@@ -6,7 +6,7 @@ import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import NoteCardPlaceholderSimple from '../boards/[id]/notes/components/NotePlaceholderSimple';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
@@ -42,34 +42,32 @@ export default function HomeTabs() {
         }
 
         setLoading(false);
+
+        if (result != null && result.length > 0) {
+          getBoardNotes(result[0].id);
+        }
       }
     };
     loadBoards();
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (boards !== null) {
-      const getBoardNotes = async (boardId: number) => {
-        setLoadingNotes(true);
-        const result = await getNotes(boardId);
+  const getBoardNotes = async (boardId: number) => {
+    setLoadingNotes(true);
+    const result = await getNotes(boardId);
 
-        if (result) {
-          const images = [];
-          for (const note of result) {
-            const image = await getFileToBase64(note.imageUrl);
-            images.push(image);
-          }
-          setNoteImages(images);
-        }
-
-        setNotes(result);
-        setLoadingNotes(false);
-      };
-      const board = boards[selectedIndex];
-      if (board) getBoardNotes(board.id);
+    if (result) {
+      const images = [];
+      for (const note of result) {
+        const image = await getFileToBase64(note.imageUrl);
+        images.push(image);
+      }
+      setNoteImages(images);
     }
-  }, [selectedIndex, boards]);
+
+    setNotes(result);
+    setLoadingNotes(false);
+  };
 
   return loading ? (
     <Loader caption="Loading boards..." />
@@ -140,7 +138,7 @@ export default function HomeTabs() {
                 aria-controls={`board-${board.id}`}
                 aria-selected={index === 0 ? 'true' : 'false'}
                 onClick={() => {
-                  setNotes([]);
+                  getBoardNotes(board.id);
                   setSelectedIndex(index);
                 }}
               >
@@ -174,64 +172,71 @@ export default function HomeTabs() {
                     </div>
                   </>
                 ) : notes && notes.length > 0 ? (
-                  notes.map((note, i) => (
-                    <div className="col-md-3" key={note.id}>
-                      <div className="card mb-2">
-                        {noteImages && noteImages[i] && (
-                          <Link
-                            href={`/boards/${note.id}/notes/${note.id}`}
-                            className="stretched-link text-secondary"
-                          >
-                            <img
-                              src={noteImages[i]}
-                              className="card-img-top"
-                              alt={note.title}
-                            />
-                          </Link>
-                        )}
-                        <div className="card-body">
-                          <Link
-                            href={`/boards/${note.id}/notes/${note.id}`}
-                            className="stretched-link text-secondary"
-                          >
-                            {note.title}
-                          </Link>
+                  notes.map(
+                    (note, i) =>
+                      note.boardsId === board.id && (
+                        <div className="col-md-3" key={note.id}>
+                          <div className="card mb-2">
+                            {noteImages && noteImages[i] && (
+                              <Link
+                                href={`/boards/${note.id}/notes/${note.id}`}
+                                className="stretched-link text-secondary"
+                              >
+                                <img
+                                  src={noteImages[i]}
+                                  className="card-img-top"
+                                  alt={note.title}
+                                />
+                              </Link>
+                            )}
+                            <div className="card-body">
+                              <Link
+                                href={`/boards/${note.id}/notes/${note.id}`}
+                                className="stretched-link text-secondary"
+                              >
+                                {note.title}
+                              </Link>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))
+                      )
+                  )
                 ) : (
-                  <div className="text-center mt-5">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-surprised mb-1"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                      <path d="M9 9l.01 0" />
-                      <path d="M15 9l.01 0" />
-                      <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                    </svg>
-                    <div className="text-secondary">
-                      You don't have notes yet...
-                    </div>
-                    <Link href={`/boards/${boards[selectedIndex].id}/notes`}>
-                      Go to this board and create one.
-                    </Link>
-                  </div>
+                  <Fragment key={board.id}>{EmptyNotes(board.id)}</Fragment>
                 )}
               </div>
             </div>
           ))}
       </div>
     </>
+  );
+}
+
+function EmptyNotes(boardId: number) {
+  return (
+    <div className="text-center mt-5">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-surprised mb-1"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+        <path d="M9 9l.01 0" />
+        <path d="M15 9l.01 0" />
+        <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      </svg>
+      <div className="text-secondary">You don't have notes yet...</div>
+      <Link href={`/boards/${boardId}/notes`}>
+        Go to this board and create one.
+      </Link>
+    </div>
   );
 }

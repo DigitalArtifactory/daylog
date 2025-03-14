@@ -7,7 +7,7 @@ export default defineConfig({
   test: {
     clearMocks: true,
     environment: 'jsdom',
-    setupFiles: ['./prisma/singleton.ts'],
+    setupFiles: ['./vitest.setup.ts'],
     coverage: {
       reporter: ['text', 'json', 'html'],
     },

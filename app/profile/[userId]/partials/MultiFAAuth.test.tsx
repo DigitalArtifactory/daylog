@@ -3,7 +3,11 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MultiFAAuth from './MultiFAAuth';
 
-// vi.mock('')
+vi.mock('@/utils/crypto');
+
+vi.mock('@/components/OTPInputWrapper', () => ({
+  default: vi.fn(),
+}));
 
 describe('MultiFAAuth', () => {
   const profileWithMFA: User = {
@@ -27,10 +31,6 @@ describe('MultiFAAuth', () => {
     role: 'user',
     terms: 'accepted',
   };
-
-  vi.mock('@/components/OTPInputWrapper', () => ({
-    default: vi.fn(),
-  }));
 
   beforeEach(() => {
     cleanup();
