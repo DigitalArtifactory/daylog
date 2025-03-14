@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import reset from './lib/actions';
+import { reset } from './lib/actions';
 
 export default function Page() {
   const [state, action, pending] = useActionState(reset, undefined);

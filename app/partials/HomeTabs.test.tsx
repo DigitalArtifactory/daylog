@@ -12,7 +12,9 @@ import HomeTabs from './HomeTabs';
 
 const mocks = vi.hoisted(() => ({
   getBoards: vi.fn(),
-  getNotes: vi.fn(),
+  getNotes: vi.fn((boardId) =>
+    mockNotes.filter((note) => note.boardsId === boardId)
+  ),
   getFileToBase64: vi.fn(),
 }));
 
@@ -33,14 +35,15 @@ const mockBoards = [
 
 const mockNotes = [
   { id: 1, title: 'Note 1', imageUrl: 'note1.jpg', boardsId: 1 },
-  { id: 2, title: 'Note 2', imageUrl: 'note2.jpg', boardsId: 2 },
+  { id: 2, title: 'Note 2', imageUrl: 'note2.jpg', boardsId: 1 },
+  { id: 3, title: 'Note 1', imageUrl: 'note1.jpg', boardsId: 2 },
+  { id: 4, title: 'Note 2', imageUrl: 'note2.jpg', boardsId: 2 },
 ];
 
 describe('HomeTabs', () => {
   beforeEach(() => {
     cleanup();
     mocks.getBoards.mockResolvedValue(mockBoards);
-    mocks.getNotes.mockResolvedValue(mockNotes);
     mocks.getFileToBase64.mockResolvedValue('');
   });
 
@@ -52,17 +55,20 @@ describe('HomeTabs', () => {
   it('renders boards after loading', async () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
-    expect(screen.getByText('Board 1')).toBeDefined();
-    expect(screen.getByText('Board 2')).toBeDefined();
+    await waitFor(() => {
+      expect(screen.getByText('Board 1')).toBeDefined();
+      expect(screen.getByText('Board 2')).toBeDefined();
+    });
   });
 
   it('renders notes of the first board at start', async () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
     await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
-      await waitFor(() => {
-        expect(screen.getByText('Note 1')).toBeDefined();
-      });
+    await waitFor(() => {
+      expect(screen.getByText('Note 1')).toBeDefined();
+      expect(screen.getByText('Note 2')).toBeDefined();
+    });
   });
 
   it('renders notes when a board is selected', async () => {
@@ -70,10 +76,9 @@ describe('HomeTabs', () => {
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
     fireEvent.click(screen.getByText('Board 1'));
     await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
-
     await waitFor(() => {
-      expect(screen.getByText('Note 1')).toBeDefined();
-      expect(screen.getByText('Note 2')).toBeDefined();
+      expect(screen.getByText('Note 1')).toBeInTheDocument();
+      expect(screen.getByText('Note 2')).toBeInTheDocument();
     });
   });
 
@@ -90,10 +95,10 @@ describe('HomeTabs', () => {
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
     fireEvent.click(screen.getByText('Board 1'));
     await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
-    await waitFor(() => {
+    await waitFor(() =>
       expect(screen.getAllByText("You don't have notes yet...").length).toBe(
         mockBoards.length
-      );
-    });
+      )
+    );
   });
 });

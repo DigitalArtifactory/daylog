@@ -117,6 +117,6 @@ describe('InitRegisterForm', () => {
     render(<InitRegisterForm />);
 
     const submitButton = screen.getByText('Create admin account');
-    expect(submitButton.classList.contains('disabled')).toEqual(true);
+    expect(submitButton).toBeDisabled();
   });
 });

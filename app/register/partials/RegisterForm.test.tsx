@@ -1,16 +1,19 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RegisterForm from './RegisterForm';
 
 const state = { message: 'Error creating account', success: false };
-let pending = false;
 
-const mocks = vi.hoisted(() => {
-  return {
-    signup: vi.fn(() => state),
-    useActionState: vi.fn(() => [state, pending, vi.fn()]),
-  };
-});
+const mocks = vi.hoisted(() => ({
+  signup: vi.fn(() => state),
+  useActionState: vi.fn(() => [state, vi.fn(), false]),
+}));
 
 vi.mock('../lib/actions', () => ({ signup: mocks.signup }));
 
@@ -59,8 +62,8 @@ describe('RegisterForm', () => {
     expect(screen.getByText('Go to login')).toBeDefined();
   });
 
-  it('disables submit button when pending', () => {
-    pending = true;
+  it('disables submit button when pending', async () => {
+    mocks.useActionState.mockReturnValueOnce([state, vi.fn(), true]);
 
     render(<RegisterForm />);
 
@@ -68,6 +71,6 @@ describe('RegisterForm', () => {
       name: /create new account/i,
     });
 
-    expect(submitButton.classList.contains('disabled')).toEqual(true);
+    await waitFor(() => expect(submitButton).toBeDisabled());
   });
 });

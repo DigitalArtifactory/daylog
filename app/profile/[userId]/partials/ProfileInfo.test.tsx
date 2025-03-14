@@ -90,7 +90,7 @@ describe('ProfileInfo', () => {
     render(<ProfileInfo profile={mockProfile} />);
 
     const submitButton = screen.getByText(/Save Changes/i);
-    expect(submitButton.classList.contains('disabled')).toEqual(true);
+    expect(submitButton).toBeDisabled();
   });
 
   it('submits the form with updated profile information', () => {

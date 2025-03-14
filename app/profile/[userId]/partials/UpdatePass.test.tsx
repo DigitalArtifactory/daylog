@@ -86,7 +86,7 @@ describe('UpdatePass Component', () => {
     mocks.useActionState.mockReturnValueOnce([state, vi.fn(), true]);
     render(<UpdatePass userId={1} profile={mockProfile} />);
     const submitButton = screen.getByText(/Change Password/i);
-    expect(submitButton.classList.contains('disabled')).toEqual(true);
+    expect(submitButton).toBeDisabled();
   });
 
   it('calls the action function when form is submitted', () => {

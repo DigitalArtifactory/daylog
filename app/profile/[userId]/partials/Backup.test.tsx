@@ -65,7 +65,7 @@ describe('Backup', () => {
     render(<Backup profile={profile} />);
 
     const submitButton = screen.getByText(/Download Data/i);
-    expect(submitButton.classList.contains('disabled')).toEqual(true);
+    expect(submitButton).toBeDisabled();
   });
 
   it('calls the action when the form is submitted', () => {

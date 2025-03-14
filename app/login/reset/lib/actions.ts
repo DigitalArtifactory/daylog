@@ -8,7 +8,7 @@ import { randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-export default async function reset(state: FormState, formData: FormData) {
+export async function reset(state: FormState, formData: FormData) {
   const result = ResetFormSchema.safeParse({
     email: formData.get('email'),
   });

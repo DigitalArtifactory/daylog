@@ -85,8 +85,6 @@ describe('DangerZone', () => {
     const submitButton = screen.getByText('Delete Account');
     fireEvent.click(submitButton);
 
-    expect(
-      screen.getByText('Yes, delete').classList.contains('disabled')
-    ).toEqual(true);
+    expect(screen.getByText('Yes, delete')).toBeDisabled();
   });
 });

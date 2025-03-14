@@ -41,7 +41,7 @@ export default function Backup({ profile }: BackupType) {
             <>
               <textarea
                 className="form-control mt-2"
-                disabled
+                disabled={pending}
                 rows={5}
                 defaultValue={state.data}
               />
