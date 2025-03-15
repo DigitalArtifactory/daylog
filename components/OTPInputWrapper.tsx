@@ -1,6 +1,6 @@
 import { OTPInput, SlotProps } from 'input-otp';
 
-type OTPInputWrapperType = {
+export type OTPInputWrapperType = {
   onChange: (value: string) => void;
 };
 

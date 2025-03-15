@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { OTPInputWrapperType } from '@/components/OTPInputWrapper';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import OTPLoginForm from './OTPLoginForm';
 
 const state: {
@@ -29,22 +30,21 @@ vi.mock('@/app/login/lib/actions', () => ({
   validateMFA: mocks.validateMFA,
 }));
 
-vi.mock('@/components/OTPInputWrapper', () => (props: any) => (
-  <input
-    data-testid="otp-input"
-    onChange={(e) => props.onChange(e.target.value)}
-  />
-));
+vi.mock('@/components/OTPInputWrapper', () => ({
+  default: vi.fn((props: OTPInputWrapperType) => (
+    <input
+      data-testid="otp-input"
+      onChange={(e) => props.onChange(e.target.value)}
+    />
+  )),
+}));
 
 describe('OTPLoginForm', () => {
   const mockUseActionState = mocks.useActionState;
 
   beforeEach(() => {
     mockUseActionState.mockReturnValue([state, vi.fn(), false]);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
+    cleanup();
   });
 
   it('renders the form with initial state', () => {
