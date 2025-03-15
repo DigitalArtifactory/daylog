@@ -1,7 +1,7 @@
 import { getUserMFA } from '../../lib/actions';
 import OTPLoginForm from './partials/OTPLoginForm';
 
-export default async function Home({
+export default async function OTPLogin({
   params,
 }: {
   params: Promise<{ userId: string }>;
