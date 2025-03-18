@@ -13,7 +13,7 @@ import { Suspense } from 'react';
 import { getCurrentSession } from '../login/lib/actions';
 import { getBoards } from './lib/actions';
 
-export default async function Home() {
+export default async function Boards() {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');

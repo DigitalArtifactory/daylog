@@ -7,7 +7,7 @@ import BoardFavoriteButton from './BoardFavoriteButton';
 import BoardModalDelete from './BoardModalDelete';
 import BoardModalForm from './BoardModalForm';
 
-type BoardCardType = {
+export type BoardCardType = {
   boardId: number;
 };
 
