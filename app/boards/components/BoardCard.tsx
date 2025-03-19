@@ -25,7 +25,10 @@ export default async function BoardCard({ boardId }: BoardCardType) {
   return (
     <div className="card d-flex flex-column">
       {board.favorite && (
-        <div className="ribbon ribbon-top ribbon-bookmark bg-yellow">
+        <div
+          data-testid="favorite-ribbon"
+          className="ribbon ribbon-top ribbon-bookmark bg-yellow"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -56,6 +59,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
         </a>
       ) : (
         <a
+          data-testid={`board-${board.id}`}
           className="ratio ratio-21x9"
           href={`/boards/${board.id}/notes`}
           style={{ backgroundColor: setBackgroundImage(board.title) }}
