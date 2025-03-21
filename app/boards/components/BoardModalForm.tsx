@@ -6,11 +6,10 @@ import {
   saveImage,
   updateBoard,
 } from '@/app/boards/lib/actions';
-import { getFileToBase64 } from '@/utils/base64';
 import { resizeImage } from '@/utils/image';
 import { Board, Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type BoardModalFormType = {
@@ -29,10 +28,8 @@ export default function BoardModalForm({
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const [image, setImage] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
-  const [removeImage, setRemoveImage] = useState(false);
 
   const {
     register,
@@ -79,8 +76,7 @@ export default function BoardModalForm({
     data.id = board?.id;
 
     await updateBoard(data);
-    if (!removeImage) await uploadImage(data.id);
-    else await deleteImage(data.id, data.imageUrl);
+    await uploadImage(data.id);
 
     router.refresh();
   };
@@ -92,29 +88,6 @@ export default function BoardModalForm({
       console.error('Close button is not available.');
     }
   };
-
-  useEffect(() => {
-    const modalElement = document.getElementById(modalId);
-    const loadImage = async () => {
-      if (board?.imageUrl) {
-        const image = await getFileToBase64(board?.imageUrl);
-        setImage(image);
-      }
-    };
-
-    if (modalElement) {
-      modalElement.addEventListener('hidden.bs.modal', () => {
-        setImage(null);
-        setRemoveImage(false);
-      });
-
-      modalElement.addEventListener('show.bs.modal', () => {
-        loadImage();
-      });
-    }
-
-    loadImage();
-  }, []);
 
   return (
     <div className="modal" id={modalId} tabIndex={-1}>
@@ -133,19 +106,19 @@ export default function BoardModalForm({
               ></button>
             </div>
             <div className="modal-body">
-              {mode === 'update' && board?.id && image && !removeImage && (
+              {mode === 'update' && board?.id && board.imageUrl && (
                 <div className="mb-3">
-                  <div className="rounded overflow-hidden border border-secondary">
+                  <div className="border border-secondary rounded">
                     <img
                       className="w-100 img-fluid"
-                      alt={board?.title}
-                      src={image}
+                      src={`/api/v1/images?filePath=${board.imageUrl}`}
+                      alt={`Preview image of ${board.title}`}
                     ></img>
                   </div>
                   <button
-                    className="btn btn-sm btn-link text-danger float-end mt-1"
-                    onClick={() => {
-                      setRemoveImage(true);
+                    className="btn btn-link btn-sm float-end text-danger mt-1"
+                    onClick={async () => {
+                      await deleteImage(board.id, board.imageUrl);
                     }}
                   >
                     <svg
@@ -158,7 +131,7 @@ export default function BoardModalForm({
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+                      className="icon icon-tabler icon-tabler-trash icons-tabler-outline"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path d="M4 7l16 0" />
@@ -172,8 +145,11 @@ export default function BoardModalForm({
                 </div>
               )}
               <div className="mb-3">
-                <label className="form-label">Image</label>
+                <label htmlFor="image" className="form-label">
+                  Image
+                </label>
                 <input
+                  id="image"
                   type="file"
                   className="form-control"
                   name="image"

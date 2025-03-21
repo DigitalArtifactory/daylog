@@ -1,10 +1,9 @@
 'use client';
 
-import { getFileToBase64 } from '@/utils/base64';
 import { resizeImage } from '@/utils/image';
 import { Note } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { createNote, deleteImage, saveImage, updateNote } from '../lib/actions';
 
@@ -30,10 +29,8 @@ export default function NoteModalForm({
   const formRef = useRef<HTMLFormElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  const [image, setImage] = useState<string | null>(null);
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
-  const [removeImage, setRemoveImage] = useState(false);
 
   const {
     register,
@@ -71,9 +68,7 @@ export default function NoteModalForm({
 
   const updateNoteHandler = async (data: Note) => {
     await updateNote(data);
-
-    if (!removeImage) await uploadImage(data.id);
-    else await deleteImage(data.id, data.imageUrl);
+    await uploadImage(data.id);
 
     router.refresh();
   };
@@ -85,29 +80,6 @@ export default function NoteModalForm({
       console.error('Close button is not available.');
     }
   };
-
-  useEffect(() => {
-    const modalElement = document.getElementById(modalId);
-    const loadImage = async () => {
-      if (note?.imageUrl) {
-        const image = await getFileToBase64(note?.imageUrl);
-        setImage(image);
-      }
-    };
-
-    if (modalElement) {
-      modalElement.addEventListener('hidden.bs.modal', () => {
-        setImage(null);
-        setRemoveImage(false);
-      });
-
-      modalElement.addEventListener('show.bs.modal', () => {
-        loadImage();
-      });
-    }
-
-    loadImage();
-  }, []);
 
   return (
     <div className="modal" id={modalId} tabIndex={-1}>
@@ -134,19 +106,19 @@ export default function NoteModalForm({
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                {mode === 'update' && note?.id && image && !removeImage && (
+                {mode === 'update' && note?.id && note.imageUrl && (
                   <div className="mb-3">
                     <div className="rounded overflow-hidden border border-secondary">
                       <img
                         className="w-100 img-fluid"
                         alt={note?.title}
-                        src={image}
+                        src={`/api/v1/images?filePath=${note.imageUrl}`}
                       ></img>
                     </div>
                     <button
                       className="btn btn-sm btn-link text-danger float-end mt-1"
-                      onClick={() => {
-                        setRemoveImage(true);
+                      onClick={async () => {
+                        await deleteImage(note.id, note.imageUrl);
                       }}
                     >
                       <svg

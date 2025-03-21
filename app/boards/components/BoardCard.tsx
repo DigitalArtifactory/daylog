@@ -1,7 +1,7 @@
 import { getBoard } from '@/app/boards/lib/actions';
-import { getFileToBase64 } from '@/utils/base64';
 import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
+import Image from 'next/image';
 import TimeDiff from '../../../components/TimeDiff';
 import BoardFavoriteButton from './BoardFavoriteButton';
 import BoardModalDelete from './BoardModalDelete';
@@ -48,14 +48,13 @@ export default async function BoardCard({ boardId }: BoardCardType) {
       )}
       {board?.imageUrl ? (
         <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
-          <img
+          <Image
             style={{ objectFit: 'cover', objectPosition: 'top' }}
-            src={
-              (await getFileToBase64(board.imageUrl)) ??
-              '/samples/photos/search-bg.jpg'
-            }
+            fill={true}
+            className="w-100 img-fluid"
+            src={`/api/v1/images?filePath=${board.imageUrl}`}
             alt={`Image of ${board.title}`}
-          />
+          ></Image>
         </a>
       ) : (
         <a

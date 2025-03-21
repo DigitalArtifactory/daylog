@@ -6,7 +6,6 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
-import { getFileToBase64 } from '@/utils/base64';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
 import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
@@ -40,11 +39,8 @@ export default async function Home({
                     <div className="card-body p-0 shadow-sm">
                       <img
                         className="card-img-top"
-                        style={{ objectFit: 'cover', maxHeight: 420 }}
-                        src={
-                          (await getFileToBase64(note.imageUrl)) ??
-                          '/samples/photos/search-bg.jpg'
-                        }
+                        style={{ objectFit: 'cover', objectPosition: 'top', maxHeight: 420 }}
+                        src={`/api/v1/images?filePath=${note.imageUrl}`}
                         alt="Book on the grass"
                       />
                     </div>

@@ -6,7 +6,6 @@ import BoardCard from './BoardCard';
 
 const mocks = vi.hoisted(() => ({
   getBoard: vi.fn(),
-  getFileToBase64: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
@@ -15,10 +14,6 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/app/boards/lib/actions', () => ({
   getBoard: mocks.getBoard,
-}));
-
-vi.mock('@/utils/base64', () => ({
-  getFileToBase64: mocks.getFileToBase64,
 }));
 
 describe('BoardCard', () => {
@@ -37,7 +32,6 @@ describe('BoardCard', () => {
 
   it('renders without crashing', async () => {
     mocks.getBoard.mockResolvedValue(mockBoard);
-    mocks.getFileToBase64.mockResolvedValue('base64-image');
 
     render(await BoardCard({ boardId: 1 }));
 
@@ -56,12 +50,10 @@ describe('BoardCard', () => {
 
   it('displays the board image if imageUrl is provided', async () => {
     mocks.getBoard.mockResolvedValue(mockBoard);
-    mocks.getFileToBase64.mockResolvedValue('base64-image');
 
     render(await BoardCard({ boardId: 1 }));
 
-    const img = await screen.findByRole('img');
-    expect(img).toHaveAttribute('src', 'base64-image');
+    expect(screen.getByAltText(`Image of ${mockBoard.title}`)).toBeDefined();
   });
 
   it('displays a colored background if imageUrl is not provided', async () => {
@@ -77,8 +69,7 @@ describe('BoardCard', () => {
   it('displays the truncated board title', async () => {
     const boardWithLargeTitle = {
       ...mockBoard,
-      title:
-        'Irure aute laboris eiusmod minim ad eu.',
+      title: 'Irure aute laboris eiusmod minim ad eu.',
     };
     mocks.getBoard.mockResolvedValue(boardWithLargeTitle);
 

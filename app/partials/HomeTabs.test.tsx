@@ -15,7 +15,6 @@ const mocks = vi.hoisted(() => ({
   getNotes: vi.fn((boardId) =>
     mockNotes.filter((note) => note.boardsId === boardId)
   ),
-  getFileToBase64: vi.fn(),
 }));
 
 vi.mock('../boards/lib/actions', () => ({
@@ -23,9 +22,6 @@ vi.mock('../boards/lib/actions', () => ({
 }));
 vi.mock('../boards/[id]/notes/lib/actions', () => ({
   getNotes: mocks.getNotes,
-}));
-vi.mock('@/utils/base64', () => ({
-  getFileToBase64: mocks.getFileToBase64,
 }));
 
 const mockBoards = [
@@ -44,7 +40,6 @@ describe('HomeTabs', () => {
   beforeEach(() => {
     cleanup();
     mocks.getBoards.mockResolvedValue(mockBoards);
-    mocks.getFileToBase64.mockResolvedValue('');
   });
 
   it('renders loading state initially', () => {
