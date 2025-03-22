@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-export default function () {
+export default function Alert () {
   const searchParams = useSearchParams();
   const saved = searchParams.get('saved');
 
@@ -17,6 +17,7 @@ export default function () {
             </div>
           </div>
           <a
+            role="button"
             className="btn-close"
             data-bs-dismiss="alert"
             aria-label="close"

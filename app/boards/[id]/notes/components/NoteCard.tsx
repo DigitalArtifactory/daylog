@@ -1,5 +1,6 @@
 import TimeDiff from '@/components/TimeDiff';
 import { truncateWord } from '@/utils/text';
+import Image from 'next/image';
 import { getNote } from '../lib/actions';
 import NoteFavoriteButton from './NoteFavoriteButton';
 import NoteModalDelete from './NoteModalDelete';
@@ -43,7 +44,9 @@ export default async function NoteCard({ noteId }: NoteCardType) {
           className="ratio ratio-21x9"
           href={`/boards/${note.boardsId}/notes/${note.id}`}
         >
-          <img
+          <Image
+            width={800}
+            height={600}
             style={{ objectFit: 'cover', objectPosition: 'top' }}
             src={`/api/v1/images?filePath=${note.imageUrl}`}
             alt={`Image of ${note.title}`}

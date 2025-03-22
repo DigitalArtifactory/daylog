@@ -1,7 +1,6 @@
 'use client';
 
 import { Note } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { updateNote } from '../../lib/actions';
 import Editor from '../components/Editor';
@@ -13,7 +12,6 @@ type NoteEditorWrapperType = {
 export default function NoteEditorClientWrapper({
   note,
 }: NoteEditorWrapperType) {
-  const router = useRouter();
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null
   );
@@ -23,7 +21,7 @@ export default function NoteEditorClientWrapper({
     if (debounceTimer) clearTimeout(debounceTimer);
 
     // Set a new timer
-    var timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       updateNoteHandler(content);
       callback();
     }, 1000); // Waits for 1 second of inactivity before saving

@@ -62,8 +62,9 @@ export async function signupInit(state: InitFormState, formData: FormData) {
       success: true,
     };
   } catch (e) {
+    console.error(e);
     return {
-      success: false, 
+      success: false,
       data: result.data,
       message: 'An error occurred while creating your admin account.',
     };

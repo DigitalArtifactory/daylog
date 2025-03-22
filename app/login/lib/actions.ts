@@ -193,6 +193,7 @@ export async function validateMFA(
 
     await generateUserSession(record);
   } catch (e) {
+    console.error(e);
     return {
       data: result.data,
       message: 'An error occurred while validating your OTP.',
@@ -214,7 +215,7 @@ async function generateUserSession(record: {
   terms: string;
 }) {
   const token = await generateSessionToken();
-  const session = await createSession(token, record!.id);
+  await createSession(token, record!.id);
   await setSessionTokenCookie(
     token,
     new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
@@ -233,6 +234,7 @@ export async function getUserMFA(userId: number) {
 
     return record.mfa;
   } catch (e) {
+    console.error(e);
     return false;
   }
 }

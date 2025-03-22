@@ -90,8 +90,8 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
               <h3>Are you sure?</h3>
               <div className="text-danger fw-bold">{note.title}</div>
               <div className="text-secondary">
-                Do you really want to remove this note? What you've done cannot
-                be undone.
+                Do you really want to remove this note? What you&apos;ve done
+                cannot be undone.
               </div>
             </div>
             <div className="modal-footer">

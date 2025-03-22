@@ -1,10 +1,9 @@
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';
-import { loadSettings, saveSettings, SettingsType } from '../lib/actions';
+import { loadSettings, saveSettings } from '../lib/actions';
 
 export default function SecurityTab() {
-  const [settings, setSettings] = useState<SettingsType | null>(null);
   const [isMfaChecked, setIsMfaChecked] = useState(false);
   const [isAllowRegChecked, setIsAllowRegChecked] = useState(false);
   const [state, action, pending] = useActionState(saveSettings, undefined);
@@ -12,7 +11,6 @@ export default function SecurityTab() {
   useEffect(() => {
     const getSettings = async () => {
       const settings = await loadSettings();
-      setSettings(settings);
       setIsMfaChecked(settings?.mfa ?? false);
       setIsAllowRegChecked(settings?.allowReg ?? false);
     };
@@ -21,7 +19,6 @@ export default function SecurityTab() {
 
   useEffect(() => {
     if (state?.data) {
-      setSettings(state.data);
       setIsMfaChecked(state.data.mfa);
     }
   }, [state]);

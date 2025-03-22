@@ -1,6 +1,7 @@
 'use client';
 
 import { User } from '@prisma/client';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavSearch from './NavSearch';
 
@@ -20,7 +21,7 @@ export default function NavBar({ user }: { user: User }) {
             homePattern.test(path) ? 'active text-primary' : ''
           }`}
         >
-          <a
+          <Link
             className={`nav-link ${
               homePattern.test(path) ? 'active text-primary' : ''
             }`}
@@ -48,7 +49,7 @@ export default function NavBar({ user }: { user: User }) {
               </svg>
             </span>
             <span className="nav-link-title">Home</span>
-          </a>
+          </Link>
         </li>
         <li
           className={`nav-item ${
@@ -57,7 +58,7 @@ export default function NavBar({ user }: { user: User }) {
               : ''
           }`}
         >
-          <a
+          <Link
             className={`nav-link ${
               boardPattern.test(path) || notePattern.test(path)
                 ? 'active text-primary'
@@ -90,7 +91,7 @@ export default function NavBar({ user }: { user: User }) {
               </svg>
             </span>
             <span className="nav-link-title">Boards</span>
-          </a>
+          </Link>
         </li>
         <li
           className={`nav-item ${

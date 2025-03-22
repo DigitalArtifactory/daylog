@@ -15,6 +15,8 @@ vi.mock('@/app/boards/[id]/notes/lib/actions', () => ({
   getNote: mocks.getNote,
 }));
 
+vi.mock('@/app/boards/[id]/notes/components/NoteModalForm');
+
 describe('NoteCard', () => {
   const mockNote = {
     id: 1,
@@ -72,7 +74,7 @@ describe('NoteCard', () => {
 
     render(await NoteCard({ noteId: 1 }));
 
-    expect(await screen.findByText('This is a test note')).toBeInTheDocument();
+    expect(screen.getByText('This is a test note')).toBeInTheDocument();
   });
 
   it('displays the TimeDiff component with the correct updatedAt prop', async () => {

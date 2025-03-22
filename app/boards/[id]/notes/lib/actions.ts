@@ -72,7 +72,7 @@ export async function saveImage(
     });
 
     return imageBase64;
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
     return null;
   }
@@ -91,7 +91,7 @@ export async function deleteImage(
         data: { imageUrl: null },
       });
     }
-  } catch (e: any) {
+  } catch (e) {
     console.error(e);
   }
 }

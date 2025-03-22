@@ -1,8 +1,9 @@
 import Admin from '@/app/admin/page';
+import { Note } from '@prisma/client';
 import { cleanup, render, screen } from '@testing-library/react';
 import { redirect } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import Note from './page';
+import NotePage from './page';
 
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
@@ -43,7 +44,7 @@ vi.mock('@/components/PageHeader');
 vi.mock('@/components/NavHeader');
 vi.mock('@/components/NavMenu');
 vi.mock('./partials/NoteEditorClientWrapper', () => ({
-  default: vi.fn(({ note }: { note: any }) => <div>{note.title}</div>),
+  default: vi.fn(({ note }: { note: Note }) => <div>{note.title}</div>),
 }));
 
 describe('Note Page', () => {
@@ -55,7 +56,7 @@ describe('Note Page', () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
     mocks.getNote.mockResolvedValue(null);
 
-    await Note({ params: Promise.resolve({ noteId: '1' }) });
+    await NotePage({ params: Promise.resolve({ noteId: '1' }) });
 
     expect(redirect).toHaveBeenCalledWith('/login');
   });
@@ -66,7 +67,7 @@ describe('Note Page', () => {
     });
     mocks.getNote.mockResolvedValue({ id: 1, title: 'Test Note' });
 
-    render(await Note({ params: Promise.resolve({ noteId: '1' }) }));
+    render(await NotePage({ params: Promise.resolve({ noteId: '1' }) }));
 
     expect(screen.getByText('Test Note')).toBeInTheDocument();
   });
@@ -110,7 +111,7 @@ describe('Note Page', () => {
   vi.mock('@/components/NavHeader');
   vi.mock('@/components/NavMenu');
   vi.mock('./partials/NoteEditorClientWrapper', () => ({
-    default: vi.fn(({ note }: { note: any }) => <div>{note.title}</div>),
+    default: vi.fn(({ note }: { note: Note }) => <div>{note.title}</div>),
   }));
 
   vi.mock('@/app/admin/partials/AdminTabs', () => ({
@@ -140,7 +141,7 @@ describe('Note Page', () => {
       mocks.getCurrentSession.mockResolvedValue({ user: null });
       mocks.getNote.mockResolvedValue(null);
 
-      await Note({ params: Promise.resolve({ noteId: '1' }) });
+      await NotePage({ params: Promise.resolve({ noteId: '1' }) });
 
       expect(redirect).toHaveBeenCalledWith('/login');
     });
@@ -151,7 +152,7 @@ describe('Note Page', () => {
       });
       mocks.getNote.mockResolvedValue({ id: 1, title: 'Test Note' });
 
-      render(await Note({ params: Promise.resolve({ noteId: '1' }) }));
+      render(await NotePage({ params: Promise.resolve({ noteId: '1' }) }));
 
       expect(screen.getByText('Test Note')).toBeInTheDocument();
     });

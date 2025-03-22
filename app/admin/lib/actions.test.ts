@@ -1,4 +1,5 @@
 import { prismaMock } from '@/prisma/singleton';
+import { User } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   deleteUser,
@@ -26,8 +27,8 @@ describe('actions', () => {
 
   describe('getUsers', () => {
     it('should return users from the database', async () => {
-      const mockUsers = [{ id: 1, name: 'John Doe' }] as any;
-      prismaMock.user.findMany.mockResolvedValue(mockUsers);
+      const mockUsers: [Partial<User>] = [{ id: 1, name: 'John Doe' }];
+      prismaMock.user.findMany.mockResolvedValue(mockUsers as [User]);
 
       const users = await getUsers();
       expect(users).toEqual(mockUsers);
@@ -36,8 +37,12 @@ describe('actions', () => {
 
   describe('setAdmin', () => {
     it('should update user role', async () => {
-      const mockUser = { id: 1, name: 'John Doe', role: 'admin' } as any;
-      prismaMock.user.update.mockResolvedValue(mockUser);
+      const mockUser: Partial<User> = {
+        id: 1,
+        name: 'John Doe',
+        role: 'admin',
+      };
+      prismaMock.user.update.mockResolvedValue(mockUser as User);
 
       const user = await setAdmin(1, 'admin');
       expect(user).toEqual(mockUser);
@@ -82,9 +87,9 @@ describe('actions', () => {
   describe('deleteUser', () => {
     it('should delete user if not current session user', async () => {
       const mockSession = { user: { id: 2 } };
-      const mockUser = { id: 1, name: 'John Doe' } as any;
+      const mockUser: Partial<User> = { id: 1, name: 'John Doe' };
       mocks.getCurrentSession.mockResolvedValue(mockSession);
-      prismaMock.user.findUnique.mockResolvedValue(mockUser);
+      prismaMock.user.findUnique.mockResolvedValue(mockUser as User);
 
       const user = await deleteUser(1);
       expect(prismaMock.user.delete).toHaveBeenCalledWith({ where: { id: 1 } });
@@ -93,9 +98,9 @@ describe('actions', () => {
 
     it('should not delete user if it is the current session user', async () => {
       const mockSession = { user: { id: 1 } };
-      const mockUser = { id: 1, name: 'John Doe' } as any;
+      const mockUser: Partial<User> = { id: 1, name: 'John Doe' };
       mocks.getCurrentSession.mockResolvedValue(mockSession);
-      prismaMock.user.findUnique.mockResolvedValue(mockUser);
+      prismaMock.user.findUnique.mockResolvedValue(mockUser as User);
 
       const user = await deleteUser(1);
       expect(prismaMock.user.delete).not.toHaveBeenCalled();

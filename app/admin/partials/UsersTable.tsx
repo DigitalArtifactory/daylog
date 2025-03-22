@@ -5,12 +5,6 @@ import { User } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { deleteUser, getUsers, setAdmin as setRole } from '../lib/actions';
 
-declare global {
-  interface Window {
-    bootstrap: any;
-  }
-}
-
 export default function UsersTable({
   currentUserId,
 }: {
@@ -135,7 +129,7 @@ export default function UsersTable({
                               </div>
                               <div className="text-secondary">
                                 Do you really want to delete this user? What
-                                you've done cannot be undone.
+                                you&apos;ve done cannot be undone.
                               </div>
                             </div>
                             <div className="modal-footer">

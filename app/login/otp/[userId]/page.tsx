@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getUserMFA } from '../../lib/actions';
 import OTPLoginForm from './partials/OTPLoginForm';
 
@@ -15,7 +16,7 @@ export default async function OTPLogin({
       <div className="container container-tight py-4">
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
-            <img
+            <Image
               src="/daylog.svg"
               width="220"
               height="64"

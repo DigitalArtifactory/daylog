@@ -8,6 +8,7 @@ import {
 } from '@/app/boards/lib/actions';
 import { resizeImage } from '@/utils/image';
 import { Board, Prisma } from '@prisma/client';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -34,14 +35,17 @@ export default function BoardModalForm({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Board>();
 
   const onSubmit: SubmitHandler<Board> = (data) => {
     setSubmiting(true);
     setTimeout(() => {
-      mode == 'create' ? createBoardHandler(data) : updateBoardHandler(data);
+      if (mode === 'create') {
+        createBoardHandler(data);
+      } else {
+        updateBoardHandler(data);
+      }
       setSubmiting(false);
       closeModal();
       formRef.current?.reset();
@@ -108,12 +112,13 @@ export default function BoardModalForm({
             <div className="modal-body">
               {mode === 'update' && board?.id && board.imageUrl && (
                 <div className="mb-3">
-                  <div className="border border-secondary rounded">
-                    <img
-                      className="w-100 img-fluid"
+                  <div className="border border-secondary rounded w-100">
+                    <Image
+                      width="800"
+                      height="600"
                       src={`/api/v1/images?filePath=${board.imageUrl}`}
                       alt={`Preview image of ${board.title}`}
-                    ></img>
+                    ></Image>
                   </div>
                   <button
                     className="btn btn-link btn-sm float-end text-danger mt-1"

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useActionState } from 'react';
 import { signupInit } from '../lib/actions';
 
@@ -11,7 +12,7 @@ export default function InitRegisterForm() {
       <div className="container container-tight py-4">
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
-            <img
+            <Image
               src="/daylog.svg"
               width="110"
               height="32"

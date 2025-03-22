@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma/client';
 import { prismaMock } from '@/prisma/singleton';
 import { removeFile, saveBase64File } from '@/utils/storage';
+import { Note } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createNote,
@@ -41,7 +42,7 @@ describe('Note Actions', () => {
     const boardId = 1;
     const noteId = 1;
 
-    prismaMock.note.create.mockResolvedValue({ id: noteId } as any);
+    prismaMock.note.create.mockResolvedValue({ id: noteId } as Note);
 
     const result = await createNote(data, boardId);
 
@@ -56,15 +57,15 @@ describe('Note Actions', () => {
   });
 
   it('should update a note', async () => {
-    const note = {
+    const note: Partial<Note> = {
       id: 1,
       title: 'Updated Note',
       content: 'Updated Content',
-    } as any;
+    };
 
-    prismaMock.note.update.mockResolvedValue(note);
+    prismaMock.note.update.mockResolvedValue(note as Note);
 
-    const result = await updateNote(note);
+    const result = await updateNote(note as Note);
 
     expect(result).toEqual(note);
     expect(prisma.note.update).toHaveBeenCalledWith({
@@ -74,11 +75,11 @@ describe('Note Actions', () => {
   });
 
   it('should delete a note', async () => {
-    const note = { id: 1 } as any;
+    const note: Partial<Note> = { id: 1 };
 
-    prismaMock.note.delete.mockResolvedValue(note);
+    prismaMock.note.delete.mockResolvedValue(note as Note);
 
-    const result = await deleteNote(note);
+    const result = await deleteNote(note as Note);
 
     expect(result).toEqual(note);
     expect(prisma.note.delete).toHaveBeenCalledWith({
@@ -88,12 +89,12 @@ describe('Note Actions', () => {
 
   it('should get notes', async () => {
     const boardId = 1;
-    const notes = [
+    const notes: Partial<Note>[] = [
       { id: 1, title: 'Note 1' },
       { id: 2, title: 'Note 2' },
-    ] as any;
+    ];
 
-    prismaMock.note.findMany.mockResolvedValue(notes);
+    prismaMock.note.findMany.mockResolvedValue(notes as Note[]);
 
     const result = await getNotes(boardId);
 
@@ -106,9 +107,9 @@ describe('Note Actions', () => {
 
   it('should get a note', async () => {
     const noteId = 1;
-    const note = { id: noteId, title: 'Note 1' } as any;
+    const note: Partial<Note> = { id: noteId, title: 'Note 1' };
 
-    prismaMock.note.findFirst.mockResolvedValue(note);
+    prismaMock.note.findFirst.mockResolvedValue(note as Note);
 
     const result = await getNote(noteId);
 
@@ -124,7 +125,7 @@ describe('Note Actions', () => {
     const filepath = 'path/to/image';
 
     mocks.saveBase64File.mockReturnValue(filepath);
-    prismaMock.note.update.mockResolvedValue({} as any);
+    prismaMock.note.update.mockResolvedValue({} as Note);
 
     const result = await saveImage(noteId, imageBase64);
 
@@ -141,7 +142,7 @@ describe('Note Actions', () => {
     const filePath = 'path/to/image';
 
     mocks.removeFile.mockReturnValue(true);
-    prismaMock.note.update.mockResolvedValue({} as any);
+    prismaMock.note.update.mockResolvedValue({} as Note);
 
     await deleteImage(noteId, filePath);
 

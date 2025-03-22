@@ -21,7 +21,7 @@ export default function Backup({ profile }: BackupType) {
           <h3 className="card-title">Backup</h3>
           <div className="text-secondary">
             Save or export all your data in a JSON file, depending of your data
-            it may take a while, please don't refresh in this page until save
+            it may take a while, please don&apos;t refresh in this page until save
             file dialog appears.
           </div>
           {!state?.success && state?.message && (

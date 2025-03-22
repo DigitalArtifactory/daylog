@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useActionState, useEffect } from 'react';
 import { signin } from '../lib/actions';
 
@@ -17,11 +18,11 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
       <div className="container container-tight py-4">
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
-            <img
+            <Image
               src="/daylog.svg"
               width="220"
               height="64"
-              alt={process.env.NEXT_PUBLIC_APP_NAME}
+              alt="daylog"
               className="navbar-brand-image"
             />
           </a>
@@ -137,7 +138,7 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
         </div>
         {allowReg && (
           <div className="text-center text-secondary mt-3">
-            Don't have account yet?{' '}
+            Don&apos;t have account yet?{' '}
             <a href="./register" tabIndex={-1}>
               Sign up
             </a>

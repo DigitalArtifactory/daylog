@@ -6,7 +6,10 @@ import { useEffect, useRef, useState } from 'react';
 
 declare global {
   interface Window {
+    // this line works but linter does not like it...
+    /* eslint-disable */
     bootstrap: any;
+    /* eslint-enable */
   }
 }
 
@@ -18,7 +21,7 @@ export default function NavSearch() {
 
   useEffect(() => {
     if (modalRef) {
-      modalRef.current?.addEventListener('shown.bs.modal', (event) => {
+      modalRef.current?.addEventListener('shown.bs.modal', () => {
         searchInput.current?.focus();
       });
     }
@@ -31,7 +34,7 @@ export default function NavSearch() {
           type="text"
           className="form-control form-control-rounded"
           placeholder="Search…"
-          onClick={(e) => {
+          onClick={() => {
             new window.bootstrap.Modal(modalRef.current).show();
           }}
         />

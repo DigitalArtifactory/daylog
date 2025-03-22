@@ -15,8 +15,8 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
       <div className="card">
         <div className="card-body">
           <h3 className="card-title">Profile Information</h3>
-          <div className="text-secondary">
-            Update your account's profile information and email address.
+          <div className="textsecondary">
+            Update your account&apos;s profile information and email address.
           </div>
           <div className="d-flex align-items-center pt-4 mt-auto">
             <div className="w-full row">

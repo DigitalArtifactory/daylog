@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useActionState } from 'react';
 import { signup } from '../lib/actions';
 
@@ -11,7 +12,7 @@ export default function RegisterForm() {
       <div className="container container-tight py-4">
         <div className="text-center mb-4">
           <a href="." className="navbar-brand navbar-brand-autodark">
-            <img
+            <Image
               src="/daylog.svg"
               width="110"
               height="32"
@@ -49,7 +50,9 @@ export default function RegisterForm() {
         )}
         <form autoComplete="off" className="card card-md" action={action}>
           <div className="card-body">
-            <h2 className="card-title text-center mb-4">Account registration</h2>
+            <h2 className="card-title text-center mb-4">
+              Account registration
+            </h2>
             <div className="mb-3">
               <label className="form-label" htmlFor="name">
                 Name

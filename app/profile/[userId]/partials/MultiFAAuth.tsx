@@ -219,15 +219,11 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
   useEffect(() => {
     if (url === '') {
       const secret = generateTOTPSecret();
-      const url = generateTOTPUrl(
-        secret,
-        profile.email,
-        'daylog'
-      );
+      const url = generateTOTPUrl(secret, profile.email, 'daylog');
       setUrl(url);
       setSecret(secret);
     }
-  }, [url]);
+  }, [url, profile.email]);
 
   return (
     <div className="card-body">

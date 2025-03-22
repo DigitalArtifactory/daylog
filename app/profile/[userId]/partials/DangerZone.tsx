@@ -82,7 +82,7 @@ export default function DangerZone({ profile }: BackupType) {
                   </svg>
                   <h3>Are you sure?</h3>
                   <div className="text-secondary">
-                    Do you really want to delete your account? What you've done
+                    Do you really want to delete your account? What you&apos;ve done
                     cannot be undone.
                   </div>
                   {!state?.success && state?.message && (

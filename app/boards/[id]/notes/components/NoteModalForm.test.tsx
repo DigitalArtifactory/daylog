@@ -1,3 +1,4 @@
+import { Note } from '@prisma/client';
 import {
   cleanup,
   fireEvent,
@@ -50,7 +51,7 @@ describe('NoteModalForm', () => {
   });
 
   it('renders update note form', () => {
-    const note = {
+    const note: Partial<Note> = {
       id: 1,
       title: 'Test Note',
       content: 'Test Content',
@@ -61,7 +62,7 @@ describe('NoteModalForm', () => {
         boardId={1}
         modalId="testModal"
         mode="update"
-        note={note as any}
+        note={note as Note}
       />
     );
 
@@ -96,7 +97,7 @@ describe('NoteModalForm', () => {
   });
 
   it('submits update note form', async () => {
-    const note = {
+    const note: Partial<Note> = {
       id: 1,
       title: 'Test Note',
       content: 'Test Content',
@@ -108,7 +109,7 @@ describe('NoteModalForm', () => {
         boardId={1}
         modalId="testModal"
         mode="update"
-        note={note as any}
+        note={note as Note}
       />
     );
 
@@ -135,7 +136,7 @@ describe('NoteModalForm', () => {
       callback('resizedDataUrl');
     });
 
-    const note = {
+    const note: Partial<Note> = {
       id: 1,
       title: 'Test Note',
       content: 'Test Content',
@@ -147,7 +148,7 @@ describe('NoteModalForm', () => {
         boardId={1}
         modalId="testModal"
         mode="update"
-        note={note as any}
+        note={note as Note}
       />
     );
 
@@ -170,7 +171,7 @@ describe('NoteModalForm', () => {
   });
 
   it('handles image removal', async () => {
-    const note = {
+    const note: Partial<Note> = {
       id: 1,
       title: 'Test Note',
       content: 'Test Content',
@@ -182,7 +183,7 @@ describe('NoteModalForm', () => {
         boardId={1}
         modalId="testModal"
         mode="update"
-        note={note as any}
+        note={note as Note}
       />
     );
 

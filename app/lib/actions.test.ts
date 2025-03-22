@@ -1,4 +1,5 @@
 import { prismaMock } from '@/prisma/singleton';
+import { Board, Note } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { describe, expect, it, vi } from 'vitest';
 import { deleteSessionTokenCookie } from '../login/lib/cookies';
@@ -27,17 +28,17 @@ describe('search', () => {
   });
 
   it('should return search results for boards and notes', async () => {
-    const mockBoards = [
+    const mockBoards: Partial<Board>[] = [
       { id: 1, title: 'Board 1' },
       { id: 2, title: 'Board 2' },
     ];
-    const mockNotes = [
+    const mockNotes: Partial<Note>[] = [
       { id: 1, title: 'Note 1', boardsId: 1 },
       { id: 2, title: 'Note 2', boardsId: 2 },
     ];
 
-    prismaMock.board.findMany.mockResolvedValue(mockBoards as any);
-    prismaMock.note.findMany.mockResolvedValue(mockNotes as any);
+    prismaMock.board.findMany.mockResolvedValue(mockBoards as Board[]);
+    prismaMock.note.findMany.mockResolvedValue(mockNotes as Note[]);
 
     const results: SearchResult[] = await search('Note');
 

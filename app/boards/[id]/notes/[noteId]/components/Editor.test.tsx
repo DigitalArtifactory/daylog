@@ -53,7 +53,7 @@ describe('Editor', () => {
   });
 
   it('displays saving indicator when content is being saved', async () => {
-    const onUpdate = vi.fn((content, callback) => {
+    const onUpdate = vi.fn(() => {
       // Never calls the callback for testing loading...
     });
     mocks.getNote.mockResolvedValueOnce(mockNote);

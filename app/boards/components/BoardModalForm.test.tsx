@@ -1,3 +1,4 @@
+import { Board } from '@prisma/client';
 import {
   cleanup,
   fireEvent,
@@ -50,14 +51,14 @@ describe('BoardModalForm', () => {
   });
 
   it('renders update board form', () => {
-    const board = {
+    const board : Partial<Board> = {
       id: 1,
       title: 'Test Board',
       description: 'Test Description',
       imageUrl: 'test.jpg',
     };
     render(
-      <BoardModalForm modalId="testModal" mode="update" board={board as any} />
+      <BoardModalForm modalId="testModal" mode="update" board={board as Board} />
     );
 
     expect(screen.getByText('Update board')).toBeInTheDocument();
@@ -89,7 +90,7 @@ describe('BoardModalForm', () => {
   });
 
   it('submits update board form', async () => {
-    const board = {
+    const board : Partial<Board> = {
       id: 1,
       title: 'Test Board',
       description: 'Test Description',
@@ -97,7 +98,7 @@ describe('BoardModalForm', () => {
     };
 
     render(
-      <BoardModalForm modalId="testModal" mode="update" board={board as any} />
+      <BoardModalForm modalId="testModal" mode="update" board={board as Board} />
     );
 
     fireEvent.change(screen.getByPlaceholderText('Your board title'), {
@@ -123,7 +124,7 @@ describe('BoardModalForm', () => {
       callback('resizedDataUrl');
     });
 
-    const board = {
+    const board : Partial<Board> = {
       id: 1,
       title: 'Test Board',
       description: 'Test Description',
@@ -131,7 +132,7 @@ describe('BoardModalForm', () => {
     };
 
     render(
-      <BoardModalForm modalId="testModal" mode="update" board={board as any} />
+      <BoardModalForm modalId="testModal" mode="update" board={board as Board} />
     );
 
     const file = new File(['dummy content'], 'example.png', {
@@ -153,7 +154,7 @@ describe('BoardModalForm', () => {
   });
 
   it('handles image removal', async () => {
-    const board = {
+    const board : Partial<Board> = {
       id: 1,
       title: 'Test Board',
       description: 'Test Description',
@@ -161,7 +162,7 @@ describe('BoardModalForm', () => {
     };
 
     render(
-      <BoardModalForm modalId="testModal" mode="update" board={board as any} />
+      <BoardModalForm modalId="testModal" mode="update" board={board as Board} />
     );
 
     fireEvent.click(screen.getByText('Remove image'));

@@ -4,6 +4,7 @@ import Loader from '@/components/Loader';
 import { stringToColor } from '@/utils/color';
 import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import NoteCardPlaceholderSimple from '../boards/[id]/notes/components/NotePlaceholderSimple';
@@ -37,7 +38,7 @@ export default function HomeTabs() {
     };
     loadBoards();
     setIsClient(true);
-  }, []);
+  }, [boards]);
 
   const getBoardNotes = async (boardId: number) => {
     setLoadingNotes(true);
@@ -68,7 +69,7 @@ export default function HomeTabs() {
         <path d="M15 10l.01 0" />
         <path d="M9.5 16a10 10 0 0 1 6 -1.5" />
       </svg>
-      <div className="text-secondary">You don't have boards yet...</div>
+      <div className="text-secondary">You don&apos;t have boards yet...</div>
       <Link href={'/boards'}>Go to your boards and create one.</Link>
     </div>
   ) : (
@@ -152,7 +153,7 @@ export default function HomeTabs() {
                   </>
                 ) : notes && notes.length > 0 ? (
                   notes.map(
-                    (note, i) =>
+                    (note) =>
                       note.boardsId === board.id && (
                         <div className="col-md-3" key={note.id}>
                           <div className="card mb-2">
@@ -161,11 +162,12 @@ export default function HomeTabs() {
                                 href={`/boards/${note.id}/notes/${note.id}`}
                                 className="stretched-link text-secondary"
                               >
-                                <img
+                                <Image
+                                  width={240}
+                                  height={120}
                                   src={`/api/v1/images?filePath=${note.imageUrl}`}
                                   className="card-img-top"
                                   style={{
-                                    maxHeight: 120,
                                     objectFit: 'cover',
                                     objectPosition: 'top',
                                   }}
@@ -217,7 +219,7 @@ function EmptyNotes(boardId: number) {
         <path d="M15 9l.01 0" />
         <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
       </svg>
-      <div className="text-secondary">You don't have notes yet...</div>
+      <div className="text-secondary">You don&apos;t have notes yet...</div>
       <Link href={`/boards/${boardId}/notes`}>
         Go to this board and create one.
       </Link>

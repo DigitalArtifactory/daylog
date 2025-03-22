@@ -6,11 +6,12 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
 import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
 
-export default async function Note({
+export default async function NotePage({
   params,
 }: {
   params: Promise<{ noteId: string }>;
@@ -37,7 +38,7 @@ export default async function Note({
                 <div className="card">
                   {note?.imageUrl && (
                     <div className="card-body p-0 shadow-sm">
-                      <img
+                      <Image
                         className="card-img-top"
                         style={{
                           objectFit: 'cover',

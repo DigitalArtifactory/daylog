@@ -1,3 +1,4 @@
+import { Note } from '@prisma/client';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { updateNote } from '../../lib/actions';
@@ -32,19 +33,19 @@ describe('NoteEditorClientWrapper', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     boardsId: 1,
-  } as any;
+  } as Partial<Note>;
 
   beforeEach(() => {
     cleanup();
   });
 
   it('renders the Editor component', () => {
-    render(<NoteEditorClientWrapper note={note} />);
+    render(<NoteEditorClientWrapper note={note as Note} />);
     expect(screen.getByTestId('editor')).toBeInTheDocument();
   });
 
   it('calls updateNoteHandler after debounce', async () => {
-    render(<NoteEditorClientWrapper note={note} />);
+    render(<NoteEditorClientWrapper note={note as Note} />);
     const editor = screen.getByTestId('editor');
 
     fireEvent.change(editor, { target: { value: 'Updated content' } });
@@ -59,7 +60,7 @@ describe('NoteEditorClientWrapper', () => {
   });
 
   it('clears previous debounce timer', async () => {
-    render(<NoteEditorClientWrapper note={note} />);
+    render(<NoteEditorClientWrapper note={note as Note} />);
     const editor = screen.getByTestId('editor');
 
     fireEvent.change(editor, { target: { value: 'First update' } });

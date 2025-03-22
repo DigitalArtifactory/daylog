@@ -2,6 +2,7 @@
 
 import { resizeImage } from '@/utils/image';
 import { Note } from '@prisma/client';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -9,7 +10,7 @@ import { createNote, deleteImage, saveImage, updateNote } from '../lib/actions';
 
 type NoteModalFormType = {
   modalId: string;
-  boardId: number | null;
+  boardId: number;
   note?: Note | null;
   mode: 'update' | 'create';
 };
@@ -20,10 +21,6 @@ export default function NoteModalForm({
   note,
   mode,
 }: NoteModalFormType) {
-  if (!boardId) {
-    return <></>;
-  }
-
   const router = useRouter();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -35,16 +32,17 @@ export default function NoteModalForm({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Note>();
 
   const onSubmit: SubmitHandler<Note> = (data) => {
     setSubmiting(true);
     setTimeout(() => {
-      mode == 'create'
-        ? createNoteHandler(data, boardId)
-        : updateNoteHandler(data);
+      if (mode == 'create') {
+        createNoteHandler(data, boardId);
+      } else {
+        updateNoteHandler(data);
+      }
       setSubmiting(false);
       closeModal();
       formRef.current?.reset();
@@ -108,12 +106,13 @@ export default function NoteModalForm({
               <div className="mb-3">
                 {mode === 'update' && note?.id && note.imageUrl && (
                   <div className="mb-3">
-                    <div className="rounded overflow-hidden border border-secondary">
-                      <img
-                        className="w-100 img-fluid"
+                    <div className="rounded overflow-hidden border border-secondary w-100">
+                      <Image
+                        width="800"
+                        height="600"
                         alt={note?.title}
                         src={`/api/v1/images?filePath=${note.imageUrl}`}
-                      ></img>
+                      ></Image>
                     </div>
                     <button
                       className="btn btn-sm btn-link text-danger float-end mt-1"

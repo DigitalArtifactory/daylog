@@ -1,5 +1,6 @@
 import { signout } from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import NavThemeToggle from './NavThemeToggle';
@@ -15,7 +16,7 @@ export default async function NavHeader() {
       <div className="container-xl">
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
           <Link href="/">
-            <img
+            <Image
               src="/daylog.svg"
               width="110"
               height="32"

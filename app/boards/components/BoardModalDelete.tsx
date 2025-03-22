@@ -90,7 +90,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
               <h3>Are you sure?</h3>
               <div className="text-danger fw-bold">{board.title}</div>
               <div className="text-secondary">
-                Do you really want to remove this board? What you've done cannot
+                Do you really want to remove this board? What you&apos;ve done cannot
                 be undone.
               </div>
             </div>

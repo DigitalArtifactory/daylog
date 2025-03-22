@@ -51,6 +51,7 @@ export async function signup(state: FormState, formData: FormData) {
       success: true,
     };
   } catch (e) {
+    console.error(e)
     return {
       success: false,
       data: result.data,
