@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
 import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
 
-export default async function Home({
+export default async function Note({
   params,
 }: {
   params: Promise<{ noteId: string }>;
@@ -27,7 +27,7 @@ export default async function Home({
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader
-          preTitle={`Home > Notes > ${note?.title ?? 'Loading...'}`}
+          preTitle={`Home > Notes > ${note?.title}`}
           title={note?.title}
         ></PageHeader>
         <PageBody>
@@ -39,7 +39,11 @@ export default async function Home({
                     <div className="card-body p-0 shadow-sm">
                       <img
                         className="card-img-top"
-                        style={{ objectFit: 'cover', objectPosition: 'top', maxHeight: 420 }}
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'top',
+                          maxHeight: 420,
+                        }}
                         src={`/api/v1/images?filePath=${note.imageUrl}`}
                         alt="Book on the grass"
                       />

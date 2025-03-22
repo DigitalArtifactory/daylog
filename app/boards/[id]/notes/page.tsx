@@ -13,7 +13,7 @@ import NoteModalForm from './components/NoteModalForm';
 import NoteCardPlaceholder from './components/NotePlaceholder';
 import { getNotes } from './lib/actions';
 
-export default async function Home({
+export default async function Notes({
   params,
 }: {
   params: Promise<{ id: string }>;

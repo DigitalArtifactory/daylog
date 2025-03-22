@@ -1,4 +1,5 @@
 import TimeDiff from '@/components/TimeDiff';
+import { truncateWord } from '@/utils/text';
 import { getNote } from '../lib/actions';
 import NoteFavoriteButton from './NoteFavoriteButton';
 import NoteModalDelete from './NoteModalDelete';
@@ -16,7 +17,10 @@ export default async function NoteCard({ noteId }: NoteCardType) {
   return (
     <div className="card d-flex flex-column">
       {note.favorite && (
-        <div className="ribbon ribbon-top ribbon-bookmark bg-yellow">
+        <div
+          data-testid="favorite-ribbon"
+          className="ribbon ribbon-top ribbon-bookmark bg-yellow"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -42,13 +46,15 @@ export default async function NoteCard({ noteId }: NoteCardType) {
           <img
             style={{ objectFit: 'cover', objectPosition: 'top' }}
             src={`/api/v1/images?filePath=${note.imageUrl}`}
-            alt="Book on the grass"
+            alt={`Image of ${note.title}`}
           />
         </a>
       )}
       <div className="card-body d-flex flex-column">
         <h3 className="card-title">
-          <a href={`/boards/${note.boardsId}/notes/${note.id}`}>{note.title}</a>
+          <a href={`/boards/${note.boardsId}/notes/${note.id}`}>
+            {truncateWord(note.title, 35)}
+          </a>
         </h3>
         <div className="text-secondary line-clamp-2">{note.content}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">

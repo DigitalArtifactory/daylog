@@ -144,8 +144,11 @@ export default function NoteModalForm({
                     </button>
                   </div>
                 )}
-                <label className="form-label">Image</label>
+                <label htmlFor="image" className="form-label">
+                  Image
+                </label>
                 <input
+                  id="image"
                   type="file"
                   className="form-control"
                   name="image"
