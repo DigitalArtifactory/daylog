@@ -137,7 +137,7 @@ Your daylog application should now be running locally at `http://localhost:3000`
 
 To run tests for the daylog application, use the following command:
 ```bash
-npm test
+npm run test
 ```
 
 This will execute the test suite and provide feedback on the application's functionality.
