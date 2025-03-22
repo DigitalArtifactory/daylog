@@ -91,7 +91,7 @@ export default async function NoteCard({ noteId }: NoteCardType) {
             </a>
             <NoteModalForm
               note={note}
-              boardId={note?.boardsId}
+              boardId={note.boardsId!}
               modalId={`edit-board-modal-${note.id}}`}
               mode="update"
             ></NoteModalForm>
