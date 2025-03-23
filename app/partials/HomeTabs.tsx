@@ -88,7 +88,7 @@ export default function HomeTabs() {
               style={
                 board.imageUrl
                   ? {
-                      backgroundSize: '180px',
+                      backgroundSize: '220px',
                       backgroundPosition: 'top',
                       backgroundRepeat: 'no-repeat',
                       backgroundImage: `${
@@ -163,8 +163,8 @@ export default function HomeTabs() {
                                 className="stretched-link text-secondary"
                               >
                                 <Image
-                                  width={240}
-                                  height={120}
+                                  width={320}
+                                  height={180}
                                   src={`/api/v1/images?filePath=${note.imageUrl}`}
                                   className="card-img-top"
                                   style={{
