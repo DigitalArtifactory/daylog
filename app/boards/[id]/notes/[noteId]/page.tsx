@@ -39,6 +39,8 @@ export default async function NotePage({
                   {note?.imageUrl && (
                     <div className="card-body p-0 shadow-sm">
                       <Image
+                        width={800}
+                        height={600}
                         className="card-img-top"
                         style={{
                           objectFit: 'cover',

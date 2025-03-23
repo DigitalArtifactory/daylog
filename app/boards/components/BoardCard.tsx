@@ -49,8 +49,9 @@ export default async function BoardCard({ boardId }: BoardCardType) {
       {board?.imageUrl ? (
         <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <Image
+            width={800}
+            height={600}
             style={{ objectFit: 'cover', objectPosition: 'top' }}
-            fill={true}
             className="w-100 img-fluid"
             src={`/api/v1/images?filePath=${board.imageUrl}`}
             alt={`Image of ${board.title}`}
