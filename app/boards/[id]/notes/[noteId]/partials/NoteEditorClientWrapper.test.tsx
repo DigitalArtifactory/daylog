@@ -54,7 +54,6 @@ describe('NoteEditorClientWrapper', () => {
     const editor = screen.getByTestId('editor');
 
     fireEvent.change(editor, { target: { value: 'Updated content' } });
-
     // skip 1s debounce time
     vi.advanceTimersByTime(1000);
 

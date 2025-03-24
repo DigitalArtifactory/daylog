@@ -1,3 +1,5 @@
+import '@/utils/test/commonMocks';
+
 import Home from '@/app/page';
 import { render, screen } from '@testing-library/react';
 import { redirect } from 'next/navigation';
@@ -6,20 +8,13 @@ import { getCurrentSession } from './login/lib/actions';
 
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
-  redirect: vi.fn(),
 }));
 
 vi.mock('./login/lib/actions', () => ({
   getCurrentSession: mocks.getCurrentSession,
 }));
 
-vi.mock('next/navigation', () => ({
-  redirect: mocks.redirect,
-}));
-
-vi.mock('../components/Page', () => ({
-  default: vi.fn(() => <div>Page</div>),
-}));
+vi.mock('./partials/HomeTabs');
 
 describe('Home Page', () => {
   it('redirects to login if user is not authenticated', async () => {
@@ -55,6 +50,6 @@ describe('Home Page', () => {
     render(await Home());
 
     expect(redirect).not.toHaveBeenCalledWith('/login');
-    expect(screen.getByText('Page')).toBeDefined();
+    expect(screen.getByText('Home')).toBeDefined();
   });
 });
