@@ -2,7 +2,7 @@
 
 ![daylog_portrait](resources/readme_portrait.jpg)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DavidArtifacts_daylog&metric=alert_status&token=1529b8fe211c12502aa1526794318552b6acaaf8)](https://sonarcloud.io/summary/new_code?id=DavidArtifacts_daylog)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DavidArtifacts_daylog&metric=alert_status&token=454f2e190f81f0af13315e8abff724843c1e5665)](https://sonarcloud.io/summary/new_code?id=DavidArtifacts_daylog)
 
 ✨ A board based note taking and markdown editor web app.
 
