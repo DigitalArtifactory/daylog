@@ -40,16 +40,16 @@ export default function BoardModalForm({
 
   const onSubmit: SubmitHandler<Board> = (data) => {
     setSubmiting(true);
-    setTimeout(() => {
-      if (mode === 'create') {
-        createBoardHandler(data);
-      } else {
-        updateBoardHandler(data);
-      }
-      setSubmiting(false);
-      closeModal();
-      formRef.current?.reset();
-    }, 500);
+
+    if (mode === 'create') {
+      createBoardHandler(data);
+    } else {
+      updateBoardHandler(data);
+    }
+    
+    setSubmiting(false);
+    closeModal();
+    formRef.current?.reset();
   };
 
   async function uploadImage(boardId: number | null) {

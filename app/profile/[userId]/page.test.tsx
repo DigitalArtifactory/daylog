@@ -1,3 +1,5 @@
+import '@/utils/test/commonMocks';
+
 import { cleanup, render, screen } from '@testing-library/react';
 import { redirect } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -7,10 +9,9 @@ const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
   getProfile: vi.fn(),
   loadSettings: vi.fn(),
-  redirect: vi.fn(),
 }));
 
-vi.mock('../../login/lib/actions', () => ({
+vi.mock('@/app/login/lib/actions', () => ({
   getCurrentSession: mocks.getCurrentSession,
 }));
 
@@ -19,42 +20,11 @@ vi.mock('./lib/actions', () => ({
   loadSettings: mocks.loadSettings,
 }));
 
-vi.mock('next/navigation', () => ({
-  redirect: mocks.redirect,
-}));
-
-vi.mock('@/components/Page', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/PageContainer', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/PageHeader', () => ({
-  default: vi.fn(({ preTitle, title }: { preTitle: string; title: string }) => (
-    <div>
-      <div>{preTitle}</div>
-      <div>{title}</div>
-    </div>
-  )),
-}));
-
-vi.mock('@/components/PageBody', () => ({
-  default: vi.fn(),
-}));
-
-vi.mock('@/components/NavHeader', () => ({
-  default: vi.fn(() => <div>NavHeader</div>),
-}));
-
-vi.mock('@/components/NavMenu', () => ({
-  default: vi.fn(() => <div>NavMenu</div>),
-}));
+vi.mock('./partials/DangerZone');
+vi.mock('./partials/MultiFAAuth');
+vi.mock('./partials/ProfileInfo');
+vi.mock('./partials/UpdatePass');
+vi.mock('./partials/Backup');
 
 describe('Profile Page', () => {
   const mockParams = { userId: '1' };

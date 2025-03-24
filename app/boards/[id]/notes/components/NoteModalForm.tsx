@@ -37,16 +37,16 @@ export default function NoteModalForm({
 
   const onSubmit: SubmitHandler<Note> = (data) => {
     setSubmiting(true);
-    setTimeout(() => {
-      if (mode == 'create') {
-        createNoteHandler(data, boardId);
-      } else {
-        updateNoteHandler(data);
-      }
-      setSubmiting(false);
-      closeModal();
-      formRef.current?.reset();
-    }, 500);
+
+    if (mode == 'create') {
+      createNoteHandler(data, boardId);
+    } else {
+      updateNoteHandler(data);
+    }
+    
+    setSubmiting(false);
+    closeModal();
+    formRef.current?.reset();
   };
 
   async function uploadImage(noteId: number | null) {

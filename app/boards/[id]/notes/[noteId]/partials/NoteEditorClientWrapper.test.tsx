@@ -1,6 +1,6 @@
 import { Note } from '@prisma/client';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { updateNote } from '../../lib/actions';
 import NoteEditorClientWrapper from './NoteEditorClientWrapper';
 
@@ -37,6 +37,11 @@ describe('NoteEditorClientWrapper', () => {
 
   beforeEach(() => {
     cleanup();
+    vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('renders the Editor component', () => {
@@ -50,8 +55,8 @@ describe('NoteEditorClientWrapper', () => {
 
     fireEvent.change(editor, { target: { value: 'Updated content' } });
 
-    // Wait for debounce
-    await new Promise((r) => setTimeout(r, 1100));
+    // skip 1s debounce time
+    vi.advanceTimersByTime(1000);
 
     expect(updateNote).toHaveBeenCalledWith({
       ...note,
@@ -64,10 +69,12 @@ describe('NoteEditorClientWrapper', () => {
     const editor = screen.getByTestId('editor');
 
     fireEvent.change(editor, { target: { value: 'First update' } });
-    fireEvent.change(editor, { target: { value: 'Second update' } });
+    // skip 1s debounce time
+    vi.advanceTimersByTime(1000);
 
-    // Wait for debounce
-    await new Promise((r) => setTimeout(r, 1100));
+    fireEvent.change(editor, { target: { value: 'Second update' } });
+    // skip 1s debounce time
+    vi.advanceTimersByTime(1000);
 
     expect(updateNote).toHaveBeenCalledWith({
       ...note,

@@ -1,3 +1,5 @@
+import '@/utils/test/commonMocks';
+
 import { cleanup, render, screen } from '@testing-library/react';
 import { redirect } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -16,40 +18,10 @@ vi.mock('./lib/actions', () => ({
   getNotes: mocks.getNotes,
 }));
 
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}));
-
-vi.mock('@/components/Page', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/PageHeader', () => ({
-  default: vi.fn(({ preTitle, title }: { preTitle: string; title: string }) => (
-    <div>
-      <div>{preTitle}</div>
-      <div>{title}</div>
-    </div>
-  )),
-}));
-
-vi.mock('@/components/PageBody', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/PageContainer', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/NavHeader');
-vi.mock('@/components/NavMenu');
 vi.mock('./components/NoteModalForm');
+vi.mock('./components/NoteCard', () => ({
+  default: vi.fn(({ noteId }: { noteId: number }) => <div>Note {noteId}</div>),
+}));
 
 describe('Home Page', () => {
   beforeEach(() => {
@@ -69,11 +41,11 @@ describe('Home Page', () => {
     mocks.getCurrentSession.mockResolvedValue({
       user: { id: 1, name: 'Test User' },
     });
-    mocks.getNotes.mockResolvedValue([{ id: 1, title: 'Test Note' }]);
+    mocks.getNotes.mockResolvedValue([{ id: 1 }]);
 
     render(await Notes({ params: Promise.resolve({ id: '1' }) }));
 
-    expect(screen.getByText('Notes')).toBeInTheDocument();
+    expect(screen.getByText('Note 1')).toBeInTheDocument();
   });
 
   it('should show empty notes message if no notes are available', async () => {

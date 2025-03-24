@@ -1,4 +1,7 @@
+import '@/utils/test/commonMocks';
+
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { redirect } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { BoardCardType } from './components/BoardCard';
 import Boards from './page';
@@ -6,7 +9,6 @@ import Boards from './page';
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
   getBoards: vi.fn(),
-  redirect: vi.fn(),
 }));
 
 vi.mock('../login/lib/actions', () => ({
@@ -16,50 +18,6 @@ vi.mock('../login/lib/actions', () => ({
 vi.mock('./lib/actions', () => ({
   getBoards: mocks.getBoards,
 }));
-
-vi.mock('next/navigation', () => ({
-  redirect: mocks.redirect,
-}));
-
-vi.mock('@/components/Page', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/PageContainer', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('@/components/NavHeader');
-vi.mock('@/components/NavMenu');
-
-vi.mock('@/components/PageHeader', () => ({
-  default: vi.fn(({ preTitle, title }: { preTitle: string; title: string }) => (
-    <div>
-      <div>{preTitle}</div>
-      <div>{title}</div>
-    </div>
-  )),
-}));
-
-vi.mock('@/components/PageBody', () => ({
-  default: vi.fn(({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  )),
-}));
-
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('react')>();
-  return {
-    ...actual,
-    Suspense: vi.fn(({ children }: { children: React.ReactNode }) => (
-      <div>{children}</div>
-    )),
-  };
-});
 
 vi.mock('@/app/boards/components/BoardCard', () => ({
   default: vi.fn(({ boardId }: BoardCardType) => (
@@ -76,7 +34,7 @@ describe('Boards Page', () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
     render(await Boards());
 
-    expect(mocks.redirect).toHaveBeenCalledWith('/login');
+    expect(redirect).toHaveBeenCalledWith('/login');
   });
 
   it('renders boards if user is authenticated', async () => {
