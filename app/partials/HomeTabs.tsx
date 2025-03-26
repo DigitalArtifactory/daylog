@@ -26,19 +26,17 @@ export default function HomeTabs() {
 
   useEffect(() => {
     const loadBoards = async () => {
-      if (boards == null || boards.length === 0) {
-        const result = await getBoards();
-        setBoards(result);
-        setLoading(false);
+      const result = await getBoards();
+      setBoards(result);
+      setLoading(false);
 
-        if (result != null && result.length > 0) {
-          getBoardNotes(result[0].id);
-        }
+      if (result != null && result.length > 0) {
+        getBoardNotes(result[0].id);
       }
     };
     loadBoards();
     setIsClient(true);
-  }, [boards]);
+  }, []);
 
   const getBoardNotes = async (boardId: number) => {
     setLoadingNotes(true);
