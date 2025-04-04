@@ -1,3 +1,5 @@
+import getVersion from '@/app/lib/version';
+
 export default function PageFooterSponsor() {
   return (
     <footer className="footer footer-transparent d-print-none">
@@ -93,7 +95,7 @@ export default function PageFooterSponsor() {
                   className="link-secondary"
                   rel="noopener"
                 >
-                  v1.0.0-beta1
+                  {getVersion()}
                 </a>
               </li>
             </ul>
