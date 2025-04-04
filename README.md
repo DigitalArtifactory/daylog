@@ -21,7 +21,7 @@ To install and run daylog in a production environment, follow these steps:
 
 1. **Clone the repository:**
   ```bash
-  git clone https://github.com/DavidArtifacts/daylog.git
+  git clone https://github.com/DigitalArtifactory/daylog.git
   cd daylog
   ```
 
@@ -159,7 +159,7 @@ Hi! I'm David, and I'm glad to have you in this repo. This is my first open-sour
 Feel free to use it as your personal note-taking app or share it with your friends, colleagues, and family. I’d truly appreciate any feedback to improve the code in this repo or any kind of collaboration.
 
 ### Donations
-Money is not the best reward—your time and collaboration are. However, if you'd like to support me (the author), you can make a donation to keep me motivated and hydrated (with some coffee, of course) at: 
+Money is not the best reward—your time and collaboration are. However, if you'd like to support me [(the author)](https://github.com/DavidArtifacts), you can make a donation to keep me motivated and hydrated (with some coffee, of course) at: 
 
 <a href="https://www.buymeacoffee.com/davidartifacts" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 30px !important;width: 109px !important;" ></a>
 
