@@ -48,10 +48,15 @@ export default async function Profile({
       <PageContainer>
         <PageHeader preTitle="Profile" title="User data"></PageHeader>
         <PageBody>
+          {user.role === 'admin' && user.id !== profile.id && (
+            <div className="alert alert-important alert-primary" role="alert">
+              You are impersonating this profile as an admin.
+            </div>
+          )}
           <ProfileInfo profile={profile} />
           <UpdatePass userId={user.id} profile={profile} />
           {settings?.mfa && <MultiFAAuth profile={profile}></MultiFAAuth>}
-          <Backup profile={profile} />
+          {user.id === profile.id && <Backup profile={profile} />}
           <DangerZone profile={profile}></DangerZone>
         </PageBody>
       </PageContainer>

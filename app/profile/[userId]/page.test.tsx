@@ -24,7 +24,9 @@ vi.mock('./partials/DangerZone');
 vi.mock('./partials/MultiFAAuth');
 vi.mock('./partials/ProfileInfo');
 vi.mock('./partials/UpdatePass');
-vi.mock('./partials/Backup');
+vi.mock('./partials/Backup', () => ({
+  default: () => <div>Backup</div>,
+}));
 
 describe('Profile Page', () => {
   const mockParams = { userId: '1' };
@@ -62,5 +64,35 @@ describe('Profile Page', () => {
 
     expect(screen.getByText('Profile')).toBeDefined();
     expect(screen.getByText('User data')).toBeDefined();
+  });
+
+  it('admin cannot be able to backup data of another user', async () => {
+    const mockProfile = { id: 2, name: 'Joane Doe' };
+    const mockSettings = { mfa: true };
+
+    mocks.getCurrentSession.mockResolvedValue({ user: { id: 1 } });
+    mocks.getProfile.mockResolvedValue(mockProfile);
+    mocks.loadSettings.mockResolvedValue(mockSettings);
+
+    render(await Profile({ params: Promise.resolve(mockParams) }));
+
+    expect(screen.queryByText('Backup')).not.toBeInTheDocument();
+  });
+
+  it('should render advice for impersonating a profile', async () => {
+    const mockProfile = { id: 2, name: 'Joane Doe' };
+    const mockSettings = { mfa: true };
+
+    mocks.getCurrentSession.mockResolvedValue({
+      user: { id: 1, role: 'admin' },
+    });
+    mocks.getProfile.mockResolvedValue(mockProfile);
+    mocks.loadSettings.mockResolvedValue(mockSettings);
+
+    render(await Profile({ params: Promise.resolve(mockParams) }));
+
+    expect(
+      screen.getByText('You are impersonating this profile as an admin.')
+    ).toBeDefined();
   });
 });
