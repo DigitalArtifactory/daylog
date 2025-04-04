@@ -7,7 +7,6 @@ import { Board, Note } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
-import NoteCardPlaceholderSimple from '../boards/[id]/notes/components/NotePlaceholderSimple';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 
@@ -138,17 +137,7 @@ export default function HomeTabs() {
             >
               <div className="row">
                 {loadingNotes ? (
-                  <>
-                    <div className="col-md-3">
-                      <NoteCardPlaceholderSimple />
-                    </div>
-                    <div className="col-md-3">
-                      <NoteCardPlaceholderSimple />
-                    </div>
-                    <div className="col-md-3">
-                      <NoteCardPlaceholderSimple />
-                    </div>
-                  </>
+                  <Loader caption="Loading notes..." />
                 ) : notes && notes.length > 0 ? (
                   notes.map(
                     (note) =>
