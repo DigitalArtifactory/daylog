@@ -16,7 +16,7 @@ export default function PageFooter() {
             <ul className="list-inline list-inline-dots mb-0">
               <li className="list-inline-item">
                 <a
-                  href="https://github.com/DavidArtifacts/daylog-next"
+                  href="https://github.com/DigitalArtifactory/daylog"
                   className="link-secondary"
                 >
                   daylog
@@ -24,7 +24,7 @@ export default function PageFooter() {
               </li>
               <li className="list-inline-item">
                 <a
-                  href="https://github.com/DavidArtifacts/daylog-next/releases"
+                  href="https://github.com/DigitalArtifactory/daylog/releases"
                   className="link-secondary"
                   rel="noopener"
                 >
