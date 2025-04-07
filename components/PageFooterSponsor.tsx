@@ -9,7 +9,7 @@ export default function PageFooterSponsor() {
             <ul className="list-inline list-inline-dots mb-0">
               <li className="list-inline-item">
                 <a
-                  href="https://github.com/DavidArtifacts/daylog-next"
+                  href="https://github.com/DigitalArtifactory/daylog"
                   target="_blank"
                   className="link-secondary"
                   rel="noopener"
@@ -34,7 +34,7 @@ export default function PageFooterSponsor() {
               </li>
               <li className="list-inline-item">
                 <a
-                  href="https://github.com/DavidArtifacts"
+                  href="https://buymeacoffee.com/davidartifacts"
                   target="_blank"
                   className="link-secondary"
                   rel="noopener"
