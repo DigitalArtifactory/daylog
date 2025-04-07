@@ -87,7 +87,7 @@ export default function RegisterForm() {
                 />
                 <span className="form-check-label">
                   Agree the{' '}
-                  <a href="register/terms" tabIndex={-1}>
+                  <a href="/register/terms" tabIndex={-1}>
                     terms and policy
                   </a>
                   .
