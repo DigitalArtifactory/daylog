@@ -135,7 +135,7 @@ export default function InitRegisterForm() {
             </div>
             <div className="mb-3">
               By register your first Admin user you are accepting the{' '}
-              <a href="register/terms" tabIndex={-1}>
+              <a href="/register/terms" tabIndex={-1}>
                 terms and policy
               </a>
               .
