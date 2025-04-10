@@ -91,7 +91,7 @@ export default function PageFooterSponsor() {
               </li>
               <li className="list-inline-item">
                 <a
-                  href="https://github.com/DavidArtifacts/daylog-next/releases"
+                  href="https://github.com/DigitalArtifactory/daylog/releases"
                   className="link-secondary"
                   rel="noopener"
                 >
