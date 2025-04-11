@@ -116,16 +116,10 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
                         send one to your e-mail.
                       </div>
                       <div className="m-3">
-                        <div className="input-group gap-3">
-                          <input
-                            name="password"
-                            type="hidden"
-                            value={password}
-                          />
-                          <OTPInputWrapper
-                            onChange={(value) => setPassword(value)}
-                          ></OTPInputWrapper>
-                        </div>
+                        <input name="password" type="hidden" value={password} />
+                        <OTPInputWrapper
+                          onChange={(value) => setPassword(value)}
+                        ></OTPInputWrapper>
                       </div>
                       {state?.errors?.password && (
                         <div className="invalid-feedback d-block" role="alert">
@@ -321,13 +315,11 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
                       password.
                     </div>
                     <div className="m-3">
-                      <div className="input-group gap-3">
-                        <input name="secret" type="hidden" value={secret} />
-                        <input name="password" type="hidden" value={password} />
-                        <OTPInputWrapper
-                          onChange={(value) => setPassword(value)}
-                        ></OTPInputWrapper>
-                      </div>
+                      <input name="secret" type="hidden" value={secret} />
+                      <input name="password" type="hidden" value={password} />
+                      <OTPInputWrapper
+                        onChange={(value) => setPassword(value)}
+                      ></OTPInputWrapper>
                     </div>
                     {state?.errors?.password && (
                       <div className="invalid-feedback d-block" role="alert">

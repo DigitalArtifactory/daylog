@@ -27,7 +27,11 @@ export default function OTPInputWrapper({ ...props }: OTPInputWrapperType) {
 
 const Slot = (props: SlotProps) => {
   return (
-    <div className="d-flex h-3 border py-3 w-4 justify-content-center align-items-center rounded">
+    <div
+      className={`d-flex h-3 border py-3 w-4 justify-content-center align-items-center rounded ${
+        props.isActive ? 'border-primary' : 'border-mute'
+      }`}
+    >
       {props.char !== null && <div>{props.char}</div>}
     </div>
   );
