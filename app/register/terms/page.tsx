@@ -37,9 +37,7 @@ export default function Page() {
             <a
               href="https://www.gnu.org/licenses/agpl-3.0.en.html"
               target="_blank"
-            >
-              GNU Affero General Public License v3 (AGPL-3.0)
-            </a>
+            >GNU Affero General Public License v3 (AGPL-3.0)</a>{' '}
             . You may use, modify, and share the platform in compliance with the
             terms of this license.
           </p>

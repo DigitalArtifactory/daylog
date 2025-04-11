@@ -13,12 +13,16 @@ const mocks = vi.hoisted(() => {
   return {
     signupInit: vi.fn(() => state),
     useActionState: vi.fn(() => [state, mocks.signupInit, false]),
+    useState: vi.fn(() => [false, vi.fn()])
   };
 });
 
 vi.mock('../lib/actions', () => ({ signupInit: mocks.signupInit }));
 
-vi.mock('react', () => ({ useActionState: mocks.useActionState }));
+vi.mock('react', async () => ({
+  useState: mocks.useState,
+  useActionState: mocks.useActionState,
+}));
 
 describe('InitRegisterForm', () => {
   beforeEach(() => {
