@@ -150,7 +150,7 @@ This project is provided "as is" without warranty of any kind, express or implie
 
 ### License
 
-This project is licensed under the AGPL-3.0 License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
 
 ### About The Author
