@@ -26,8 +26,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <body suppressHydrationWarning className={`${geistSans.className} ${geistMono.variable}`}>
+    <html lang="en">
+      <body className={`${geistSans.className} ${geistMono.variable}`}>
         <MainLayout>{children}</MainLayout>
         <script src="/js/tabler.1.0.0.min.js" defer></script>
       </body>
