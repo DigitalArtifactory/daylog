@@ -35,9 +35,11 @@ export default function Page() {
           <p>
             This platform is licensed under the{' '}
             <a
-              href="https://www.gnu.org/licenses/agpl-3.0.en.html"
+              href="https://www.apache.org/licenses/LICENSE-2.0"
               target="_blank"
-            >GNU Affero General Public License v3 (AGPL-3.0)</a>{' '}
+            >
+              Apache 2.0 License
+            </a>
             . You may use, modify, and share the platform in compliance with the
             terms of this license.
           </p>
@@ -61,22 +63,15 @@ export default function Page() {
             We may update these terms from time to time. Any changes will be
             communicated to you and will take effect immediately upon posting.
           </p>
-
-          <h2 className="h2">Contact</h2>
-          <p className="mb-4">
-            If you have any questions about these terms and conditions, please
-            contact us at{' '}
-            <a href="mailto:support@example.com">support@example.com</a>.
-          </p>
         </div>
         <div className="card-footer text-center">
           <p className="mb-0">
             Licensed under the{' '}
             <a
-              href="https://www.gnu.org/licenses/agpl-3.0.en.html"
+              href="https://www.apache.org/licenses/LICENSE-2.0"
               target="_blank"
             >
-              GNU Affero General Public License v3 (AGPL-3.0)
+              Apache 2.0 License
             </a>
           </p>
         </div>
