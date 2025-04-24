@@ -38,7 +38,12 @@ export default async function NotePage({
               <div className="col-lg-10 col-xl-9">
                 <div className="card">
                   {note?.imageUrl && (
-                    <div className="card-body p-0 shadow-sm">
+                    <div
+                      className="card-body p-0 shadow-sm"
+                      style={{
+                        maxHeight: 320,
+                      }}
+                    >
                       <Image
                         width={1920}
                         height={0}
@@ -47,7 +52,6 @@ export default async function NotePage({
                           objectFit: 'cover',
                           objectPosition: 'center',
                           width: 'auto',
-                          maxHeight: 1080,
                         }}
                         src={getImageUrlOrFile(note.imageUrl)}
                         alt={`Preview image of ${note.title}`}

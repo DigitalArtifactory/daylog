@@ -17,7 +17,7 @@ type UnsplashImage = {
   id: string;
   description: string | null;
   user: { name: string; username: string };
-  urls: { small: string; regular: string };
+  urls: { small: string; regular: string, thumb: string };
   links: { download: string };
 };
 
@@ -128,18 +128,18 @@ export default function UnsplashImagesDropdown({
                   checked={selection === image.id}
                   onChange={() => {
                     setSelection(image.id);
-                    setImageUrl(image.links.download);
-                    imageSelected(image.links.download);
+                    setImageUrl(image.urls.regular);
+                    imageSelected(image.urls.regular);
                   }}
                 />
                 <span className="form-imagecheck-figure h-100">
                   <Image
                     title={'Photo by ' + image.user.name + ' on Unsplash'}
-                    src={image.urls.small}
+                    src={image.urls.thumb}
                     alt={image.description || 'Unsplash image'}
                     width={150}
                     height={0}
-                    style={{ width: 'auto', height: '100px' }}
+                    style={{ width: 'auto', height: '100px', objectFit: 'cover' }}
                     className="form-imagecheck-image h-100"
                     priority
                   />
