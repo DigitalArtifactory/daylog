@@ -18,10 +18,12 @@ export default async function OTPLogin({
           <a href="." className="navbar-brand navbar-brand-autodark">
             <Image
               src="/daylog.svg"
-              width="220"
-              height="64"
+              width="0"
+              height="0"
               alt={'daylog'}
+              priority={true}
               className="navbar-brand-image"
+              style={{ width: 'auto', height: '48px' }}
             />
           </a>
         </div>

@@ -1,10 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export function saveBase64File(
-  base64String: string,
-  existentFileName?: string | null
-) {
+export function saveBase64File(base64String: string) {
   const folderPath = process.env.STORAGE_PATH ?? 'storage';
 
   if (!fs.existsSync(folderPath)) {
@@ -22,8 +19,7 @@ export function saveBase64File(
   const ext = matches[1].split('/')[1]; // Extract file extension
   const buffer = Buffer.from(matches[2], 'base64'); // Convert to buffer
   const fileName = generateRandomFilename(ext);
-  const filePath = existentFileName || path.join(folderPath, fileName);
-
+  const filePath = path.join(folderPath, fileName);
   fs.writeFileSync(filePath, buffer);
 
   return filePath;

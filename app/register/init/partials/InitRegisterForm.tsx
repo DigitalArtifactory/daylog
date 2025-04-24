@@ -15,10 +15,11 @@ export default function InitRegisterForm() {
           <a href="." className="navbar-brand navbar-brand-autodark">
             <Image
               src="/daylog.svg"
-              width="110"
-              height="32"
+              width="0"
+              height="0"
               alt={'daylog'}
               className="navbar-brand-image"
+              style={{ width: '110px', height: 'auto' }}
             />
           </a>
         </div>

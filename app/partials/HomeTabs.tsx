@@ -2,6 +2,7 @@
 
 import Loader from '@/components/Loader';
 import { stringToColor } from '@/utils/color';
+import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
 import { Board, Note } from '@prisma/client';
 import Image from 'next/image';
@@ -85,29 +86,33 @@ export default function HomeTabs() {
               style={
                 board.imageUrl
                   ? {
+                      minHeight: '90px',
+                      minWidth: '220px',
                       backgroundSize: '220px',
-                      backgroundPosition: 'top',
+                      backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
                       backgroundImage: `${
                         index === selectedIndex
                           ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
                           : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                      }, url(${`/api/v1/images?filePath=${encodeURI(
-                        board.imageUrl
-                      )}`})`,
+                      }, url(${getImageUrlOrFile(
+                        `${encodeURI(board.imageUrl)}`
+                      )})`,
                     }
                   : {
+                      minHeight: '90px',
+                      minWidth: '220px',
                       backgroundColor: setBackgroundImage(board.title),
                     }
               }
             >
               <Link
-                className={`nav-link justify-content-center px-5 py-3 ${
+                className={`nav-link justify-content-start align-items-start h-100 h3 ${
                   index === selectedIndex
                     ? 'active text-white border-white'
                     : 'text-light'
                 }`}
-                style={{ minWidth: '150px', textShadow: '1px 1px 3px black' }}
+                style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
                 id={`tab-${board.id}`}
                 data-bs-toggle="tab"
                 href={`#board-${board.id}`}
@@ -152,13 +157,14 @@ export default function HomeTabs() {
                                 <Image
                                   width={320}
                                   height={180}
-                                  src={`/api/v1/images?filePath=${note.imageUrl}`}
+                                  src={getImageUrlOrFile(note.imageUrl)}
                                   className="card-img-top"
                                   style={{
                                     objectFit: 'cover',
-                                    objectPosition: 'top',
+                                    objectPosition: 'center',
                                   }}
                                   alt={note.title}
+                                  priority={false}
                                 />
                               </Link>
                             )}

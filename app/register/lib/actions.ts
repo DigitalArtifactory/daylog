@@ -1,6 +1,6 @@
 'use server';
 
-import { loadSettings } from '@/app/admin/lib/actions';
+import { getSettings } from '@/app/admin/lib/actions';
 import { prisma } from '@/prisma/client';
 import { hashPassword } from '@/utils/crypto';
 import { redirect } from 'next/navigation';
@@ -61,7 +61,7 @@ export async function signup(state: FormState, formData: FormData) {
 }
 
 export async function validateAllowRegistration() {
-  const settings = await loadSettings();
+  const settings = await getSettings();
   const allowReg = settings?.allowReg ?? false;
   if (!allowReg) redirect('login');
 }

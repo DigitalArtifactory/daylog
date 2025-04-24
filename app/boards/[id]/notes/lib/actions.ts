@@ -3,7 +3,10 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { removeFile, saveBase64File } from '@/utils/storage';
+import { isBase64, isUrl } from '@/utils/text';
 import { Note, Prisma } from '@prisma/client';
+
+import fs from 'fs';
 
 export async function createNote(
   data: Prisma.NoteCreateInput,
@@ -60,18 +63,30 @@ export async function getNote(noteId: number): Promise<Note | null> {
 
 export async function saveImage(
   noteId: number,
-  imageBase64: string,
+  imageUrl: string,
   existentFileName?: string | null
 ): Promise<string | null> {
   try {
     const { user } = await getCurrentSession();
-    const filepath = saveBase64File(imageBase64, existentFileName);
+
+    if (!isBase64(imageUrl) && !isUrl(imageUrl)) {
+      throw new Error(
+        'Invalid image format. Must be a valid URL or Base64 string.'
+      );
+    }
+
+    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
+    if (existentFileName && fs.existsSync(existentFileName)) {
+      removeFile(existentFileName);
+    }
+    if (isBase64(imageUrl)) urlOrFilepath = saveBase64File(imageUrl);
+
     await prisma.note.update({
       where: { id: noteId, boards: { userId: user?.id } },
-      data: { imageUrl: filepath },
+      data: { imageUrl: urlOrFilepath },
     });
 
-    return imageBase64;
+    return imageUrl;
   } catch (e) {
     console.error(e);
     return null;

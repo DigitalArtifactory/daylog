@@ -6,6 +6,7 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { getImageUrlOrFile } from '@/utils/image';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
@@ -39,16 +40,18 @@ export default async function NotePage({
                   {note?.imageUrl && (
                     <div className="card-body p-0 shadow-sm">
                       <Image
-                        width={800}
-                        height={600}
+                        width={1920}
+                        height={0}
                         className="card-img-top"
                         style={{
                           objectFit: 'cover',
-                          objectPosition: 'top',
-                          maxHeight: 420,
+                          objectPosition: 'center',
+                          width: 'auto',
+                          maxHeight: 1080,
                         }}
-                        src={`/api/v1/images?filePath=${note.imageUrl}`}
-                        alt="Book on the grass"
+                        src={getImageUrlOrFile(note.imageUrl)}
+                        alt={`Preview image of ${note.title}`}
+                        priority={true}
                       />
                     </div>
                   )}

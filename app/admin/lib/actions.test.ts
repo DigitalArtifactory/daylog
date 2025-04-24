@@ -3,8 +3,8 @@ import { User } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   deleteUser,
+  getSettings,
   getUsers,
-  loadSettings,
   saveSettings,
   setAdmin,
 } from './actions';
@@ -55,14 +55,14 @@ describe('actions', () => {
       mocks.fs.existsSync.mockReturnValue(true);
       mocks.fs.readFileSync.mockReturnValue(JSON.stringify(mockSettings));
 
-      const settings = await loadSettings();
+      const settings = await getSettings();
       expect(settings).toEqual(mockSettings);
     });
 
     it('should return null if settings file does not exist', async () => {
       mocks.fs.existsSync.mockReturnValue(false);
 
-      const settings = await loadSettings();
+      const settings = await getSettings();
       expect(settings).toBeNull();
     });
   });

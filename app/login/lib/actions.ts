@@ -2,7 +2,7 @@
 
 import type { Session, User } from '@prisma/client';
 
-import { loadSettings } from '@/app/admin/lib/actions';
+import { getSettings } from '@/app/admin/lib/actions';
 import { prisma } from '@/prisma/client';
 import { encodeBase32, encodeHex, hashPassword } from '@/utils/crypto';
 import { validateTOTP } from '@/utils/totp';
@@ -116,7 +116,7 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
-    const settings = await loadSettings();
+    const settings = await getSettings();
     if (record.mfa && settings?.mfa) {
       goMFA = record.mfa;
       userId = record.id;

@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { saveSettings } from '../lib/actions';
-import SecurityTab from './SecurityTab';
+import PreferencesTab from './PreferencesTab';
 
 const mocks = vi.hoisted(() => ({
   loadSettings: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('../lib/actions', () => ({
   saveSettings: mocks.saveSettings,
 }));
 
-describe('SecurityTab', () => {
+describe('PreferencesTab', () => {
   beforeEach(() => {
     cleanup();
   });
@@ -22,24 +22,29 @@ describe('SecurityTab', () => {
     mocks.loadSettings.mockResolvedValue({
       mfa: true,
       allowReg: false,
+      allowUnsplash: false,
     });
 
-    render(<SecurityTab />);
+    render(<PreferencesTab />);
 
     expect(await screen.findByText('Security')).toBeInTheDocument();
     expect(
       screen.getByLabelText('Force users to configure 2FA Authentication')
     ).toBeChecked();
     expect(screen.getByLabelText('Allow users to Sign Up')).not.toBeChecked();
+    expect(
+      screen.getByLabelText('Allow users to use Unsplash images')
+    ).not.toBeChecked();
   });
 
   it('toggles MFA checkbox', async () => {
     mocks.loadSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
+      allowUnsplash: false,
     });
 
-    render(<SecurityTab />);
+    render(<PreferencesTab />);
 
     const mfaCheckbox = await screen.findByLabelText(
       'Force users to configure 2FA Authentication'
@@ -53,9 +58,10 @@ describe('SecurityTab', () => {
     mocks.loadSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
+      allowUnsplash: false,
     });
 
-    render(<SecurityTab />);
+    render(<PreferencesTab />);
 
     const allowRegCheckbox = await screen.findByLabelText(
       'Allow users to Sign Up'
@@ -65,13 +71,31 @@ describe('SecurityTab', () => {
     expect(allowRegCheckbox).toBeChecked();
   });
 
+  it('toggles Unsplash checkbox', async () => {
+    mocks.loadSettings.mockResolvedValue({
+      mfa: false,
+      allowReg: false,
+      allowUnsplash: false,
+    });
+
+    render(<PreferencesTab />);
+
+    const unsplashCheckbox = await screen.findByLabelText(
+      'Allow users to use Unsplash images'
+    );
+    fireEvent.click(unsplashCheckbox);
+
+    expect(unsplashCheckbox).toBeChecked();
+  });
+
   it('submits the form', async () => {
     mocks.loadSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
+      allowUnsplash: false,
     });
 
-    render(<SecurityTab />);
+    render(<PreferencesTab />);
 
     const saveButton = await screen.findByText('Save Settings');
     fireEvent.click(saveButton);

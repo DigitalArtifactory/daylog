@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { loadSettings } from '../admin/lib/actions';
+import { getSettings } from '../admin/lib/actions';
 import { validateAdminUserNotExists } from './lib/actions';
 import Page from './page';
 import LoginForm from './partials/LoginForm';
@@ -39,7 +39,7 @@ describe('Login Page', () => {
     render(await Page());
 
     expect(validateAdminUserNotExists).toHaveBeenCalled();
-    expect(loadSettings).toHaveBeenCalled();
+    expect(getSettings).toHaveBeenCalled();
     // Don't know why but it needs a second arg to be undefined...
     expect(LoginForm).toHaveBeenCalledWith({ allowReg: false }, undefined);
     expect(screen.getByText('LoginForm')).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe('Login Page', () => {
     render(await Page());
 
     expect(validateAdminUserNotExists).toHaveBeenCalled();
-    expect(loadSettings).toHaveBeenCalled();
+    expect(getSettings).toHaveBeenCalled();
     expect(LoginForm).toHaveBeenCalledWith({ allowReg: true }, undefined);
     expect(screen.getByText('LoginForm')).toBeInTheDocument();
   });

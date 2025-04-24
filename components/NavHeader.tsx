@@ -18,10 +18,12 @@ export default async function NavHeader() {
           <Link href="/">
             <Image
               src="/daylog.svg"
-              width="110"
-              height="32"
               alt="daylog"
+              width="0"
+              height="0"
               className="navbar-brand-image"
+              style={{ width: '110px', height: 'auto' }}
+              priority={true}
             />
           </Link>
         </h1>

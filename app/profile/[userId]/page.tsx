@@ -1,4 +1,4 @@
-import { loadSettings } from '@/app/admin/lib/actions';
+import { getSettings } from '@/app/admin/lib/actions';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -39,7 +39,7 @@ export default async function Profile({
     );
   }
 
-  const settings = await loadSettings();
+  const settings = await getSettings();
 
   return (
     <Page>
