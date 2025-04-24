@@ -84,18 +84,30 @@ describe('Board Actions', () => {
     });
   });
 
-  it('should save an image', async () => {
-    const imageBase64 = 'base64string';
+  it('should save an image from file', async () => {
+    const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA...';
     const filepath = 'path/to/image';
     mocks.saveBase64File.mockReturnValue(filepath);
     prismaMock.board.update.mockResolvedValue(board as Board);
 
     const result = await saveImage(board.id!, imageBase64);
     expect(result).toBe(imageBase64);
-    expect(mocks.saveBase64File).toHaveBeenCalledWith(imageBase64, undefined);
+    expect(mocks.saveBase64File).toHaveBeenCalledWith(imageBase64);
     expect(prismaMock.board.update).toHaveBeenCalledWith({
       where: { id: board.id, userId: user.id },
       data: { imageUrl: filepath },
+    });
+  });
+
+  it('should save an image from url', async () => {
+    const fileurl = 'http://example.com/image.jpg';
+    prismaMock.board.update.mockResolvedValue(board as Board);
+
+    const result = await saveImage(board.id!, fileurl);
+    expect(result).toBe(fileurl);
+    expect(prismaMock.board.update).toHaveBeenCalledWith({
+      where: { id: board.id, userId: user.id },
+      data: { imageUrl: fileurl },
     });
   });
 

@@ -14,7 +14,7 @@ import {
 } from './actions';
 
 const mocks = vi.hoisted(() => ({
-  loadSettings: vi.fn(),
+  getSettings: vi.fn(),
   encodeBase32: vi.fn().mockReturnValue('mocked-token'),
   encodeHex: vi.fn().mockReturnValue('mocked-session-id'),
   hashPassword: vi.fn().mockReturnValue('mocked-hash'),
@@ -34,7 +34,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('@/app/admin/lib/actions', () => ({
-  loadSettings: mocks.loadSettings,
+  getSettings: mocks.getSettings,
 }));
 
 vi.mock('@/utils/crypto', () => ({
@@ -189,7 +189,7 @@ describe('signin', () => {
       role: '',
       terms: ''
     });
-    mocks.loadSettings.mockResolvedValue({ mfa: true });
+    mocks.getSettings.mockResolvedValue({ mfa: true });
 
     const formData = mockFormData({
       email: 'test@example.com',
@@ -216,7 +216,7 @@ describe('signin', () => {
       role: '',
       terms: ''
     });
-    mocks.loadSettings.mockResolvedValue({ mfa: false });
+    mocks.getSettings.mockResolvedValue({ mfa: false });
 
     const formData = mockFormData({
       email: 'test@example.com',

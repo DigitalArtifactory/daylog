@@ -75,7 +75,7 @@ export default async function Notes({
               </div>
             ) : (
               notes?.map((b) => (
-                <div key={b.id} className="col-md-4 mb-3">
+                <div key={b.id} className="col-md-4 mb-3 h-100">
                   <Suspense fallback={<NoteCardPlaceholder />}>
                     <NoteCard noteId={b.id}></NoteCard>
                   </Suspense>

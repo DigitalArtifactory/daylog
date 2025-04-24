@@ -40,12 +40,12 @@ describe('BoardCard', () => {
     );
   });
 
-  it('displays the favorite ribbon if the board is marked as favorite', async () => {
+  it('displays the favorite icon filled if the board is marked as favorite', async () => {
     mocks.getBoard.mockResolvedValue(mockBoard);
 
     render(await BoardCard({ boardId: 1 }));
 
-    expect(screen.getByTestId('favorite-ribbon')).toBeInTheDocument();
+    expect(screen.getByTestId('filled-heart')).toBeInTheDocument();
   });
 
   it('displays the board image if imageUrl is provided', async () => {

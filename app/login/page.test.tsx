@@ -7,13 +7,13 @@ import LoginForm from './partials/LoginForm';
 
 const mocks = vi.hoisted(() => {
   return {
-    loadSettings: vi.fn(),
+    getSettings: vi.fn(),
     validateAdminUserNotExists: vi.fn(),
   };
 });
 
 vi.mock('../admin/lib/actions', () => ({
-  loadSettings: mocks.loadSettings,
+  getSettings: mocks.getSettings,
 }));
 
 vi.mock('./lib/actions', () => ({
@@ -34,7 +34,7 @@ describe('Login Page', () => {
   });
 
   it('should render LoginForm with allowReg as false when settings.allowReg is undefined', async () => {
-    mocks.loadSettings.mockResolvedValueOnce({});
+    mocks.getSettings.mockResolvedValueOnce({});
 
     render(await Page());
 
@@ -46,7 +46,7 @@ describe('Login Page', () => {
   });
 
   it('should render LoginForm with allowReg as true when settings.allowReg is true', async () => {
-    mocks.loadSettings.mockResolvedValueOnce({ allowReg: true });
+    mocks.getSettings.mockResolvedValueOnce({ allowReg: true });
 
     render(await Page());
 

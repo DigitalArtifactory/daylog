@@ -75,10 +75,11 @@ export async function saveImage(
       );
     }
 
-    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
     if (existentFileName && fs.existsSync(existentFileName)) {
       removeFile(existentFileName);
     }
+    
+    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
     if (isBase64(imageUrl)) urlOrFilepath = saveBase64File(imageUrl);
 
     await prisma.note.update({

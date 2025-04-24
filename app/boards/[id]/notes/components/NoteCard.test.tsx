@@ -39,12 +39,12 @@ describe('NoteCard', () => {
     expect((await screen.findAllByText('Test Note')).length).toBeGreaterThan(0);
   });
 
-  it('displays the favorite ribbon if the note is marked as favorite', async () => {
+  it('displays the favorite icon filled if the note is marked as favorite', async () => {
     mocks.getNote.mockResolvedValue(mockNote);
 
     render(await NoteCard({ noteId: 1 }));
 
-    expect(screen.getByTestId('favorite-ribbon')).toBeInTheDocument();
+    expect(screen.getByTestId('filled-heart')).toBeInTheDocument();
   });
 
   it('displays the note image if imageUrl is provided', async () => {

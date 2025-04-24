@@ -4,12 +4,12 @@ import { saveSettings } from '../lib/actions';
 import PreferencesTab from './PreferencesTab';
 
 const mocks = vi.hoisted(() => ({
-  loadSettings: vi.fn(),
+  getSettings: vi.fn(),
   saveSettings: vi.fn(),
 }));
 
 vi.mock('../lib/actions', () => ({
-  loadSettings: mocks.loadSettings,
+  getSettings: mocks.getSettings,
   saveSettings: mocks.saveSettings,
 }));
 
@@ -19,7 +19,7 @@ describe('PreferencesTab', () => {
   });
 
   it('renders correctly', async () => {
-    mocks.loadSettings.mockResolvedValue({
+    mocks.getSettings.mockResolvedValue({
       mfa: true,
       allowReg: false,
       allowUnsplash: false,
@@ -33,12 +33,12 @@ describe('PreferencesTab', () => {
     ).toBeChecked();
     expect(screen.getByLabelText('Allow users to Sign Up')).not.toBeChecked();
     expect(
-      screen.getByLabelText('Allow users to use Unsplash images')
+      screen.getByLabelText('Allow Unsplash as a source for images')
     ).not.toBeChecked();
   });
 
   it('toggles MFA checkbox', async () => {
-    mocks.loadSettings.mockResolvedValue({
+    mocks.getSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
@@ -55,7 +55,7 @@ describe('PreferencesTab', () => {
   });
 
   it('toggles Allow Registration checkbox', async () => {
-    mocks.loadSettings.mockResolvedValue({
+    mocks.getSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
@@ -72,7 +72,7 @@ describe('PreferencesTab', () => {
   });
 
   it('toggles Unsplash checkbox', async () => {
-    mocks.loadSettings.mockResolvedValue({
+    mocks.getSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
@@ -81,7 +81,7 @@ describe('PreferencesTab', () => {
     render(<PreferencesTab />);
 
     const unsplashCheckbox = await screen.findByLabelText(
-      'Allow users to use Unsplash images'
+      'Allow Unsplash as a source for images'
     );
     fireEvent.click(unsplashCheckbox);
 
@@ -89,7 +89,7 @@ describe('PreferencesTab', () => {
   });
 
   it('submits the form', async () => {
-    mocks.loadSettings.mockResolvedValue({
+    mocks.getSettings.mockResolvedValue({
       mfa: false,
       allowReg: false,
       allowUnsplash: false,

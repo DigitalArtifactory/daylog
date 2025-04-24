@@ -25,7 +25,7 @@ describe('Page', () => {
     expect(screen.getByText('Forgot password')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Enter your email address and your password will be reset and emailed to you.'
+        'Enter your email address and we will send you instructions to reset your password.'
       )
     ).toBeInTheDocument();
   });
@@ -38,7 +38,7 @@ describe('Page', () => {
     expect(screen.getByText('Account reseted')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Your account has been reseted successfuly, check your email inbox and follow the instructions.'
+        'Your account has been reset successfully. Please check your email inbox and follow the instructions.'
       )
     ).toBeInTheDocument();
   });
@@ -73,7 +73,7 @@ describe('Page', () => {
 
     render(<Page />);
     expect(
-      screen.getByRole('button', { name: /Send me new password/i })
+      screen.getByRole('button', { name: /Send me a new password/i })
     ).toBeDisabled();
   });
 
@@ -87,7 +87,7 @@ describe('Page', () => {
 
     render(<Page />);
     const submitButton = screen.getByRole('button', {
-      name: /Send me new password/i,
+      name: /Send me a new password/i,
     });
     fireEvent.click(submitButton);
     expect(actionMock).toHaveBeenCalled();

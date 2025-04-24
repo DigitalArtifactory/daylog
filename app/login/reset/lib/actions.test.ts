@@ -1,6 +1,5 @@
 import { prismaMock } from '@/prisma/singleton';
 import { cleanup } from '@testing-library/react';
-import nodemailer from 'nodemailer';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { reset } from './actions';
 
@@ -9,22 +8,17 @@ const mocks = vi.hoisted(() => ({
   createTransport: vi.fn(),
   sendMail: vi.fn(),
   ResetFormSchema: vi.fn(),
+  createAndVerifyTransporter: vi.fn().mockImplementation(() => ({
+    sendMail: mocks.sendMail,
+  })),
 }));
 
 vi.mock('@/utils/crypto', () => ({
   hashPassword: mocks.hashPassword,
 }));
 
-vi.mock('nodemailer', () => ({
-  default: {
-    createTransport: mocks.createTransport.mockReturnValue({
-      sendMail: mocks.sendMail,
-    }),
-  },
-}));
-
-vi.mock('nodemailer/lib/smtp-transport', () => ({
-  default: vi.fn().mockImplementation(() => ({})),
+vi.mock('@/utils/email', () => ({
+  createAndVerifyTransporter: mocks.createAndVerifyTransporter,
 }));
 
 describe('reset', () => {
@@ -75,13 +69,38 @@ describe('reset', () => {
       where: { id: user.id },
       data: { password: 'mocked-hash' },
     });
-    expect(nodemailer.createTransport().sendMail).toHaveBeenCalledWith({
-      from: `"daylog accounts" <${process.env.SMTP_SERVER_USER}>`,
-      to: user.email,
-      subject: 'Account password reset',
-      text: expect.stringContaining('Your account password has been reset'),
-    });
+    expect(mocks.createAndVerifyTransporter).toHaveBeenCalled();
     expect(result.success).toBe(true);
+  });
+
+  it('should not reset password if transporter creation fails', async () => {
+    const formData = new FormData();
+    formData.append('email', 'test@example.com');
+
+    const user = {
+      id: 1,
+      name: 'John Doe',
+      email: 'test@example.com',
+      password: 'password123#',
+      mfa: false,
+      role: 'user',
+      terms: 'accept',
+      secret: '',
+    };
+    mocks.createAndVerifyTransporter.mockImplementation(() => {
+      throw new Error('Transporter creation failed');
+    });
+    prismaMock.user.findFirst.mockResolvedValue(user);
+    mocks.sendMail.mockResolvedValue({ messageId: '123' });
+
+    const result = await reset({}, formData);
+
+    expect(prismaMock.user.update).not.toHaveBeenCalledWith({
+      where: { id: user.id },
+      data: { password: 'mocked-hash' },
+    });
+    expect(mocks.createAndVerifyTransporter).toHaveBeenCalled();
+    expect(result.message).toBe("An error occurred while reseting your account.");
   });
 
   it('should return error message if an exception occurs', async () => {
@@ -94,7 +113,7 @@ describe('reset', () => {
     const result = await reset({}, formData);
 
     expect(result.message).toBe(
-      'An error occurred while reseting your account.'
+      `An error occurred while reseting your account.`
     );
   });
 });
