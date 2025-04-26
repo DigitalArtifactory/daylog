@@ -57,19 +57,18 @@ export default async function BoardCard({ boardId }: BoardCardType) {
         style={{
           backgroundImage:
             'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))',
+          pointerEvents: 'none',
         }}
       >
         <h3 className="card-title text-white">
-          <Link href={`/boards/${board.id}/notes`}>
-            {truncateWord(board.title, 35)}
-          </Link>
+          {truncateWord(board.title, 35)}
         </h3>
         <div className="text-light">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-light">
             <TimeDiff updatedAt={board?.updatedAt} />
           </div>
-          <div className="d-block">
+          <div className="d-block" style={{ pointerEvents: 'all' }}>
             <a
               href="#"
               className="icon ms-3 text-light"
