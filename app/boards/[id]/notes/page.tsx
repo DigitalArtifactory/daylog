@@ -1,3 +1,4 @@
+import { getSettings } from '@/app/admin/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
@@ -24,6 +25,7 @@ export default async function Notes({
   }
   const { id } = await params;
   const notes = await getNotes(parseInt(id));
+  const settings = await getSettings();
 
   return (
     <Page>
@@ -60,6 +62,7 @@ export default async function Notes({
               boardId={parseInt(id)}
               modalId="new-note-modal"
               mode="create"
+              isUnsplashAllowed={settings?.allowUnsplash}
             ></NoteModalForm>
           </div>
         </PageHeader>
@@ -72,8 +75,8 @@ export default async function Notes({
               </div>
             ) : (
               notes?.map((b) => (
-                <div key={b.id} className="col-md-4 mb-3">
-                  <Suspense fallback={<NoteCardPlaceholder></NoteCardPlaceholder>}>
+                <div key={b.id} className="col-md-4 mb-3 h-100">
+                  <Suspense fallback={<NoteCardPlaceholder />}>
                     <NoteCard noteId={b.id}></NoteCard>
                   </Suspense>
                 </div>

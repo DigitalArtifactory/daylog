@@ -119,9 +119,9 @@ describe('Note Actions', () => {
     });
   });
 
-  it('should save an image', async () => {
+  it('should save an image from file', async () => {
     const noteId = 1;
-    const imageBase64 = 'base64string';
+    const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA';
     const filepath = 'path/to/image';
 
     mocks.saveBase64File.mockReturnValue(filepath);
@@ -130,10 +130,25 @@ describe('Note Actions', () => {
     const result = await saveImage(noteId, imageBase64);
 
     expect(result).toBe(imageBase64);
-    expect(saveBase64File).toHaveBeenCalledWith(imageBase64, undefined);
+    expect(saveBase64File).toHaveBeenCalledWith(imageBase64);
     expect(prisma.note.update).toHaveBeenCalledWith({
       where: { id: noteId, boards: { userId: user.id } },
       data: { imageUrl: filepath },
+    });
+  });
+
+  it('should save an image from url', async () => {
+    const noteId = 1;
+    const fileurl = 'http://example.com/image.jpg';
+
+    prismaMock.note.update.mockResolvedValue({} as Note);
+
+    const result = await saveImage(noteId, fileurl);
+
+    expect(result).toBe(fileurl);
+    expect(prisma.note.update).toHaveBeenCalledWith({
+      where: { id: noteId, boards: { userId: user.id } },
+      data: { imageUrl: fileurl },
     });
   });
 

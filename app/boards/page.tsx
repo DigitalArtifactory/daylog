@@ -10,6 +10,7 @@ import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+import { getSettings } from '../admin/lib/actions';
 import { getCurrentSession } from '../login/lib/actions';
 import { getBoards } from './lib/actions';
 
@@ -19,6 +20,7 @@ export default async function Boards() {
     return redirect('/login');
   }
   const boards = await getBoards();
+  const settings = await getSettings();
 
   return (
     <Page>
@@ -54,6 +56,7 @@ export default async function Boards() {
             <BoardModalForm
               modalId="new-board-modal"
               mode="create"
+              isUnsplashAllowed={settings?.allowUnsplash}
             ></BoardModalForm>
           </div>
         </PageHeader>
@@ -67,7 +70,9 @@ export default async function Boards() {
             ) : (
               boards?.map((b) => (
                 <div key={b.id} className="col-md-4 mb-3">
-                  <Suspense fallback={<BoardCardPlaceholder></BoardCardPlaceholder>}>
+                  <Suspense
+                    fallback={<BoardCardPlaceholder></BoardCardPlaceholder>}
+                  >
                     <BoardCard boardId={b.id}></BoardCard>
                   </Suspense>
                 </div>

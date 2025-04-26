@@ -1,7 +1,10 @@
+import { getSettings } from '@/app/admin/lib/actions';
 import { getBoard } from '@/app/boards/lib/actions';
 import { stringToColor } from '@/utils/color';
+import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
 import Image from 'next/image';
+import Link from 'next/link';
 import TimeDiff from '../../../components/TimeDiff';
 import BoardFavoriteButton from './BoardFavoriteButton';
 import BoardModalDelete from './BoardModalDelete';
@@ -17,6 +20,8 @@ export default async function BoardCard({ boardId }: BoardCardType) {
     return <></>;
   }
 
+  const settings = await getSettings();
+
   function setBackgroundImage(str: string): string {
     const color = stringToColor(str);
     return color;
@@ -24,62 +29,49 @@ export default async function BoardCard({ boardId }: BoardCardType) {
 
   return (
     <div className="card d-flex flex-column">
-      {board.favorite && (
-        <div
-          data-testid="favorite-ribbon"
-          className="ribbon ribbon-top ribbon-bookmark bg-yellow"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="icon"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
-          </svg>
-        </div>
-      )}
       {board?.imageUrl ? (
-        <a className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
+        <Link className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <Image
             width={800}
             height={600}
-            style={{ objectFit: 'cover', objectPosition: 'top' }}
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
             className="w-100 img-fluid"
-            src={`/api/v1/images?filePath=${board.imageUrl}`}
+            src={getImageUrlOrFile(board.imageUrl)}
             alt={`Image of ${board.title}`}
+            priority={false}
           ></Image>
-        </a>
+        </Link>
       ) : (
-        <a
+        <Link
           data-testid={`board-${board.id}`}
           className="ratio ratio-21x9"
           href={`/boards/${board.id}/notes`}
           style={{ backgroundColor: setBackgroundImage(board.title) }}
-        ></a>
+        ></Link>
       )}
-      <div className="card-body d-flex flex-column">
-        <h3 className="card-title">
-          <a href={`/boards/${board.id}/notes`}>
-            {truncateWord(board.title, 35)}
-          </a>
+      <div
+        className="position-absolute card-body d-flex flex-column w-full h-full"
+        style={{
+          backgroundImage:
+            'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))',
+          pointerEvents: 'none',
+        }}
+      >
+        <h3 className="card-title text-white">
+          {truncateWord(board.title, 35)}
         </h3>
-        <div className="text-secondary">{board.description}</div>
+        <div className="text-light">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
-          <div className="text-secondary">
+          <div className="text-light">
             <TimeDiff updatedAt={board?.updatedAt} />
           </div>
-          <div className="d-block">
+          <div className="d-block" style={{ pointerEvents: 'all' }}>
             <a
               href="#"
-              className="icon ms-3 text-secondary"
+              className="icon ms-3 text-light"
               data-bs-toggle="modal"
               data-bs-target={`#edit-board-modal-${board.id}}`}
             >
@@ -105,6 +97,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
               board={board}
               modalId={`edit-board-modal-${board.id}}`}
               mode="update"
+              isUnsplashAllowed={settings?.allowUnsplash}
             ></BoardModalForm>
             <BoardModalDelete board={board} />
             <BoardFavoriteButton board={board} />

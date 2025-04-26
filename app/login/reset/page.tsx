@@ -14,10 +14,12 @@ export default function Page() {
           <a href="." className="navbar-brand navbar-brand-autodark">
             <Image
               src="/daylog.svg"
-              width="220"
-              height="64"
-              alt={'daylog'}
+              width="0"
+              height="0"
+              alt="daylog"
+              priority={true}
               className="navbar-brand-image"
+              style={{ width: 'auto', height: '48px' }}
             />
           </a>
         </div>
@@ -25,8 +27,8 @@ export default function Page() {
           <div className="alert alert-success alert-dismissible" role="alert">
             <h3 className="mb-1">Account reseted</h3>
             <p>
-              Your account has been reseted successfuly, check your email inbox
-              and follow the instructions.
+              Your account has been reset successfully. Please check your email
+              inbox and follow the instructions.
             </p>
             <div className="btn-list">
               <a href="/login" className="btn btn-success">
@@ -58,10 +60,10 @@ export default function Page() {
           noValidate={true}
         >
           <div className="card-body">
-            <h2 className="card-title text-center mb-4">Forgot password</h2>
+            <h2 className="h2 text-center mb-4">Forgot password</h2>
             <p className="text-secondary mb-4">
-              Enter your email address and your password will be reset and
-              emailed to you.
+              Enter your email address and we will send you instructions to
+              reset your password.
             </p>
             <div className="mb-3">
               <label className="form-label">Email address</label>
@@ -101,13 +103,13 @@ export default function Page() {
                   <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path>
                   <path d="M3 7l9 6l9 -6"></path>
                 </svg>
-                Send me new password
+                Send me a new password
               </button>
             </div>
           </div>
         </form>
         <div className="text-center text-secondary mt-3">
-          Forget it, <a href="/login">send me back</a> to the sign in screen.
+          Never mind, <a href="/login">take me back</a> to the sign in screen.
         </div>
       </div>
     </div>

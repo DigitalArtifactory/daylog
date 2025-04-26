@@ -3,7 +3,10 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { removeFile, saveBase64File } from '@/utils/storage';
+import { isBase64, isUrl } from '@/utils/text';
 import { Board, Prisma } from '@prisma/client';
+
+import fs from 'fs';
 
 export async function createBoard(
   board: Prisma.BoardCreateInput
@@ -62,18 +65,31 @@ export async function getBoard(boardId: number): Promise<Board | null> {
 
 export async function saveImage(
   boardId: number,
-  imageBase64: string,
+  imageUrl: string,
   existentFileName?: string | null
 ): Promise<string | null> {
   try {
     const { user } = await getCurrentSession();
-    const filepath = saveBase64File(imageBase64, existentFileName);
+
+    if (!isBase64(imageUrl) && !isUrl(imageUrl)) {
+      throw new Error(
+        'Invalid image format. Must be a valid URL or Base64 string.'
+      );
+    }
+
+    if (existentFileName && fs.existsSync(existentFileName)) {
+      removeFile(existentFileName);
+    }
+
+    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
+    if (isBase64(imageUrl)) urlOrFilepath = saveBase64File(imageUrl);
+
     await prisma.board.update({
       where: { id: boardId, userId: user?.id },
-      data: { imageUrl: filepath },
+      data: { imageUrl: urlOrFilepath },
     });
 
-    return imageBase64;
+    return imageUrl;
   } catch (e) {
     console.error(e);
     return null;

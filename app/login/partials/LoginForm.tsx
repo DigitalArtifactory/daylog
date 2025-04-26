@@ -21,10 +21,12 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
           <a href="." className="navbar-brand navbar-brand-autodark">
             <Image
               src="/daylog.svg"
-              width="220"
-              height="64"
+              width="0"
+              height="0"
               alt="daylog"
+              priority={true}
               className="navbar-brand-image"
+              style={{ width: 'auto', height: '48px' }}
             />
           </a>
         </div>
@@ -71,6 +73,11 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
                 >
                   Sign in
                 </button>
+                <div className="text-center text-muted mt-3">
+                  <a href="/login/reset" tabIndex={-1}>
+                    Forgot password?
+                  </a>
+                </div>
               </div>
             </form>
           </div>

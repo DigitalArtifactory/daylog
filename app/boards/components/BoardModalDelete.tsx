@@ -36,7 +36,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
     <>
       <a
         href="#"
-        className="icon ms-3 text-secondary"
+        className="icon ms-3 text-light"
         data-bs-toggle="modal"
         data-bs-target={`#delete-modal-${board.id}`}
       >

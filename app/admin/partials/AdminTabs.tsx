@@ -15,7 +15,7 @@ export default function AdminTabs() {
         <>
           <li className="nav-item">
             <a
-              href="#tabs-home-ex1"
+              href="#tabs-admin-1"
               className="nav-link active"
               data-bs-toggle="tab"
             >
@@ -24,7 +24,7 @@ export default function AdminTabs() {
           </li>
           <li className="nav-item">
             <a href="#tabs-admin-2" className="nav-link" data-bs-toggle="tab">
-              Security
+              Preferences
             </a>
           </li>
         </>

@@ -1,25 +1,30 @@
 'use client';
 
 import { useActionState, useEffect, useState } from 'react';
-import { loadSettings, saveSettings } from '../lib/actions';
+import { getSettings, saveSettings } from '../lib/actions';
 
-export default function SecurityTab() {
+export default function PreferencesTab() {
   const [isMfaChecked, setIsMfaChecked] = useState(false);
   const [isAllowRegChecked, setIsAllowRegChecked] = useState(false);
+  const [isUnsplashChecked, setIsUnsplashChecked] = useState(false);
+
   const [state, action, pending] = useActionState(saveSettings, undefined);
 
   useEffect(() => {
-    const getSettings = async () => {
-      const settings = await loadSettings();
+    const loadSettings = async () => {
+      const settings = await getSettings();
       setIsMfaChecked(settings?.mfa ?? false);
       setIsAllowRegChecked(settings?.allowReg ?? false);
+      setIsUnsplashChecked(settings?.allowUnsplash ?? false);
     };
-    getSettings();
+    loadSettings();
   }, []);
 
   useEffect(() => {
     if (state?.data) {
       setIsMfaChecked(state.data.mfa);
+      setIsAllowRegChecked(state.data.allowReg);
+      setIsUnsplashChecked(state.data.allowUnsplash);
     }
   }, [state]);
 
@@ -58,9 +63,47 @@ export default function SecurityTab() {
             role="switch"
             id="flexSwitchCheckDefaultAllow"
           />
-          <label className="form-check-label" htmlFor="flexSwitchCheckDefaultAllow">
+          <label
+            className="form-check-label"
+            htmlFor="flexSwitchCheckDefaultAllow"
+          >
             Allow users to Sign Up
           </label>
+        </div>
+      </div>
+      <h3 className="card-title">Third party</h3>
+      <div className="text-secondary">
+        Customize your third party integrations and data sources.
+      </div>
+      <div className="pt-4 mb-3">
+        <div className="form-check form-switch">
+          <input
+            name="allowUnsplash"
+            className="form-check-input"
+            defaultValue={'active'}
+            checked={isUnsplashChecked}
+            onChange={(e) => setIsUnsplashChecked(e.target.checked)}
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefaultAllowUnsplash"
+          />
+          <label
+            className="form-check-label"
+            htmlFor="flexSwitchCheckDefaultAllowUnsplash"
+          >
+            Allow Unsplash as a source for images
+          </label>
+          <p className="text-muted text-sm mb-0">
+            You need to create an Unsplash account and add your API key in the
+            enviroment variables to use this feature.
+          </p>
+          <p className="text-muted">
+            Go to{' '}
+            <a href="https://unsplash.com/developers" target="_blank">
+              Unsplash developer page{' '}
+            </a>
+            to create an account and get your API key.
+          </p>
         </div>
       </div>
       {state?.success && state?.message && (

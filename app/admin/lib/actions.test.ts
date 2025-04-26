@@ -3,8 +3,8 @@ import { User } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   deleteUser,
+  getSettings,
   getUsers,
-  loadSettings,
   saveSettings,
   setAdmin,
 } from './actions';
@@ -51,18 +51,18 @@ describe('actions', () => {
 
   describe('loadSettings', () => {
     it('should load settings from file', async () => {
-      const mockSettings = { mfa: true, allowReg: false };
+      const mockSettings = { mfa: true, allowReg: false, allowUnsplash: false };
       mocks.fs.existsSync.mockReturnValue(true);
       mocks.fs.readFileSync.mockReturnValue(JSON.stringify(mockSettings));
 
-      const settings = await loadSettings();
+      const settings = await getSettings();
       expect(settings).toEqual(mockSettings);
     });
 
     it('should return null if settings file does not exist', async () => {
       mocks.fs.existsSync.mockReturnValue(false);
 
-      const settings = await loadSettings();
+      const settings = await getSettings();
       expect(settings).toBeNull();
     });
   });
@@ -72,15 +72,20 @@ describe('actions', () => {
       const formData = new FormData();
       formData.set('mfa', 'active');
       formData.set('allowRegistration', 'active');
+      formData.set('allowUnsplash', 'active');
 
       mocks.fs.existsSync.mockReturnValue(false);
       mocks.fs.readFileSync.mockReturnValue(
-        JSON.stringify({ mfa: false, allowReg: false })
+        JSON.stringify({ mfa: false, allowReg: false, allowUnsplash: false })
       );
 
       const result = await saveSettings({}, formData);
       expect(result.success).toBe(true);
-      expect(result.data).toEqual({ mfa: true, allowReg: true });
+      expect(result.data).toEqual({
+        mfa: true,
+        allowReg: true,
+        allowUnsplash: true,
+      });
     });
   });
 

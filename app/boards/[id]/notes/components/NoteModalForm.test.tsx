@@ -16,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   saveImage: vi.fn(),
   resizeImage: vi.fn(),
   refresh: vi.fn(),
+  getImageUrlOrFile: vi.fn(() => 'https://dummy.com/test.jpg'),
 }));
 
 vi.mock('@/app/boards/[id]/notes/lib/actions', () => ({
@@ -27,6 +28,7 @@ vi.mock('@/app/boards/[id]/notes/lib/actions', () => ({
 
 vi.mock('@/utils/image', () => ({
   resizeImage: mocks.resizeImage,
+  getImageUrlOrFile: mocks.getImageUrlOrFile,
 }));
 
 vi.mock('next/navigation', () => ({
@@ -155,7 +157,7 @@ describe('NoteModalForm', () => {
     const file = new File(['dummy content'], 'example.png', {
       type: 'image/png',
     });
-    fireEvent.change(screen.getByLabelText('Image'), {
+    fireEvent.change(screen.getByLabelText('Select image from your device (optional)'), {
       target: { files: [file] },
     });
 

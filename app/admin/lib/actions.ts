@@ -25,9 +25,10 @@ export async function setAdmin(
 export type SettingsType = {
   mfa: boolean;
   allowReg: boolean;
+  allowUnsplash: boolean;
 };
 
-export async function loadSettings() {
+export async function getSettings() {
   if (fs.existsSync('./settings.json')) {
     const fileContent = fs.readFileSync('./settings.json', 'utf-8');
     const settings = JSON.parse(fileContent) as SettingsType;
@@ -43,6 +44,7 @@ export async function saveSettings(
 ) {
   const mfa = formData.get('mfa') === 'active';
   const allowReg = formData.get('allowRegistration') === 'active';
+  const allowUnsplash = formData.get('allowUnsplash') === 'active';
 
   if (!fs.existsSync('./settings.json')) {
     fs.writeFileSync('./settings.json', JSON.stringify({ mfa: mfa }), 'utf-8');
@@ -54,6 +56,7 @@ export async function saveSettings(
 
   settings.mfa = mfa;
   settings.allowReg = allowReg;
+  settings.allowUnsplash = allowUnsplash;
 
   fs.writeFileSync('./settings.json', JSON.stringify(settings));
 

@@ -4,14 +4,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { signup, validateAllowRegistration } from './actions';
 
 const mocks = vi.hoisted(() => ({
-  loadSettings: vi.fn(),
+  getSettings: vi.fn(),
   hashPassword: vi.fn().mockReturnValue('mocked-hash'),
   SignupFormSchema: vi.fn(),
   redirect: vi.fn(),
 }));
 
 vi.mock('@/app/admin/lib/actions', () => ({
-  loadSettings: mocks.loadSettings,
+  getSettings: mocks.getSettings,
 }));
 
 vi.mock('@/utils/crypto', async () => ({
@@ -136,14 +136,14 @@ describe('signup', () => {
 
 describe('validateAllowRegistration', () => {
   it('should redirect to login if registration is not allowed', async () => {
-    mocks.loadSettings.mockResolvedValue({ allowReg: false });
+    mocks.getSettings.mockResolvedValue({ allowReg: false });
 
     await validateAllowRegistration();
     expect(redirect).toHaveBeenCalledWith('login');
   });
 
   it('should not redirect if registration is allowed', async () => {
-    mocks.loadSettings.mockResolvedValue({ allowReg: true });
+    mocks.getSettings.mockResolvedValue({ allowReg: true });
 
     await validateAllowRegistration();
     expect(redirect).not.toHaveBeenCalled();

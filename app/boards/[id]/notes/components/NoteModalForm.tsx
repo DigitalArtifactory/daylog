@@ -1,6 +1,7 @@
 'use client';
 
-import { resizeImage } from '@/utils/image';
+import UnsplashImagesDropdown from '@/app/boards/components/UnsplashImagesDropdown';
+import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import { Note } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -13,6 +14,7 @@ type NoteModalFormType = {
   boardId: number;
   note?: Note | null;
   mode: 'update' | 'create';
+  isUnsplashAllowed?: boolean;
 };
 
 export default function NoteModalForm({
@@ -20,6 +22,7 @@ export default function NoteModalForm({
   boardId,
   note,
   mode,
+  isUnsplashAllowed = false,
 }: NoteModalFormType) {
   const router = useRouter();
 
@@ -28,6 +31,7 @@ export default function NoteModalForm({
 
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   const {
     register,
@@ -43,18 +47,23 @@ export default function NoteModalForm({
     } else {
       updateNoteHandler(data);
     }
-    
+
     setSubmiting(false);
     closeModal();
     formRef.current?.reset();
   };
 
   async function uploadImage(noteId: number | null) {
-    if (!imageFile || !noteId) return;
-    resizeImage(imageFile, 1920, 1080, async (resizedDataUrl) => {
-      await saveImage(noteId, resizedDataUrl, note?.imageUrl);
+    if ((!imageFile && !imageUrl) || !noteId) return;
+    if (imageFile) {
+      resizeImage(imageFile, 1920, 1080, async (resizedDataUrl) => {
+        await saveImage(noteId, resizedDataUrl, note?.imageUrl);
+        router.refresh();
+      });
+    } else {
+      await saveImage(noteId, imageUrl, note?.imageUrl);
       router.refresh();
-    });
+    }
   }
 
   const createNoteHandler = async (data: Note, boardId: number) => {
@@ -104,14 +113,26 @@ export default function NoteModalForm({
             </div>
             <div className="modal-body">
               <div className="mb-3">
+                {isUnsplashAllowed && (
+                  <div className="mb-2">
+                    <UnsplashImagesDropdown
+                      imageSelected={(imageUrl) => setImageUrl(imageUrl)}
+                    />
+                  </div>
+                )}
                 {mode === 'update' && note?.id && note.imageUrl && (
                   <div className="mb-3">
                     <div className="rounded overflow-hidden border border-secondary w-100">
                       <Image
                         width="800"
-                        height="600"
-                        alt={note?.title}
-                        src={`/api/v1/images?filePath=${note.imageUrl}`}
+                        height="0"
+                        src={getImageUrlOrFile(note.imageUrl)}
+                        alt={`Preview image of ${note.title}`}
+                        style={{
+                          width: 'auto',
+                          height: 'auto',
+                        }}
+                        priority={false}
                       ></Image>
                     </div>
                     <button
@@ -144,7 +165,8 @@ export default function NoteModalForm({
                   </div>
                 )}
                 <label htmlFor="image" className="form-label">
-                  Image
+                  Select image from your device{' '}
+                  <span className="text-secondary">(optional)</span>
                 </label>
                 <input
                   id="image"

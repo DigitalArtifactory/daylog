@@ -8,7 +8,7 @@ import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { getCurrentSession } from '../login/lib/actions';
 import AdminTabs from './partials/AdminTabs';
-import SecurityTab from './partials/SecurityTab';
+import PreferencesTab from './partials/PreferencesTab';
 import UserModal from './partials/UserModal';
 import UsersTable from './partials/UsersTable';
 
@@ -34,7 +34,7 @@ export default async function Admin() {
             </div>
             <div className="card-body">
               <div className="tab-content">
-                <div className="tab-pane active show" id="tabs-home-ex1">
+                <div className="tab-pane active show" id="tabs-admin-1">
                   <div className="d-flex justify-content-between">
                     <div>
                       <h3 className="card-title">Users</h3>
@@ -51,7 +51,7 @@ export default async function Admin() {
                   </div>
                 </div>
                 <div className="tab-pane" id="tabs-admin-2">
-                  <SecurityTab />
+                  <PreferencesTab />
                 </div>
               </div>
             </div>

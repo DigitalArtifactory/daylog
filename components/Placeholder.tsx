@@ -1,11 +1,19 @@
-
 type PlaceholderProps = {
   simple?: boolean;
+  background?: boolean;
   className?: string;
 };
 
-export default function Placeholder({ simple = false, className = '' }: PlaceholderProps) {
-  return (
+export default function Placeholder({
+  simple = false,
+  background = false,
+  className = '',
+}: PlaceholderProps) {
+  return background ? (
+    <div className={`card placeholder-glow ${className}`}>
+      <div className="ratio ratio-21x9 card-img-top placeholder"></div>
+    </div>
+  ) : (
     <div className={`card placeholder-glow ${className}`}>
       <div className="ratio ratio-21x9 card-img-top placeholder"></div>
       <div className="card-body pt-3 mt-1">
@@ -24,4 +32,4 @@ export default function Placeholder({ simple = false, className = '' }: Placehol
       </div>
     </div>
   );
-} 
+}

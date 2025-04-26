@@ -55,3 +55,11 @@ export function bytesToBase64(bytes?: Uint8Array): string | null {
   if (!bytes) return null;
   return Buffer.from(bytes).toString('base64');
 }
+
+export function getImageUrlOrFile(imageUrl: string): string {
+  if (imageUrl.startsWith('http')) {
+    return imageUrl;
+  } else {
+    return `/api/v1/images?filePath=${imageUrl}`;
+  }
+}

@@ -6,23 +6,26 @@ import {
   saveImage,
   updateBoard,
 } from '@/app/boards/lib/actions';
-import { resizeImage } from '@/utils/image';
+import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import { Board, Prisma } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import UnsplashImagesDropdown from './UnsplashImagesDropdown';
 
 type BoardModalFormType = {
   modalId: string;
   board?: Board | null;
   mode: 'update' | 'create';
+  isUnsplashAllowed?: boolean;
 };
 
 export default function BoardModalForm({
   modalId,
   board,
   mode,
+  isUnsplashAllowed = false,
 }: BoardModalFormType) {
   const router = useRouter();
 
@@ -31,6 +34,7 @@ export default function BoardModalForm({
 
   const [submiting, setSubmiting] = useState(false);
   const [imageFile, setImageFile] = useState<File>();
+  const [imageUrl, setImageUrl] = useState<string>('');
 
   const {
     register,
@@ -46,18 +50,25 @@ export default function BoardModalForm({
     } else {
       updateBoardHandler(data);
     }
-    
+
     setSubmiting(false);
     closeModal();
     formRef.current?.reset();
+    setImageFile(undefined);
+    setImageUrl('');
   };
 
   async function uploadImage(boardId: number | null) {
-    if (!imageFile || !boardId) return;
-    resizeImage(imageFile, 1920, 1080, async (resizedDataUrl) => {
-      await saveImage(boardId, resizedDataUrl, board?.imageUrl);
+    if ((!imageFile && !imageUrl) || !boardId) return;
+    if (imageFile) {
+      resizeImage(imageFile, 1920, 1080, async (resizedDataUrl) => {
+        await saveImage(boardId, resizedDataUrl, board?.imageUrl);
+        router.refresh();
+      });
+    } else {
+      await saveImage(boardId, imageUrl, board?.imageUrl);
       router.refresh();
-    });
+    }
   }
 
   const createBoardHandler = async (data: Board) => {
@@ -110,14 +121,26 @@ export default function BoardModalForm({
               ></button>
             </div>
             <div className="modal-body">
+              {isUnsplashAllowed && (
+                <div className="mb-2">
+                  <UnsplashImagesDropdown
+                    imageSelected={(imageUrl) => setImageUrl(imageUrl)}
+                  />
+                </div>
+              )}
               {mode === 'update' && board?.id && board.imageUrl && (
                 <div className="mb-3">
                   <div className="border border-secondary rounded w-100">
                     <Image
                       width="800"
-                      height="600"
-                      src={`/api/v1/images?filePath=${board.imageUrl}`}
+                      height="0"
+                      src={getImageUrlOrFile(board.imageUrl)}
                       alt={`Preview image of ${board.title}`}
+                      style={{
+                        width: 'auto',
+                        height: 'auto',
+                      }}
+                      priority={false}
                     ></Image>
                   </div>
                   <button
@@ -151,7 +174,8 @@ export default function BoardModalForm({
               )}
               <div className="mb-3">
                 <label htmlFor="image" className="form-label">
-                  Image
+                  Select image from your device{' '}
+                  <span className="text-secondary">(optional)</span>
                 </label>
                 <input
                   id="image"
