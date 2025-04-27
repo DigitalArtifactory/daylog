@@ -4,15 +4,6 @@ import { search, SearchResult } from '@/app/lib/actions';
 import { truncateWord } from '@/utils/text';
 import { useEffect, useRef, useState } from 'react';
 
-declare global {
-  interface Window {
-    // this line works but linter does not like it...
-    /* eslint-disable */
-    bootstrap: any;
-    /* eslint-enable */
-  }
-}
-
 export default function NavSearch() {
   const modalRef = useRef<HTMLDivElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
@@ -30,15 +21,11 @@ export default function NavSearch() {
   return (
     <>
       <div className="input-icon">
-        <input
-          type="text"
-          className="form-control form-control-rounded"
-          placeholder="Search…"
-          onClick={() => {
-            new window.bootstrap.Modal(modalRef.current).show();
-          }}
-        />
-        <span className="input-icon-addon">
+        <button
+          className="btn text-secondary rounded-pill justify-content-start px-4"
+          data-bs-toggle="modal"
+          data-bs-target="#searchModal"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -55,7 +42,8 @@ export default function NavSearch() {
             <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
             <path d="M21 21l-6 -6" />
           </svg>
-        </span>
+          Search
+        </button>
       </div>
       <div
         ref={modalRef}

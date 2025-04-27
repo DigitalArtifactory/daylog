@@ -39,7 +39,7 @@ export default async function NotePage({
                 <div className="card">
                   {note?.imageUrl && (
                     <div
-                      className="card-body p-0 shadow-sm"
+                      className="card-body p-0 shadow-sm overflow-hidden"
                       style={{
                         maxHeight: 320,
                       }}

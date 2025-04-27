@@ -148,7 +148,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
             </div>
           </div>
           <div className="tab-pane" id="tabs-preview">
-            <div className="markdown p-3" style={{ minHeight: 200 }}>
+            <div className="markdown p-3" style={{ minHeight: 400 }}>
               <div
                 dangerouslySetInnerHTML={renderMarkdownToHtml(markdown ?? '')}
               ></div>

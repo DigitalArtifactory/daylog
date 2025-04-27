@@ -28,7 +28,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
   }
 
   return (
-    <div className="card d-flex flex-column">
+    <div className="card d-flex flex-column overflow-hidden">
       {board?.imageUrl ? (
         <Link className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <Image
