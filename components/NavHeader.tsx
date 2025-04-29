@@ -70,7 +70,7 @@ export default async function NavHeader() {
                 )}
               </div>
             </Link>
-            <ul className="dropdown-menu">
+            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
               <li>
                 <Link className="dropdown-item" href={`/profile/${user?.id}`}>
                   Profile

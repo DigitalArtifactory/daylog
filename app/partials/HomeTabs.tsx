@@ -88,6 +88,7 @@ export default function HomeTabs() {
                   ? {
                       minHeight: '90px',
                       minWidth: '220px',
+                      objectFit: 'cover',
                       backgroundSize: '220px',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',

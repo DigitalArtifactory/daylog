@@ -121,58 +121,58 @@ export default function BoardModalForm({
               ></button>
             </div>
             <div className="modal-body">
-              {isUnsplashAllowed && (
-                <div className="mb-2">
-                  <UnsplashImagesDropdown
-                    imageSelected={(imageUrl) => setImageUrl(imageUrl)}
-                  />
-                </div>
-              )}
-              {mode === 'update' && board?.id && board.imageUrl && (
-                <div className="mb-3">
-                  <div className="border border-secondary rounded w-100">
-                    <Image
-                      width="800"
-                      height="0"
-                      src={getImageUrlOrFile(board.imageUrl)}
-                      alt={`Preview image of ${board.title}`}
-                      style={{
-                        width: 'auto',
-                        height: 'auto',
-                      }}
-                      priority={false}
-                    ></Image>
-                  </div>
-                  <button
-                    className="btn btn-link btn-sm float-end text-danger mt-1"
-                    onClick={async () => {
-                      await deleteImage(board.id, board.imageUrl);
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler icon-tabler-trash icons-tabler-outline"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M4 7l16 0" />
-                      <path d="M10 11l0 6" />
-                      <path d="M14 11l0 6" />
-                      <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-                      <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                    </svg>
-                    Remove image
-                  </button>
-                </div>
-              )}
               <div className="mb-3">
+                {isUnsplashAllowed && (
+                  <div className="mb-2">
+                    <UnsplashImagesDropdown
+                      imageSelected={(imageUrl) => setImageUrl(imageUrl)}
+                    />
+                  </div>
+                )}
+                {mode === 'update' && board?.id && board.imageUrl && (
+                  <div className="mb-3">
+                    <div className="border border-secondary rounded w-100">
+                      <Image
+                        width="800"
+                        height="0"
+                        src={getImageUrlOrFile(board.imageUrl)}
+                        alt={`Preview image of ${board.title}`}
+                        style={{
+                          width: 'auto',
+                          height: 'auto',
+                        }}
+                        priority={false}
+                      ></Image>
+                    </div>
+                    <button
+                      className="btn btn-link btn-sm float-end text-danger mt-1"
+                      onClick={async () => {
+                        await deleteImage(board.id, board.imageUrl);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="icon icon-tabler icon-tabler-trash icons-tabler-outline"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 7l16 0" />
+                        <path d="M10 11l0 6" />
+                        <path d="M14 11l0 6" />
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                      </svg>
+                      Remove image
+                    </button>
+                  </div>
+                )}
                 <label htmlFor="image" className="form-label">
                   Select image from your device{' '}
                   <span className="text-secondary">(optional)</span>

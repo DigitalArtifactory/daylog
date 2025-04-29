@@ -2,22 +2,13 @@
 
 import Loader from '@/components/Loader';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
-
-declare global {
-  interface Window {
-    // this line works but linter does not like it...
-    /* eslint-disable */
-    bootstrap: any;
-    /* eslint-enable */
-  }
-}
+import { useState } from 'react';
 
 type UnsplashImage = {
   id: string;
   description: string | null;
   user: { name: string; username: string };
-  urls: { small: string; regular: string, thumb: string };
+  urls: { small: string; regular: string; thumb: string };
   links: { download: string };
 };
 
@@ -26,8 +17,6 @@ export default function UnsplashImagesDropdown({
 }: {
   imageSelected: (imageUrl: string) => void;
 }) {
-  const ddCloseButtonRef = useRef<HTMLButtonElement>(null);
-
   const [imageUrl, setImageUrl] = useState<string>('');
   const [images, setImages] = useState<UnsplashImage[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -89,10 +78,7 @@ export default function UnsplashImagesDropdown({
       >
         Search Unsplash images
       </button>
-      <ul
-        className="dropdown-menu p-3"
-        aria-labelledby="unsplashImagesDropdown"
-      >
+      <div className="dropdown-menu p-3">
         <div className="mb-3">
           <label className="form-label">Search by keyword</label>
           <input
@@ -139,7 +125,11 @@ export default function UnsplashImagesDropdown({
                     alt={image.description || 'Unsplash image'}
                     width={150}
                     height={0}
-                    style={{ width: 'auto', height: '100px', objectFit: 'cover' }}
+                    style={{
+                      width: 'auto',
+                      height: '100px',
+                      objectFit: 'cover',
+                    }}
                     className="form-imagecheck-image h-100"
                     priority
                   />
@@ -148,7 +138,7 @@ export default function UnsplashImagesDropdown({
             </div>
           ))}
         </div>
-        <div className="d-flex flex-row gap-1 w-full justify-content-between pb-2">
+        <div className="d-flex flex-row gap-1 justify-content-between pb-2">
           {selectedImage && (
             <a
               href={`https://unsplash.com/@${selectedImage?.user.username}`}
@@ -184,57 +174,37 @@ export default function UnsplashImagesDropdown({
             </div>
           )}
         </div>
-        <div className="d-flex flex-row justify-content-between">
-          <button
-            type="button"
-            className="btn btn-link text-secondary mt-1"
-            onClick={async () => {
-              setImageUrl('');
-              setSelection('');
-              imageSelected('');
-            }}
+        <button
+          type="button"
+          className="btn btn-link text-secondary mt-1"
+          onClick={async () => {
+            setImageUrl('');
+            setSelection('');
+            imageSelected('');
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icon-tabler-trash icons-tabler-outline"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icon-tabler-trash icons-tabler-outline"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-            Clear selection
-          </button>
-          <button
-            ref={ddCloseButtonRef}
-            type="button"
-            className="btn"
-            data-bs-dismiss="dropdown"
-            onClick={() => {
-              const dropdown = window.bootstrap.Dropdown.getInstance(
-                ddCloseButtonRef.current
-                  ?.closest('.dropdown')
-                  ?.querySelector('[data-bs-toggle="dropdown"]')
-              );
-              if (dropdown) {
-                dropdown.hide();
-              }
-            }}
-          >
-            Close
-          </button>
-        </div>
-      </ul>
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M4 7l16 0" />
+            <path d="M10 11l0 6" />
+            <path d="M14 11l0 6" />
+            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+          </svg>
+          Clear selection
+        </button>
+      </div>
     </div>
   );
 }

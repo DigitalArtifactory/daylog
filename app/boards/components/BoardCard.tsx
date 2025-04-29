@@ -28,7 +28,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
   }
 
   return (
-    <div className="card d-flex flex-column overflow-hidden">
+    <div className="card d-flex flex-column" style={{ overflow: 'clip' }}>
       {board?.imageUrl ? (
         <Link className="ratio ratio-21x9" href={`/boards/${board.id}/notes`}>
           <Image
@@ -63,7 +63,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
         <h3 className="card-title text-white">
           {truncateWord(board.title, 35)}
         </h3>
-        <div className="text-light">{board.description}</div>
+        <div className="text-light line-clamp-2">{board.description}</div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-light">
             <TimeDiff updatedAt={board?.updatedAt} />
