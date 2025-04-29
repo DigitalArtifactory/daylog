@@ -66,11 +66,11 @@ describe('Note Actions', () => {
     prismaMock.note.update.mockResolvedValue(note as Note);
 
     const result = await updateNote(note as Note);
-
+    const { id, ...updatedNote } = note;
     expect(result).toEqual(note);
     expect(prisma.note.update).toHaveBeenCalledWith({
       where: { id: note.id, boards: { userId: user.id } },
-      data: { ...note },
+      data: { ...updatedNote },
     });
   });
 
