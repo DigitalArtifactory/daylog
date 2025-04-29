@@ -23,11 +23,11 @@ export async function createBoard(
 
 export async function updateBoard(board: Board): Promise<Board | null> {
   const { user } = await getCurrentSession();
-
+  const {id, ...updateBoard} = board;
   const updatedBoard = await prisma.board.update({
-    where: { id: board.id, userId: user?.id },
+    where: { id, userId: user?.id },
     data: {
-      ...board,
+      ...updateBoard,
     },
   });
 

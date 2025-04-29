@@ -25,10 +25,11 @@ export async function createNote(
 
 export async function updateNote(note: Note): Promise<Note | null> {
   const { user } = await getCurrentSession();
+  const {id, ...updateNote } = note;
   const updatedNote = await prisma.note.update({
-    where: { id: note.id, boards: { userId: user?.id } },
+    where: { id, boards: { userId: user?.id } },
     data: {
-      ...note,
+      ...updateNote,
     },
   });
 
