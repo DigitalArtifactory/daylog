@@ -21,13 +21,17 @@ export default async function Boards() {
   }
   const boards = await getBoards();
   const settings = await getSettings();
+  const breadcrumbs = [
+    { name: 'Home', href: '/' },
+    { name: 'Boards', href: '/boards' },
+  ];
 
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Boards" title="All boards">
+        <PageHeader title="All boards" breadcrumbs={breadcrumbs}>
           <div className="btn-list">
             <a
               href="#"

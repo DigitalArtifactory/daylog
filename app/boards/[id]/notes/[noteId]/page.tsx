@@ -1,3 +1,4 @@
+import { getBoard } from '@/app/boards/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
@@ -21,17 +22,24 @@ export default async function NotePage({
   if (user === null) {
     return redirect('/login');
   }
+  const board = await getBoard(parseInt((await params).noteId));
   const note = await getNote(parseInt((await params).noteId));
+  const breadcrumbs = [
+    { name: 'Home', href: '/' },
+    { name: 'Boards', href: '/boards' },
+    { name: board?.title ?? 'Notes', href: `/boards/${note?.boardsId}/notes` },
+    {
+      name: note?.title ?? '',
+      href: `/boards/${note?.boardsId}/notes/${note?.id}`,
+    },
+  ];
 
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader
-          preTitle={`Home > Notes > ${note?.title}`}
-          title={note?.title}
-        ></PageHeader>
+        <PageHeader title={note?.title} breadcrumbs={breadcrumbs}></PageHeader>
         <PageBody>
           <div className="container-xl p-0 px-lg-2">
             <div className="row justify-content-center">

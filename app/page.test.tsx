@@ -50,6 +50,6 @@ describe('Home Page', () => {
     render(await Home());
 
     expect(redirect).not.toHaveBeenCalledWith('/login');
-    expect(screen.getByText('Home')).toBeDefined();
+    expect(screen.getByText('Welcome John Doe')).toBeDefined();
   });
 });
