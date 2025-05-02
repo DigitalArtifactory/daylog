@@ -49,6 +49,7 @@ describe('Board Actions', () => {
   it('should update a board', async () => {
     prismaMock.board.update.mockResolvedValue(board as Board);
     const result = await updateBoard(board as Board);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...updatedBoard } = board;
     expect(result).toEqual(board);
     expect(prismaMock.board.update).toHaveBeenCalledWith({

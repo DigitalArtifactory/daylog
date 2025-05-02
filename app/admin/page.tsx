@@ -20,13 +20,21 @@ export default async function Admin() {
   if (user.role !== 'admin') {
     return redirect('/');
   }
+  const breadcrumbs = [
+    { name: 'Home', href: '/' },
+    { name: 'Admin', href: '/admin' },
+  ];
 
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Admin" title="Configuration"></PageHeader>
+        <PageHeader
+          preTitle="Admin"
+          title="Configuration"
+          breadcrumbs={breadcrumbs}
+        ></PageHeader>
         <PageBody>
           <div className="card">
             <div className="card-header">

@@ -39,6 +39,14 @@ export default async function Profile({
     );
   }
 
+  const breadcrumbs = [
+    { name: 'Home', href: '/' },
+    {
+      name: profile?.name ?? '',
+      href: `/profile/${(await params).userId}`,
+    },
+  ];
+
   const settings = await getSettings();
 
   return (
@@ -46,7 +54,7 @@ export default async function Profile({
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Profile" title="User data"></PageHeader>
+        <PageHeader title="User data" breadcrumbs={breadcrumbs}></PageHeader>
         <PageBody>
           {user.role === 'admin' && user.id !== profile.id && (
             <div className="alert alert-important alert-primary" role="alert">

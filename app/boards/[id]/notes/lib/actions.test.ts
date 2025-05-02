@@ -66,6 +66,7 @@ describe('Note Actions', () => {
     prismaMock.note.update.mockResolvedValue(note as Note);
 
     const result = await updateNote(note as Note);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, ...updatedNote } = note;
     expect(result).toEqual(note);
     expect(prisma.note.update).toHaveBeenCalledWith({

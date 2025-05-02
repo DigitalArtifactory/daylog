@@ -15,12 +15,17 @@ export default async function Home() {
     return redirect('/login');
   }
 
+  const breadcrumbs = [{ name: 'Home', href: '/' }];
+
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home" title={`Welcome ${user.name}`}></PageHeader>
+        <PageHeader
+          title={`Welcome ${user.name}`}
+          breadcrumbs={breadcrumbs}
+        ></PageHeader>
         <PageBody>
           <HomeTabs />
         </PageBody>

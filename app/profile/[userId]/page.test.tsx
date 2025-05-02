@@ -62,7 +62,6 @@ describe('Profile Page', () => {
 
     render(await Profile({ params: Promise.resolve(mockParams) }));
 
-    expect(screen.getByText('Profile')).toBeDefined();
     expect(screen.getByText('User data')).toBeDefined();
   });
 

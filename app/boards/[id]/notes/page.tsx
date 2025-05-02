@@ -9,6 +9,7 @@ import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+import { getBoard } from '../../lib/actions';
 import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
 import NoteCardPlaceholder from './components/NotePlaceholder';
@@ -24,15 +25,21 @@ export default async function Notes({
     return redirect('/login');
   }
   const { id } = await params;
+  const board = await getBoard(parseInt(id));
   const notes = await getNotes(parseInt(id));
   const settings = await getSettings();
+  const breadcrumbs = [
+    { name: 'Home', href: '/' },
+    { name: 'Boards', href: '/boards' },
+    { name: board?.title ?? 'Notes', href: `/boards/${id}/notes` },
+  ];
 
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader preTitle="Home > Notes" title="Notes">
+        <PageHeader title={board?.title} breadcrumbs={breadcrumbs}>
           <div className="btn-list">
             <a
               href="#"
