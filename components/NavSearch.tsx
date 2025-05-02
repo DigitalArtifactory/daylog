@@ -3,6 +3,7 @@
 import { search, SearchResult } from '@/app/lib/actions';
 import { truncateWord } from '@/utils/text';
 import { useEffect, useRef, useState } from 'react';
+import { ChalkboardIcon, NoteIcon, PuzzledIcon, SearchIcon } from './icons';
 
 export default function NavSearch() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -26,23 +27,7 @@ export default function NavSearch() {
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="icon icon-tabler icons-tabler-outline icon-tabler-search"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-            <path d="M21 21l-6 -6" />
-          </svg>
-          Search
+          <SearchIcon /> Search
         </button>
       </div>
       <div
@@ -68,22 +53,7 @@ export default function NavSearch() {
                   }}
                 />
                 <span className="input-icon-addon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="icon icon-tabler icons-tabler-outline icon-tabler-search"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                    <path d="M21 21l-6 -6" />
-                  </svg>
+                  <SearchIcon />
                 </span>
               </div>
             </div>
@@ -91,26 +61,7 @@ export default function NavSearch() {
               {results.length === 0 ? (
                 <div className="text-center">
                   <span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="icon icon-tabler text-secondary icon-lg icons-tabler-outline icon-tabler-mood-puzzled mb-2"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M14.986 3.51a9 9 0 1 0 1.514 16.284c2.489 -1.437 4.181 -3.978 4.5 -6.794" />
-                      <path d="M10 10h.01" />
-                      <path d="M14 8h.01" />
-                      <path d="M12 15c1 -1.333 2 -2 3 -2" />
-                      <path d="M20 9v.01" />
-                      <path d="M20 6a2.003 2.003 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483" />
-                    </svg>
+                    <PuzzledIcon />
                   </span>
                   <div className="text-secondary">Empty results</div>
                 </div>
@@ -122,49 +73,11 @@ export default function NavSearch() {
                         <div className="col-auto">
                           {item.type === 'note' ? (
                             <span title="Note">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="icon icon-tabler text-yellow icons-tabler-outline icon-tabler-note"
-                              >
-                                <path
-                                  stroke="none"
-                                  d="M0 0h24v24H0z"
-                                  fill="none"
-                                />
-                                <path d="M13 20l7 -7" />
-                                <path d="M13 20v-6a1 1 0 0 1 1 -1h6v-7a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7" />
-                              </svg>
+                              <NoteIcon />
                             </span>
                           ) : (
                             <span title="Board">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="icon icon-tabler text-blue icons-tabler-outline icon-tabler-chalkboard"
-                              >
-                                <path
-                                  stroke="none"
-                                  d="M0 0h24v24H0z"
-                                  fill="none"
-                                />
-                                <path d="M8 19h-3a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v11a1 1 0 0 1 -1 1" />
-                                <path d="M11 16m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-                              </svg>
+                              <ChalkboardIcon />
                             </span>
                           )}
                         </div>
