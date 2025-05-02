@@ -1,5 +1,6 @@
 'use client';
 
+import { TrashIcon, WarningIcon } from '@/components/icons';
 import { useActionState } from 'react';
 import { deleteAccount } from '../lib/actions';
 
@@ -32,26 +33,7 @@ export default function DangerZone({ profile }: BackupType) {
             data-bs-toggle="modal"
             data-bs-target="#delete-modal"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-tabler icons-tabler-outline icon-tabler-trash"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 7l16 0" />
-              <path d="M10 11l0 6" />
-              <path d="M14 11l0 6" />
-              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-            </svg>
-            Delete Account
+            <TrashIcon /> Delete Account
           </button>
           <div className="modal" id="delete-modal" tabIndex={-1}>
             <div className="modal-dialog modal-sm" role="document">
@@ -64,26 +46,11 @@ export default function DangerZone({ profile }: BackupType) {
                 ></button>
                 <div className="modal-status bg-danger"></div>
                 <div className="modal-body text-center py-4">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon mb-2 text-danger icon-lg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 9v2m0 4v.01" />
-                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
-                  </svg>
+                  <WarningIcon />
                   <h3>Are you sure?</h3>
                   <div className="text-secondary">
-                    Do you really want to delete your account? What you&apos;ve done
-                    cannot be undone.
+                    Do you really want to delete your account? What you&apos;ve
+                    done cannot be undone.
                   </div>
                   {!state?.success && state?.message && (
                     <div

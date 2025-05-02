@@ -1,5 +1,6 @@
 'use client';
 
+import { ConfusedIcon, SurprisedIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
@@ -49,24 +50,7 @@ export default function HomeTabs() {
     <Loader caption="Loading boards..." />
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-confuzed mb-1"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-        <path d="M9 10l.01 0" />
-        <path d="M15 10l.01 0" />
-        <path d="M9.5 16a10 10 0 0 1 6 -1.5" />
-      </svg>
+      <ConfusedIcon />
       <div className="text-secondary">You don&apos;t have boards yet...</div>
       <Link href={'/boards'}>Go to your boards and create one.</Link>
     </div>
@@ -195,24 +179,7 @@ export default function HomeTabs() {
 function EmptyNotes(boardId: number) {
   return (
     <div className="text-center mt-5">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="icon icon-tabler icon-lg text-secondary icons-tabler-outline icon-tabler-mood-surprised mb-1"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-        <path d="M9 9l.01 0" />
-        <path d="M15 9l.01 0" />
-        <path d="M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-      </svg>
+      <SurprisedIcon />
       <div className="text-secondary">You don&apos;t have notes yet...</div>
       <Link href={`/boards/${boardId}/notes`}>
         Go to this board and create one.

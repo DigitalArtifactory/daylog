@@ -1,6 +1,7 @@
 'use client';
 
 import { signup } from '@/app/register/lib/actions';
+import { AddIcon, ViewIcon } from '@/components/icons';
 import { useActionState, useEffect } from 'react';
 
 export default function UserModal() {
@@ -20,22 +21,7 @@ export default function UserModal() {
         data-bs-toggle="modal"
         data-bs-target="#userModal"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="icon"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          strokeWidth="2"
-          stroke="currentColor"
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
-        </svg>
+        <AddIcon />
         Create new user
       </button>
       <div className="modal" id="userModal" tabIndex={-1}>
@@ -110,26 +96,7 @@ export default function UserModal() {
                         aria-label="Show password"
                         data-bs-original-title="Show password"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="icon"
-                        >
-                          <path
-                            stroke="none"
-                            d="M0 0h24v24H0z"
-                            fill="none"
-                          ></path>
-                          <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                          <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
-                        </svg>
+                        <ViewIcon />
                       </a>
                     </span>
                   </div>
