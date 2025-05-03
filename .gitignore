@@ -48,3 +48,6 @@ settings.json
 
 # storage default folder
 /storage
+
+# test coverage file
+sonar-report.xml
