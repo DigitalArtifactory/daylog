@@ -13,7 +13,7 @@ export default defineConfig({
       ['vitest-sonar-reporter', { outputFile: 'sonar-report.xml' }],
     ],
     coverage: {
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text', 'json', 'html', 'lcov'],
     },
   },
 });
