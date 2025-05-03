@@ -23,7 +23,7 @@ export default async function NoteCard({ noteId }: NoteCardType) {
   const settings = await getSettings();
 
   return (
-    <div className="card d-flex flex-column">
+    <div className="card d-flex flex-column" style={{ overflow: 'clip' }}>
       {note?.imageUrl && (
         <Link
           className="ratio ratio-21x9"
