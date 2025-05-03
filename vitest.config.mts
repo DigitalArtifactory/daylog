@@ -21,6 +21,8 @@ export default defineConfig({
         '**/route.ts',
         '.next/**',
         'prisma/**',
+        '**/*.test.ts',
+        '**/*.test.tsx',
       ],
     },
   },
