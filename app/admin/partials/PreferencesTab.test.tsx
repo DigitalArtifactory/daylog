@@ -102,4 +102,25 @@ describe('PreferencesTab', () => {
 
     expect(saveSettings).toHaveBeenCalled();
   });
+
+  it('shows success message on save', async () => {
+    mocks.getSettings.mockResolvedValue({
+      mfa: false,
+      allowReg: false,
+      allowUnsplash: false,
+    });
+    mocks.saveSettings.mockResolvedValue({
+      success: true,
+      message: 'Settings saved successfully',
+    });
+
+    render(<PreferencesTab />);
+
+    const saveButton = await screen.findByText('Save Settings');
+    fireEvent.click(saveButton);
+
+    expect(
+      await screen.findByText('Settings saved successfully')
+    ).toBeInTheDocument();
+  });
 });

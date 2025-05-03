@@ -100,8 +100,8 @@ export default function PreferencesTab() {
           <p className="text-muted">
             Go to{' '}
             <a href="https://unsplash.com/developers" target="_blank">
-              Unsplash developer page{' '}
-            </a>
+              Unsplash developer page
+            </a>{' '}
             to create an account and get your API key.
           </p>
         </div>
