@@ -14,6 +14,14 @@ export default defineConfig({
     ],
     coverage: {
       reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        'components/icons/**',
+        '**/*.js',
+        '**/*.jsx',
+        '**/route.ts',
+        '.next/**',
+        'prisma/**',
+      ],
     },
   },
 });

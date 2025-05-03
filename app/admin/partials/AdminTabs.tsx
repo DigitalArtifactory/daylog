@@ -29,7 +29,10 @@ export default function AdminTabs() {
           </li>
         </>
       ) : (
-        <div style={{ height: '37px' }}></div>
+        <div
+          data-testid="admin-tabs-placeholder"
+          style={{ height: '37px' }}
+        ></div>
       )}
     </ul>
   );
