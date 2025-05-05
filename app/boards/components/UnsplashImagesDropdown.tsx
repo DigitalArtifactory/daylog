@@ -79,7 +79,7 @@ export default function UnsplashImagesDropdown({
       >
         Search Unsplash images
       </button>
-      <div className="dropdown-menu p-3">
+      <div className="dropdown-menu p-3 w-full">
         <div className="mb-3">
           <label className="form-label">Search by keyword</label>
           <input
@@ -97,7 +97,7 @@ export default function UnsplashImagesDropdown({
             }}
           />
         </div>
-        <div className="d-flex flex-wrap pt-2" style={{ width: '456px' }}>
+        <div className="d-flex flex-wrap pt-2">
           {loading && <Loader caption="Loading images..."></Loader>}
           {!loading && images.length === 0 && (
             <div className="text-secondary w-full text-center py-4">
@@ -105,8 +105,15 @@ export default function UnsplashImagesDropdown({
             </div>
           )}
           {images.map((image) => (
-            <div key={image.id} className="col-6 col-sm-4 p-1">
-              <label className="form-imagecheck h-100">
+            <div
+              key={image.id}
+              className="col-6 col-md-4 p-1"
+              style={{
+                minHeight: '100px',
+                maxHeight: '100px',
+              }}
+            >
+              <label className="form-imagecheck h-100 w-full">
                 <input
                   name="form-imagecheck-radio"
                   type="radio"
@@ -124,14 +131,14 @@ export default function UnsplashImagesDropdown({
                     title={'Photo by ' + image.user.name + ' on Unsplash'}
                     src={image.urls.thumb}
                     alt={image.description || 'Unsplash image'}
-                    width={150}
+                    width={300}
                     height={0}
                     style={{
                       width: 'auto',
                       height: '100px',
                       objectFit: 'cover',
                     }}
-                    className="form-imagecheck-image h-100"
+                    className="form-imagecheck-image h-100 w-full"
                     priority
                   />
                 </span>
