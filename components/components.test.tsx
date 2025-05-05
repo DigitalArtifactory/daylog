@@ -104,11 +104,12 @@ describe('Component Tests', () => {
   it('renders OTPInputWrapper component with slots', () => {
     vi.mock('input-otp', () => ({
       __esModule: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       OTPInput: ({ render }: { render: any }) => {
         return <div>{render({ slots: [] })}</div>;
       },
       SlotProps: ({ char, isActive }: { char: string; isActive: boolean }) => (
-        <div className={`slot ${isActive ? 'active' : ''}`}>{char}</div>
+        <div className={`slot ${isActive ? 'active' : ''}`}>{char}q</div>
       ),
     }));
     const { container } = render(<OTPInputWrapper onChange={() => {}} />);
