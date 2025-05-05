@@ -23,6 +23,7 @@ export default defineConfig({
         'prisma/**',
         '**/*.test.ts',
         '**/*.test.tsx',
+        'pages/layout.tsx',
       ],
     },
   },

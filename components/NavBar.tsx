@@ -88,7 +88,7 @@ export default function NavBar({ user }: { user: User }) {
         </li>
       </ul>
       {user?.role === 'admin' && (
-        <ul className="navbar-nav mb-2 mb-lg-0">
+        <ul data-testid="admin-nav" className="navbar-nav mb-2 mb-lg-0">
           <li
             className={`nav-item ${
               adminPattern.test(path) ? 'active text-primary' : ''
