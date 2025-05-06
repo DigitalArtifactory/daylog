@@ -31,7 +31,6 @@ export default async function Admin() {
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader
-          preTitle="Admin"
           title="Configuration"
           breadcrumbs={breadcrumbs}
         ></PageHeader>
