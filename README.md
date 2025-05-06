@@ -81,7 +81,7 @@ Your daylog application should now be running in a production environment.
 - [ ] Improve grammar 📖
 - [ ] Enhance MD editor 🖊
 - [ ] Improve user security (data encryption, account recovery, email verification) 🔐
-- [ ] Create breadcrumbs navigation 🚢
+- [x] Create breadcrumbs navigation 🚢
 - [ ] Create public link sharing option ✉
 - [ ] Create shared boards 📰
 - [ ] Improve production deployment instructions 🛠
