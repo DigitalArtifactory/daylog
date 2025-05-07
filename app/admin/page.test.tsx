@@ -61,7 +61,6 @@ describe('Admin Page', () => {
 
     render(await Admin());
 
-    expect(screen.getByText('Admin')).toBeDefined();
     expect(screen.getByText('Configuration')).toBeDefined();
     expect(screen.getByText('NavHeader')).toBeDefined();
     expect(screen.getByText('NavMenu')).toBeDefined();

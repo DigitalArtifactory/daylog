@@ -19,12 +19,7 @@ vi.mock('@/components/Page', () => ({
 }));
 
 vi.mock('@/components/PageHeader', () => ({
-  default: vi.fn(({ preTitle, title }: { preTitle: string; title: string }) => (
-    <div>
-      <div>{preTitle}</div>
-      <div>{title}</div>
-    </div>
-  )),
+  default: vi.fn(({ title }: { title: string }) => <div>{title}</div>),
 }));
 
 vi.mock('@/components/PageBody', () => ({
