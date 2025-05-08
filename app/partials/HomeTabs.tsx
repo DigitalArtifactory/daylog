@@ -136,7 +136,7 @@ export default function HomeTabs() {
                           <div className="card mb-2">
                             {note.imageUrl && (
                               <Link
-                                href={`/boards/${note.id}/notes/${note.id}`}
+                                href={`/boards/${board.id}/notes/${note.id}`}
                                 className="stretched-link text-secondary"
                               >
                                 <Image
@@ -155,7 +155,7 @@ export default function HomeTabs() {
                             )}
                             <div className="card-body">
                               <Link
-                                href={`/boards/${note.id}/notes/${note.id}`}
+                                href={`/boards/${board.id}/notes/${note.id}`}
                                 className="stretched-link text-secondary"
                               >
                                 {note.title}

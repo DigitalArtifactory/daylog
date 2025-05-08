@@ -16,13 +16,13 @@ import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
 export default async function NotePage({
   params,
 }: {
-  params: Promise<{ noteId: string }>;
+  params: Promise<{ id: string, noteId: string }>;
 }) {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');
   }
-  const board = await getBoard(parseInt((await params).noteId));
+  const board = await getBoard(parseInt((await params).id));
   const note = await getNote(parseInt((await params).noteId));
   const breadcrumbs = [
     { name: 'Home', href: '/' },
