@@ -17,7 +17,7 @@
 ### Production Installation
 
 To install and run daylog in a production environment, follow these steps:
-*(I'm currently working in simplifying this steps)*
+*(I'm currently working in simplifying this steps with an option using Docker and a bash script)*
 
 1. **Clone the repository:**
   ```bash
@@ -31,22 +31,10 @@ To install and run daylog in a production environment, follow these steps:
   ```
 
 3. **Set up environment variables:**
-  Create a `.env` file in the root directory and configure the necessary environment variables. Refer to `.env.example` for the required variables. 
-  **Important:** by default daylog uses SQLite, you can change your conection string to a postgress or any other database engine supported by Prisma ORM. You can follow their [guide](https://www.prisma.io/docs/orm/reference/connection-urls) to achieve this step.
-
-4. **Edit the Prisma schema:**
-  Open the `prisma/schema.prisma` file and update the `datasource` provider to your desired database engine. For example, to use PostgreSQL, modify the provider and connection URL as follows:
-  ```prisma
-  datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-  }
-  ```
-  Ensure that you removed `prisma/migrations` directory and changed the `DATABASE_URL` environment variable in your `.env` file is set to the correct connection string for your database.
+  Copy `.env.example` and setup your own variables. **Important:** by default daylog uses PostgreSQL, you can change your conection string to any other database engine supported by Prisma ORM. You can follow their [guide](https://www.prisma.io/docs/orm/reference/connection-urls) to achieve this step.
 
 5. **Initialize the Prisma database:**
   ```bash
-  npx prisma migrate dev --name init
   npx prisma migrate deploy
   ```
 
@@ -60,7 +48,7 @@ To install and run daylog in a production environment, follow these steps:
   npm start
   ```
 
-8. **Configure a process manager:**
+8. **(optional) Configure a process manager:**
   Use a process manager like PM2 to keep your application running:
   ```bash
   npm install -g pm2
@@ -107,25 +95,14 @@ Your daylog application should now be running in a production environment.
 
 ### Local Development
 
-To set up a local development environment for daylog, follow these steps:
+To set up a local development environment for daylog, you can follow the same steps as Production but with this changes:
 
-1. **Clone the repository:**
+1. **Set up dev environment variable:**
+  Change `ENVIRONMENT` variable to `'development'`
+
+5. **Initialize the Prisma database:**
   ```bash
-  git clone https://github.com/DavidArtifacts/daylog.git
-  cd daylog
-  ```
-
-2. **Install dependencies:**
-  ```bash
-  npm install
-  ```
-
-3. **Set up environment variables:**
-  Create a `.env` file in the root directory and configure the necessary environment variables. Refer to `.env.example` for the required variables.
-
-5. **Initialize the Prisma dev database:**
-  ```bash
-  npx prisma migrate dev
+  npx prisma deploy
   ```
 
 4. **Run the development server:**

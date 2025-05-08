@@ -41,7 +41,7 @@ next-env.d.ts
 
 # database
 /prisma/database
-/prisma/migrations
+/prisma/generated/client
 
 # settings
 settings.json

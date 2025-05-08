@@ -1,12 +1,16 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// daylog uses Prisma to manage its database schema.
+// We use PostgreSQL as the default database provider, but you can change it to MSSQLServer or MySQL if you prefer.
+// If you want to use a different database provider, you might need to change this schema a bit,
+// and you can also use the Prisma Migrate tool to generate the migration files for you.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
