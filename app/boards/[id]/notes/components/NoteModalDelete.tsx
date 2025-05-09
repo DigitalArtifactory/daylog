@@ -1,7 +1,7 @@
 'use client';
 
 import { TrashIcon, WarningIcon } from '@/components/icons';
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { deleteNote } from '../lib/actions';

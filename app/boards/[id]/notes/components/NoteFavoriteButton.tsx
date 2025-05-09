@@ -1,7 +1,7 @@
 'use client';
 
 import { HeartFilledIcon, HeartIcon } from '@/components/icons';
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import { updateNote } from '../lib/actions';
 

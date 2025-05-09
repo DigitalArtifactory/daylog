@@ -1,12 +1,12 @@
+import { User } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
-import { User } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  deleteUser,
-  getSettings,
-  getUsers,
-  saveSettings,
-  setAdmin,
+    deleteUser,
+    getSettings,
+    getUsers,
+    saveSettings,
+    setAdmin,
 } from './actions';
 
 const mocks = vi.hoisted(() => ({

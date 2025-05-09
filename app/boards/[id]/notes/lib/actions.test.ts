@@ -1,16 +1,16 @@
 import { prisma } from '@/prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
 import { removeFile, saveBase64File } from '@/utils/storage';
-import { Note } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  createNote,
-  deleteImage,
-  deleteNote,
-  getNote,
-  getNotes,
-  saveImage,
-  updateNote,
+    createNote,
+    deleteImage,
+    deleteNote,
+    getNote,
+    getNotes,
+    saveImage,
+    updateNote,
 } from './actions';
 
 const mocks = vi.hoisted(() => ({

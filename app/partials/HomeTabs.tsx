@@ -2,10 +2,10 @@
 
 import { ConfusedIcon, SurprisedIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
+import { Board, Note } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
-import { Board, Note } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';

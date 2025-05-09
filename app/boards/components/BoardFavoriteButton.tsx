@@ -2,7 +2,7 @@
 
 import { updateBoard } from '@/app/boards/lib/actions';
 import { HeartFilledIcon, HeartIcon } from '@/components/icons';
-import { Board } from '@prisma/client';
+import { Board } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 
 type BoardFavoriteButtonType = {

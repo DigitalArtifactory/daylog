@@ -1,10 +1,10 @@
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NoteModalForm from './NoteModalForm';

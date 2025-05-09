@@ -1,7 +1,7 @@
 'use client';
 
 import { SaveIcon } from '@/components/icons';
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import { useActionState } from 'react';
 import { updateProfile } from '../lib/actions';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { useState } from 'react';
 import { updateNote } from '../../lib/actions';
 import Editor from '../components/Editor';

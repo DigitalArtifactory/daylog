@@ -1,6 +1,6 @@
 'use server';
 
-import type { Session, User } from '@prisma/client';
+import type { Session, User } from '@/prisma/generated/client';
 
 import { getSettings } from '@/app/admin/lib/actions';
 import { prisma } from '@/prisma/client';
@@ -12,10 +12,10 @@ import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { setSessionTokenCookie } from './cookies';
 import {
-  FormState,
-  SigninFormSchema,
-  ValidateMFAFormSchema,
-  ValidateMFAFormState,
+    FormState,
+    SigninFormSchema,
+    ValidateMFAFormSchema,
+    ValidateMFAFormState,
 } from './definitions';
 
 export async function validateAdminUserNotExists() {

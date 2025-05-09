@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ProfileInfo from './ProfileInfo';

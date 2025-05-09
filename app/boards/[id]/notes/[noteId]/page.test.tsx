@@ -1,6 +1,6 @@
 import '@/utils/test/commonMocks';
 
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { cleanup, render, screen } from '@testing-library/react';
 import { redirect } from 'next/navigation';
 import { beforeEach, describe, expect, it, vi } from 'vitest';

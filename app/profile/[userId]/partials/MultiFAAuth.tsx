@@ -2,8 +2,8 @@
 
 import { OTPIcon } from '@/components/icons';
 import OTPInputWrapper from '@/components/OTPInputWrapper';
+import { User } from '@/prisma/generated/client';
 import { generateTOTPSecret, generateTOTPUrl } from '@/utils/totp';
-import { User } from '@prisma/client';
 import { QRCodeSVG } from 'qrcode.react';
 import { useActionState, useEffect, useState } from 'react';
 import { deleteMFA, updateMFA } from '../lib/actions';

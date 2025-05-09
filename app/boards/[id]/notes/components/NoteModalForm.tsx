@@ -2,8 +2,8 @@
 
 import UnsplashImagesDropdown from '@/app/boards/components/UnsplashImagesDropdown';
 import { TrashIcon } from '@/components/icons';
+import { Note } from '@/prisma/generated/client';
 import { getImageUrlOrFile, resizeImage } from '@/utils/image';
-import { Note } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';

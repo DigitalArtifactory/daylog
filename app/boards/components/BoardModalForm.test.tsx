@@ -1,10 +1,10 @@
-import { Board } from '@prisma/client';
+import { Board } from '@/prisma/generated/client';
 import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BoardModalForm from './BoardModalForm';

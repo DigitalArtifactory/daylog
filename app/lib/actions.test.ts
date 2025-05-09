@@ -1,5 +1,5 @@
+import { Board, Note } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
-import { Board, Note } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { describe, expect, it, vi } from 'vitest';
 import { deleteSessionTokenCookie } from '../login/lib/cookies';

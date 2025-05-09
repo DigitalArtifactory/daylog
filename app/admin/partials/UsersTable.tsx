@@ -2,7 +2,7 @@
 
 import { WarningIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import { useEffect, useState } from 'react';
 import { deleteUser, getUsers, setAdmin as setRole } from '../lib/actions';
 

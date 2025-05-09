@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import { cleanup, render, screen } from '@testing-library/react';
 import { describe } from 'node:test';
 import { beforeEach, expect, it, vi } from 'vitest';

@@ -1,14 +1,14 @@
 'use client';
 
 import {
-  createBoard,
-  deleteImage,
-  saveImage,
-  updateBoard,
+    createBoard,
+    deleteImage,
+    saveImage,
+    updateBoard,
 } from '@/app/boards/lib/actions';
 import { TrashIcon } from '@/components/icons';
+import { Board, Prisma } from '@/prisma/generated/client';
 import { getImageUrlOrFile, resizeImage } from '@/utils/image';
-import { Board, Prisma } from '@prisma/client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Note } from '@prisma/client';
+import { Note } from '@/prisma/generated/client';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { updateNote } from '../../lib/actions';

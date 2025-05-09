@@ -2,7 +2,7 @@
 
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import * as fs from 'fs';
 import { SettingsFormState } from './definitions';
 

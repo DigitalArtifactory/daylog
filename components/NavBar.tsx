@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@prisma/client';
+import { User } from '@/prisma/generated/client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavSearch from './NavSearch';

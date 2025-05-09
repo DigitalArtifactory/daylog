@@ -2,9 +2,9 @@
 
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
+import { Note, Prisma } from '@/prisma/generated/client';
 import { removeFile, saveBase64File } from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
-import { Note, Prisma } from '@prisma/client';
 
 import fs from 'fs';
 

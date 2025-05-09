@@ -2,7 +2,7 @@
 
 import { deleteBoard } from '@/app/boards/lib/actions';
 import { TrashIcon, WarningIcon } from '@/components/icons';
-import { Board } from '@prisma/client';
+import { Board } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 

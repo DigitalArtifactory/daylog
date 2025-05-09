@@ -1,15 +1,15 @@
+import { Board, Prisma, User } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
 import { removeFile } from '@/utils/storage';
-import { Board, Prisma, User } from '@prisma/client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  createBoard,
-  deleteBoard,
-  deleteImage,
-  getBoard,
-  getBoards,
-  saveImage,
-  updateBoard,
+    createBoard,
+    deleteBoard,
+    deleteImage,
+    getBoard,
+    getBoards,
+    saveImage,
+    updateBoard,
 } from './actions';
 
 const mocks = vi.hoisted(() => ({
