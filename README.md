@@ -36,6 +36,7 @@ To install and run daylog in a production environment, follow these steps:
 5. **Initialize the Prisma database:**
   ```bash
   npx prisma migrate deploy
+  npx prisma generate
   ```
 
 6. **Build the application:**
