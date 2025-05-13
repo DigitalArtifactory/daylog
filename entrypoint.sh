@@ -1,24 +1,24 @@
 #!/bin/sh
-echo "Esperando a que la base de datos esté disponible..."
+echo "Waiting for the database to be available..."
 
-# Esperar a que PostgreSQL esté listo (opcional si ya usas depends_on con healthcheck)
+# Wait until PostgreSQL is ready (optional if you're already using depends_on with healthcheck)
 until nc -z db 5432; do
-  echo "PostgreSQL aún no responde en db:5432..."
+  echo "PostgreSQL is still not responding on db:5432..."
   sleep 2
 done
 
-echo "Base de datos disponible. Ejecutando migraciones Prisma..."
+echo "Database is available. Running Prisma migrations..."
 
 npx prisma migrate deploy
 
-echo "Generando cliente Prisma..."
+echo "Generating Prisma client..."
 
 npx prisma generate
 
-echo "Compilando aplicación..."
+echo "Building application..."
 
 npm run build
 
-echo "Iniciando aplicación..."
+echo "Starting application..."
 
 npm run start
