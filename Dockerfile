@@ -1,7 +1,7 @@
-# Etapa de construcción
+# Build stage
 FROM node:24-alpine AS builder
 
-# Instala OpenSSL y otras dependencias necesarias
+# Install OpenSSL and other required dependencies
 RUN apk add --no-cache openssl
 
 WORKDIR /app
@@ -11,31 +11,31 @@ RUN npm install
 
 COPY . .
 
-# No ejecutamos `npx prisma migrate deploy` aquí, porque el contenedor `db` no está disponible en tiempo de build.
+# We don't run `npx prisma migrate deploy` here, because the `db` container is not available at build time.
 
-# Etapa final
+# Final stage
 FROM node:24-alpine
 
-# Instala OpenSSL en la etapa final también
+# Install OpenSSL in the final stage as well
 RUN apk add --no-cache openssl
 
 WORKDIR /app
 
 COPY --from=builder /app /app
 
-# Copiamos el entrypoint
+# Copy the entrypoint
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +wxr /app/entrypoint.sh
 
-# Instalamos solo lo necesario (puedes usar npm ci si tienes package-lock.json)
+# Install only what's necessary (you can use npm ci if you have a package-lock.json)
 RUN npm install --omit=dev
 
-# Prisma CLI si es necesario (opcional, depende de cómo esté instalado)
+# Prisma CLI if needed (optional, depends on how it's installed)
 # RUN npm install -g prisma
 
-# Expone el puerto
+# Expose the port
 EXPOSE 3000
 
-# Entrypoint que se encargará de correr migraciones y luego iniciar la app
+# Entrypoint that will run migrations and then start the app
 ENTRYPOINT ["/app/entrypoint.sh"]
 #CMD ["tail", "-f", "/dev/null"]
