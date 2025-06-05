@@ -84,8 +84,8 @@ export async function saveImage(
       removeFile(existentFileName);
     }
 
-    let urlKeyOrPath = await saveAndGetImageFile(imageUrl);
-    console.log('Image saved at:', urlKeyOrPath);
+    const urlKeyOrPath = await saveAndGetImageFile(imageUrl);
+
     await prisma.board.update({
       where: { id: boardId, userId: user?.id },
       data: { imageUrl: urlKeyOrPath },
