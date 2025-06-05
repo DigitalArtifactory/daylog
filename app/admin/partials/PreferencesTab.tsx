@@ -7,6 +7,7 @@ export default function PreferencesTab() {
   const [isMfaChecked, setIsMfaChecked] = useState(false);
   const [isAllowRegChecked, setIsAllowRegChecked] = useState(false);
   const [isUnsplashChecked, setIsUnsplashChecked] = useState(false);
+  const [isS3Checked, setIsS3Checked] = useState(false);
 
   const [state, action, pending] = useActionState(saveSettings, undefined);
 
@@ -16,6 +17,7 @@ export default function PreferencesTab() {
       setIsMfaChecked(settings?.mfa ?? false);
       setIsAllowRegChecked(settings?.allowReg ?? false);
       setIsUnsplashChecked(settings?.allowUnsplash ?? false);
+      setIsS3Checked(settings?.enableS3 ?? false);
     };
     loadSettings();
   }, []);
@@ -25,6 +27,7 @@ export default function PreferencesTab() {
       setIsMfaChecked(state.data.mfa);
       setIsAllowRegChecked(state.data.allowReg);
       setIsUnsplashChecked(state.data.allowUnsplash);
+      setIsS3Checked(state.data.enableS3);
     }
   }, [state]);
 
@@ -103,6 +106,34 @@ export default function PreferencesTab() {
               Unsplash developer page
             </a>{' '}
             to create an account and get your API key.
+          </p>
+        </div>
+      </div>
+      <h3 className="card-title">Storage</h3>
+      <div className="text-secondary">
+        Customize your storage options for images and files.
+      </div>
+      <div className="pt-4 mb-3">
+        <div className="form-check form-switch">
+          <input
+            name="enableS3"
+            className="form-check-input"
+            defaultValue={'active'}
+            checked={isS3Checked}
+            onChange={(e) => setIsS3Checked(e.target.checked)}
+            type="checkbox"
+            role="switch"
+            id="flexSwitchCheckDefaultEnableS3"
+          />
+          <label
+            className="form-check-label"
+            htmlFor="flexSwitchCheckDefaultEnableS3"
+          >
+            Enable S3 Storage
+          </label>
+          <p className="text-muted text-sm mb-0">
+            You need to create an S3 bucket and add your credentials in the
+            enviroment variables to use this feature.
           </p>
         </div>
       </div>

@@ -59,6 +59,8 @@ export function bytesToBase64(bytes?: Uint8Array): string | null {
 export function getImageUrlOrFile(imageUrl: string): string {
   if (imageUrl.startsWith('http')) {
     return imageUrl;
+  } else if (imageUrl.startsWith('S3')) {
+    return `/api/v1/storage?key=${imageUrl}`;
   } else {
     return `/api/v1/images?filePath=${imageUrl}`;
   }

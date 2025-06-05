@@ -3,7 +3,8 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { Note, Prisma } from '@/prisma/generated/client';
-import { removeFile, saveBase64File } from '@/utils/storage';
+import { saveAndGetImageFile } from '@/utils/file';
+import { removeFile } from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
 
 import fs from 'fs';
@@ -25,9 +26,9 @@ export async function createNote(
 
 export async function updateNote(note: Note): Promise<Note | null> {
   const { user } = await getCurrentSession();
-  const {id, ...updateNote } = note;
+  const { id, ...updateNote } = note;
   const updatedNote = await prisma.note.update({
-    where: { id, boards: { userId: user?.id } },
+    where: { id, boards: { id: note.boardsId!, userId: user?.id } },
     data: {
       ...updateNote,
     },
@@ -79,13 +80,12 @@ export async function saveImage(
     if (existentFileName && fs.existsSync(existentFileName)) {
       removeFile(existentFileName);
     }
-    
-    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
-    if (isBase64(imageUrl)) urlOrFilepath = saveBase64File(imageUrl);
+
+    let urlKeyOrPath = await saveAndGetImageFile(imageUrl);
 
     await prisma.note.update({
       where: { id: noteId, boards: { userId: user?.id } },
-      data: { imageUrl: urlOrFilepath },
+      data: { imageUrl: urlKeyOrPath },
     });
 
     return imageUrl;
