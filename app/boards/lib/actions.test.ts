@@ -3,19 +3,34 @@ import { prismaMock } from '@/prisma/singleton';
 import { removeFile } from '@/utils/storage';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-    createBoard,
-    deleteBoard,
-    deleteImage,
-    getBoard,
-    getBoards,
-    saveImage,
-    updateBoard,
+  createBoard,
+  deleteBoard,
+  deleteImage,
+  getBoard,
+  getBoards,
+  saveImage,
+  updateBoard,
 } from './actions';
 
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
   removeFile: vi.fn(),
   saveBase64File: vi.fn(),
+  getSettings: vi.fn(() => ({
+    mfa: false,
+    allowReg: false,
+    allowUnsplash: false,
+    enableS3: false,
+  })),
+  uploadFileS3: vi.fn(),
+}));
+
+vi.mock('@/app/api/v1/storage/lib/s3Storage', () => ({
+  uploadFileS3: mocks.uploadFileS3,
+}));
+
+vi.mock('@/app/admin/lib/actions', () => ({
+  getSettings: mocks.getSettings,
 }));
 
 vi.mock('@/app/login/lib/actions', () => ({
@@ -25,6 +40,12 @@ vi.mock('@/app/login/lib/actions', () => ({
 vi.mock('@/utils/storage', () => ({
   removeFile: mocks.removeFile,
   saveBase64File: mocks.saveBase64File,
+  generateFileFromBase64: vi.fn().mockReturnValue({
+    fileName: 'mocked.jpg',
+    buffer: Buffer.from('mocked'),
+    ext: 'jpg',
+    contentLength: 6,
+  }),
 }));
 
 describe('Board Actions', () => {
@@ -99,6 +120,23 @@ describe('Board Actions', () => {
       where: { id: board.id, userId: user.id },
       data: { imageUrl: filepath },
     });
+  });
+
+  it('should upload image to S3', async () => {
+    const boardId = 1;
+    const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA';
+
+    mocks.getSettings.mockResolvedValue({
+      mfa: false,
+      allowReg: false,
+      allowUnsplash: false,
+      enableS3: true,
+    });
+    
+    const key = await saveImage(boardId, imageBase64);
+
+    expect(mocks.uploadFileS3).toHaveBeenCalled();
+    expect(key).not.toBeNull();
   });
 
   it('should save an image from url', async () => {

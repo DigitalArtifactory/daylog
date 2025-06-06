@@ -17,7 +17,12 @@ export function saveBase64File(base64String: string) {
   return filePath;
 }
 
-export function generateFileFromBase64(base64String: string) {
+export function generateFileFromBase64(base64String: string): {
+  fileName: string;
+  buffer: Buffer<ArrayBuffer>;
+  ext: string;
+  contentLength: number;
+} {
   const matches =
     base64String.match(/^data:(image\/\w+);base64,(.+)$/) ||
     base64String.match(/^data:(\w+\/[\w-+\d.]+);base64,(.+)$/); // For general files

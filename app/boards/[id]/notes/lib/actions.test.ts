@@ -1,22 +1,40 @@
 import { prisma } from '@/prisma/client';
 import { Note } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
-import { removeFile, saveBase64File } from '@/utils/storage';
+import {
+  removeFile,
+  saveBase64File
+} from '@/utils/storage';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-    createNote,
-    deleteImage,
-    deleteNote,
-    getNote,
-    getNotes,
-    saveImage,
-    updateNote,
+  createNote,
+  deleteImage,
+  deleteNote,
+  getNote,
+  getNotes,
+  saveImage,
+  updateNote,
 } from './actions';
 
 const mocks = vi.hoisted(() => ({
   removeFile: vi.fn(),
   saveBase64File: vi.fn(),
   getCurrentSession: vi.fn(),
+  getSettings: vi.fn(() => ({
+    mfa: false,
+    allowReg: false,
+    allowUnsplash: false,
+    enableS3: false,
+  })),
+  uploadFileS3: vi.fn(),
+}));
+
+vi.mock('@/app/api/v1/storage/lib/s3Storage', () => ({
+  uploadFileS3: mocks.uploadFileS3,
+}));
+
+vi.mock('@/app/admin/lib/actions', () => ({
+  getSettings: mocks.getSettings,
 }));
 
 vi.mock('@/app/login/lib/actions', () => ({
@@ -26,6 +44,12 @@ vi.mock('@/app/login/lib/actions', () => ({
 vi.mock('@/utils/storage', () => ({
   removeFile: mocks.removeFile,
   saveBase64File: mocks.saveBase64File,
+  generateFileFromBase64: vi.fn().mockReturnValue({
+    fileName: 'mocked.jpg',
+    buffer: Buffer.from('mocked'),
+    ext: 'jpg',
+    contentLength: 6,
+  }),
 }));
 
 describe('Note Actions', () => {
@@ -151,6 +175,23 @@ describe('Note Actions', () => {
       where: { id: noteId, boards: { userId: user.id } },
       data: { imageUrl: fileurl },
     });
+  });
+
+  it('should upload image to S3', async () => {
+    const noteId = 1;
+    const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA';
+
+    mocks.getSettings.mockResolvedValue({
+      mfa: false,
+      allowReg: false,
+      allowUnsplash: false,
+      enableS3: true,
+    });
+    
+    const key = await saveImage(noteId, imageBase64);
+
+    expect(mocks.uploadFileS3).toHaveBeenCalled();
+    expect(key).not.toBeNull();
   });
 
   it('should delete an image', async () => {

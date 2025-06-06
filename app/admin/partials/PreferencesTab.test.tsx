@@ -23,6 +23,7 @@ describe('PreferencesTab', () => {
       mfa: true,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
 
     render(<PreferencesTab />);
@@ -35,6 +36,7 @@ describe('PreferencesTab', () => {
     expect(
       screen.getByLabelText('Allow Unsplash as a source for images')
     ).not.toBeChecked();
+    expect(screen.getByLabelText('Enable S3 Storage')).not.toBeChecked();
   });
 
   it('toggles MFA checkbox', async () => {
@@ -42,6 +44,7 @@ describe('PreferencesTab', () => {
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
 
     render(<PreferencesTab />);
@@ -59,6 +62,7 @@ describe('PreferencesTab', () => {
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
 
     render(<PreferencesTab />);
@@ -76,6 +80,7 @@ describe('PreferencesTab', () => {
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
 
     render(<PreferencesTab />);
@@ -93,6 +98,7 @@ describe('PreferencesTab', () => {
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
 
     render(<PreferencesTab />);
@@ -108,6 +114,7 @@ describe('PreferencesTab', () => {
       mfa: false,
       allowReg: false,
       allowUnsplash: false,
+      enableS3: false,
     });
     mocks.saveSettings.mockResolvedValue({
       success: true,
