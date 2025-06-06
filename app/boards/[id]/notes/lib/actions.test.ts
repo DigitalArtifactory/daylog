@@ -16,6 +16,13 @@ import {
   updateNote,
 } from './actions';
 
+// Mock S3 environment variables for tests
+process.env.S3_ENDPOINT = 'https://mock-s3-endpoint';
+process.env.S3_REGION = 'mock-region';
+process.env.S3_ACCESS_KEY_ID = 'mock-access-key-id';
+process.env.S3_SECRET_ACCESS_KEY = 'mock-secret-access-key';
+process.env.S3_BUCKET = 'mock-bucket';
+
 const mocks = vi.hoisted(() => ({
   removeFile: vi.fn(),
   saveBase64File: vi.fn(),
