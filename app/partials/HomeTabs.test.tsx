@@ -88,6 +88,7 @@ describe('HomeTabs', () => {
     mocks.getNotes.mockResolvedValue([]);
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
+    await waitFor(() => expect(screen.queryByText('Loading boards...')).not.toBeInTheDocument());
     fireEvent.click(screen.getByText('Board 1'));
     await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
     await waitFor(() =>
