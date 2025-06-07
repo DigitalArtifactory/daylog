@@ -3,7 +3,10 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { Board, Prisma } from '@/prisma/generated/client';
-import { removeFile, saveBase64File } from '@/utils/storage';
+import { saveAndGetImageFile } from '@/utils/file';
+import {
+  removeFile
+} from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
 
 import fs from 'fs';
@@ -23,7 +26,7 @@ export async function createBoard(
 
 export async function updateBoard(board: Board): Promise<Board | null> {
   const { user } = await getCurrentSession();
-  const {id, ...updateBoard} = board;
+  const { id, ...updateBoard } = board;
   const updatedBoard = await prisma.board.update({
     where: { id, userId: user?.id },
     data: {
@@ -81,12 +84,11 @@ export async function saveImage(
       removeFile(existentFileName);
     }
 
-    let urlOrFilepath = isUrl(imageUrl) ? imageUrl : null;
-    if (isBase64(imageUrl)) urlOrFilepath = saveBase64File(imageUrl);
+    const urlKeyOrPath = await saveAndGetImageFile(imageUrl);
 
     await prisma.board.update({
       where: { id: boardId, userId: user?.id },
-      data: { imageUrl: urlOrFilepath },
+      data: { imageUrl: urlKeyOrPath },
     });
 
     return imageUrl;

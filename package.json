@@ -11,6 +11,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.726.1",
     "@github/relative-time-element": "^4.4.5",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",

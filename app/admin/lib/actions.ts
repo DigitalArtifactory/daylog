@@ -26,6 +26,7 @@ export type SettingsType = {
   mfa: boolean;
   allowReg: boolean;
   allowUnsplash: boolean;
+  enableS3: boolean;
 };
 
 export async function getSettings() {
@@ -45,6 +46,7 @@ export async function saveSettings(
   const mfa = formData.get('mfa') === 'active';
   const allowReg = formData.get('allowRegistration') === 'active';
   const allowUnsplash = formData.get('allowUnsplash') === 'active';
+  const enableS3 = formData.get('enableS3') === 'active';
 
   if (!fs.existsSync('./settings.json')) {
     fs.writeFileSync('./settings.json', JSON.stringify({ mfa: mfa }), 'utf-8');
@@ -57,6 +59,7 @@ export async function saveSettings(
   settings.mfa = mfa;
   settings.allowReg = allowReg;
   settings.allowUnsplash = allowUnsplash;
+  settings.enableS3 = enableS3;
 
   fs.writeFileSync('./settings.json', JSON.stringify(settings));
 
