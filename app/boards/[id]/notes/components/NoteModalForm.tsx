@@ -90,7 +90,7 @@ export default function NoteModalForm({
   };
 
   return (
-    <div className="modal" id={modalId} tabIndex={-1}>
+    <div className="modal fade" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         {mode === 'update' && (
           <input

@@ -24,7 +24,7 @@ export default function UserModal() {
         <AddIcon />
         Create new user
       </button>
-      <div className="modal" id="userModal" tabIndex={-1}>
+      <div className="modal fade" id="userModal" tabIndex={-1}>
         <form autoComplete="off" action={action}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">

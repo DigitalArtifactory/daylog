@@ -23,12 +23,12 @@ export async function search(keywords: string): Promise<SearchResult[]> {
 
   const boards = await prisma.board.findMany({
     select: { id: true, title: true },
-    where: { title: { contains: keywords } },
+    where: { title: { contains: keywords, mode: 'insensitive' } },
   });
 
   const notes = await prisma.note.findMany({
     select: { id: true, title: true, boardsId: true },
-    where: { title: { contains: keywords } },
+    where: { title: { contains: keywords, mode: 'insensitive' } },
   });
 
   notes.forEach((n) =>

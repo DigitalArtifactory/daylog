@@ -1,10 +1,10 @@
 'use client';
 
 import {
-    createBoard,
-    deleteImage,
-    saveImage,
-    updateBoard,
+  createBoard,
+  deleteImage,
+  saveImage,
+  updateBoard,
 } from '@/app/boards/lib/actions';
 import { TrashIcon } from '@/components/icons';
 import { Board, Prisma } from '@/prisma/generated/client';
@@ -106,7 +106,7 @@ export default function BoardModalForm({
   };
 
   return (
-    <div className="modal" id={modalId} tabIndex={-1}>
+    <div className="modal fade" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
