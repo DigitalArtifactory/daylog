@@ -72,7 +72,7 @@ describe('actions', () => {
   describe('saveSettings', () => {
     it('should save settings to file', async () => {
       const formData = new FormData();
-      formSettings.forEach((item, index) => {
+      formSettings.forEach((item) => {
         formData.append(`settings`, item);
       });
 
