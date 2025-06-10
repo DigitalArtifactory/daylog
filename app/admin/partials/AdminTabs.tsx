@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function AdminTabs() {
@@ -14,18 +15,18 @@ export default function AdminTabs() {
       {isClient ? (
         <>
           <li className="nav-item">
-            <a
-              href="#tabs-admin-1"
+            <Link
+              href="#tabs-admin-users"
               className="nav-link active"
               data-bs-toggle="tab"
             >
               Users
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a href="#tabs-admin-2" className="nav-link" data-bs-toggle="tab">
+            <Link href="#tabs-admin-preferences" className="nav-link" data-bs-toggle="tab">
               Preferences
-            </a>
+            </Link>
           </li>
         </>
       ) : (

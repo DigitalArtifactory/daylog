@@ -9,6 +9,8 @@ import {
   setAdmin,
 } from './actions';
 
+const formSettings = ['mfa', 'allowReg', 'allowUnsplash', 'enableS3'];
+
 const mocks = vi.hoisted(() => ({
   fs: { existsSync: vi.fn(), readFileSync: vi.fn(), writeFileSync: vi.fn() },
   getCurrentSession: vi.fn(),
@@ -70,10 +72,9 @@ describe('actions', () => {
   describe('saveSettings', () => {
     it('should save settings to file', async () => {
       const formData = new FormData();
-      formData.set('mfa', 'active');
-      formData.set('allowRegistration', 'active');
-      formData.set('allowUnsplash', 'active');
-      formData.set('enableS3', 'active');
+      formSettings.forEach((item, index) => {
+        formData.append(`settings`, item);
+      });
 
       mocks.fs.existsSync.mockReturnValue(false);
       mocks.fs.readFileSync.mockReturnValue(

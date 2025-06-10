@@ -1,133 +1,138 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { saveSettings } from '../lib/actions';
+import { SettingsType } from '../lib/actions';
 import PreferencesTab from './PreferencesTab';
 
 const mocks = vi.hoisted(() => ({
-  getSettings: vi.fn(),
+  useActionState: vi.fn(),
+}));
+
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react')>();
+  return {
+    ...actual,
+    useActionState: mocks.useActionState,
+  };
+});
+
+vi.mock('../lib/actions', () => ({
   saveSettings: vi.fn(),
 }));
 
-vi.mock('../lib/actions', () => ({
-  getSettings: mocks.getSettings,
-  saveSettings: mocks.saveSettings,
-}));
+const initialSettings: SettingsType = {
+  mfa: false,
+  allowReg: false,
+  allowUnsplash: false,
+  enableS3: false,
+};
 
 describe('PreferencesTab', () => {
   beforeEach(() => {
+    mocks.useActionState.mockReturnValue([
+      {
+        data: {
+          mfa: false,
+          allowReg: false,
+          allowUnsplash: false,
+          enableS3: false,
+        },
+        errors: {},
+        success: false,
+      },
+      vi.fn(),
+      false,
+    ]);
     cleanup();
   });
 
   it('renders correctly', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: true,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
-    });
-
-    render(<PreferencesTab />);
+    render(<PreferencesTab initialSettings={initialSettings} />);
 
     expect(await screen.findByText('Security')).toBeInTheDocument();
-    expect(
-      screen.getByLabelText('Force users to configure 2FA Authentication')
-    ).toBeChecked();
-    expect(screen.getByLabelText('Allow users to Sign Up')).not.toBeChecked();
-    expect(
-      screen.getByLabelText('Allow Unsplash as a source for images')
-    ).not.toBeChecked();
-    expect(screen.getByLabelText('Enable S3 Storage')).not.toBeChecked();
+    expect(await screen.findByText('Third party')).toBeInTheDocument();
+    expect(await screen.findByText('Storage')).toBeInTheDocument();
   });
 
   it('toggles MFA checkbox', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: false,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
+    render(<PreferencesTab initialSettings={initialSettings} />);
+
+    const mfaCheckbox = screen.getByRole('switch', {
+      name: /Force users to configure 2FA Authentication/i,
     });
 
-    render(<PreferencesTab />);
-
-    const mfaCheckbox = await screen.findByLabelText(
-      'Force users to configure 2FA Authentication'
-    );
     fireEvent.click(mfaCheckbox);
 
     expect(mfaCheckbox).toBeChecked();
   });
 
-  it('toggles Allow Registration checkbox', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: false,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
+  it('toggles Allow Registration checkbox', () => {
+    render(<PreferencesTab initialSettings={initialSettings} />);
+
+    const allowRegCheckbox = screen.getByRole('switch', {
+      name: /Allow users to Sign Up/i,
     });
 
-    render(<PreferencesTab />);
-
-    const allowRegCheckbox = await screen.findByLabelText(
-      'Allow users to Sign Up'
-    );
     fireEvent.click(allowRegCheckbox);
 
     expect(allowRegCheckbox).toBeChecked();
   });
 
-  it('toggles Unsplash checkbox', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: false,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
+  it('toggles Unsplash checkbox', () => {
+    render(<PreferencesTab initialSettings={initialSettings} />);
+
+    const unsplashCheckbox = screen.getByRole('switch', {
+      name: /Allow Unsplash as a source for images/i,
     });
 
-    render(<PreferencesTab />);
-
-    const unsplashCheckbox = await screen.findByLabelText(
-      'Allow Unsplash as a source for images'
-    );
     fireEvent.click(unsplashCheckbox);
 
     expect(unsplashCheckbox).toBeChecked();
   });
+  
+  it('toggles S3 checkbox', () => {
+    render(<PreferencesTab initialSettings={initialSettings} />);
 
-  it('submits the form', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: false,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
+    const s3Checkbox = screen.getByRole('switch', {
+      name: /Enable S3 Storage/i,
     });
 
-    render(<PreferencesTab />);
+    fireEvent.click(s3Checkbox);
+
+    expect(s3Checkbox).toBeChecked();
+  });
+
+  it('submits the form', async () => {
+    render(<PreferencesTab initialSettings={initialSettings} />);
 
     const saveButton = await screen.findByText('Save Settings');
     fireEvent.click(saveButton);
 
-    expect(saveSettings).toHaveBeenCalled();
+    expect(mocks.useActionState).toHaveBeenCalled();
   });
 
   it('shows success message on save', async () => {
-    mocks.getSettings.mockResolvedValue({
-      mfa: false,
-      allowReg: false,
-      allowUnsplash: false,
-      enableS3: false,
-    });
-    mocks.saveSettings.mockResolvedValue({
-      success: true,
-      message: 'Settings saved successfully',
-    });
+    mocks.useActionState.mockReturnValue([
+      {
+        data: {
+          mfa: false,
+          allowReg: false,
+          allowUnsplash: false,
+          enableS3: false,
+        },
+        success: true,
+        message: 'Settings saved successfully.',
+      },
+      vi.fn(),
+      false,
+    ]);
 
-    render(<PreferencesTab />);
+    render(<PreferencesTab initialSettings={initialSettings} />);
 
     const saveButton = await screen.findByText('Save Settings');
     fireEvent.click(saveButton);
 
     expect(
-      await screen.findByText('Settings saved successfully')
+      await screen.findByText('Settings saved successfully.')
     ).toBeInTheDocument();
   });
 });

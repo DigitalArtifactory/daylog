@@ -7,6 +7,7 @@ import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { getCurrentSession } from '../login/lib/actions';
+import { getSettings } from './lib/actions';
 import AdminTabs from './partials/AdminTabs';
 import PreferencesTab from './partials/PreferencesTab';
 import UserModal from './partials/UserModal';
@@ -25,6 +26,8 @@ export default async function Admin() {
     { name: 'Admin', href: '/admin' },
   ];
 
+  const initialSettings = await getSettings();
+
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -41,7 +44,7 @@ export default async function Admin() {
             </div>
             <div className="card-body">
               <div className="tab-content">
-                <div className="tab-pane active show" id="tabs-admin-1">
+                <div className="tab-pane active show" id="tabs-admin-users">
                   <div className="d-flex justify-content-between">
                     <div>
                       <h3 className="card-title">Users</h3>
@@ -57,8 +60,8 @@ export default async function Admin() {
                     <UsersTable currentUserId={user.id}></UsersTable>
                   </div>
                 </div>
-                <div className="tab-pane" id="tabs-admin-2">
-                  <PreferencesTab />
+                <div className="tab-pane" id="tabs-admin-preferences">
+                  <PreferencesTab initialSettings={initialSettings} />
                 </div>
               </div>
             </div>

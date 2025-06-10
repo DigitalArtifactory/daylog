@@ -43,10 +43,12 @@ export async function saveSettings(
   state: SettingsFormState,
   formData: FormData
 ) {
-  const mfa = formData.get('mfa') === 'active';
-  const allowReg = formData.get('allowRegistration') === 'active';
-  const allowUnsplash = formData.get('allowUnsplash') === 'active';
-  const enableS3 = formData.get('enableS3') === 'active';
+  const formSettings = formData.getAll('settings') as string[];
+
+  const mfa = formSettings.includes('mfa');
+  const allowReg = formSettings.includes('allowReg');
+  const allowUnsplash = formSettings.includes('allowUnsplash');
+  const enableS3 = formSettings.includes('enableS3');
 
   if (!fs.existsSync('./settings.json')) {
     fs.writeFileSync('./settings.json', JSON.stringify({ mfa: mfa }), 'utf-8');
