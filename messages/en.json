@@ -1,0 +1,263 @@
+{
+  "register": {
+    "title": "Admin registration",
+    "name": "Name",
+    "namePlaceholder": "Enter name",
+    "nameError": "Name must be at least 2 characters long.",
+    "email": "Email address",
+    "emailPlaceholder": "Enter email",
+    "emailError": "Please enter a valid email.",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "passwordHint": {
+      "0": "Be at least 8 characters long",
+      "1": "Contain at least one letter",
+      "2": "Contain at least one number",
+      "3": "Contain at least one special character"
+    },
+    "disclaimer": "By registering your first Admin user you are accepting the <link>terms and policy</link>.",
+    "submit": "Create admin account"
+  },
+  "login": {
+    "title": "Login to your account",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "your@email.com",
+    "emailError": "Please enter a valid email.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Your password",
+    "passwordError": "Password is required.",
+    "signInButton": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "couldntLogIn": "Could not login",
+    "couldntLogInDescription": "An error occurred while validating your credentials.",
+    "noAccount": "Don't have an account? <link>Sign up</link>"
+  },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "description": "Enter your email address and we will send you instructions to reset your password.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Enter email",
+    "emailError": "Please enter a valid email.",
+    "submitButton": "Send me a new password",
+    "back": "Never mind, <link>take me back</link> to the sign in screen.",
+    "error": {
+      "title": "Could not reset",
+      "message": "This email is not registered."
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "boards": "Boards",
+    "profile": "Profile",
+    "admin": "Admin",
+    "search": "Search"
+  },
+  "searchModal": {
+    "placeholder": "Search…",
+    "emptyResults": "Empty results",
+    "body": "Press <span>Enter</span> to open the selected result.",
+    "footer": "Use <span>Arrow Up</span> and <span>Arrow Down</span> to navigate results.."
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "signOut": "Sign out"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "boards": "Boards",
+    "profile": "Profile",
+    "admin": "Admin"
+  },
+  "adminPage": {
+    "configuration": "Configuration",
+    "tabs": {
+      "users": "Users",
+      "preferences": "Preferences"
+    },
+    "usersSection": {
+      "sectionTitle": "Users",
+      "sectionDescription": "Manage user accounts, and roles with ease.",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "setAsAdmin": "Set as Admin",
+        "setAsUser": "Set as User"
+      },
+      "actions": {
+        "create": "Create new user",
+        "edit": "Edit",
+        "delete": "Delete",
+        "createModal": "Create",
+        "cancelModal": "Cancel",
+        "confirmModal": "Yes, delete"
+      },
+      "modalCreate": {
+        "title": "New user",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter name",
+        "emailLabel": "Email address",
+        "emailPlaceholder": "Enter email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Password",
+        "accountNotCreated": "Account not created"
+      },
+      "modalDelete": {
+        "title": "Are you sure?",
+        "deleteLabel": "Delete",
+        "confirmationText": "Do you really want to delete this user? What you've done cannot be undone."
+      }
+    },
+    "preferencesSection": {
+      "safetyTitle": "Security",
+      "safetyDescription": "Customize your user accounts access and data security.",
+      "thirdPartyTitle": "Third party",
+      "thirdPartyDescription": "Customize your third party integrations and data sources.",
+      "fields": {
+        "require2fa": "Force users to configure 2FA Authentication",
+        "allowSignup": "Allow users to Sign Up",
+        "unsplash": "Allow Unsplash as a source for images",
+        "storage": "Enable S3 Storage"
+      },
+      "unsplashNote": "You need to create an Unsplash account and add your API key in the environment variables to use this feature.",
+      "unsplashLinkText": "Go to <link>Unsplash developer page</link> to create an account and get your API key.",
+      "saveButton": "Save Settings",
+      "storageTitle": "Storage",
+      "storageDescription": "Customize your storage options for images and files.",
+      "storageNote": "You need to create an S3 bucket and add your credentials in the enviroment variables to use this feature."
+    }
+  },
+  "homePage": {
+    "welcomeMessage": "Welcome",
+    "noBoardsMessage": "You don't have boards yet...",
+    "createBoardLink": "Go to your boards and create one.",
+    "noNotesMessage": "You don't have notes yet...",
+    "createNoteLink": "Go to your notes and create one."
+  },
+  "boardsPage": {
+    "allBoards": "All boards",
+    "emptyBoardTitle": "Your boards are empty",
+    "emptyBoardDescription": "You can create a new board",
+    "emptyNoteTitle": "Your notes are empty",
+    "emptyNoteDescription": "You can create a new note",
+    "actions": {
+      "createBoard": "Create new board",
+      "createNote": "Create new note"
+    }
+  },
+  "loading": {
+    "loadingBoards": "Loading boards...",
+    "loadingNotes": "Loading notes...",
+    "loadingUsers": "Loading users..."
+  },
+  "footer": {
+    "madeWithBy": "Made with <icon /> by <link>DavidArtifacts</link>",
+    "by": "by",
+    "author": "<link>DavidArtifacts</link>",
+    "version": "version",
+    "sourceCode": "<link>Source code</link>",
+    "buyMeCoffee": "<link>Buy me a Coffee</link>"
+  },
+  "boardModal": {
+    "titleCreate": "Create board",
+    "titleUpdate": "Update board",
+    "imageLabel": "Select image from your device <optional>(optional)</optional>",
+    "titleLabel": "Title",
+    "titleError": "Title is required",
+    "titlePlaceholder": "Your board title",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Type any description",
+    "createButton": "Create",
+    "updateButton": "Update",
+    "closeButton": "Close"
+  },
+  "noteModal": {
+    "titleCreate": "Create note",
+    "titleUpdate": "Update note",
+    "imageLabel": "Select image from your device <optional>(optional)</optional>",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Your note title",
+    "titleError": "Title is required",
+    "contentLabel": "Content",
+    "contentPlaceholder": "Type any simple content",
+    "removeImage": "Remove image",
+    "createButton": "Create",
+    "updateButton": "Update",
+    "closeButton": "Close"
+  },
+  "deleteModal": {
+    "title": "Are you sure?",
+    "description": "Do you really want to remove this board? What you've done cannot be undone.",
+    "passwordPlaceholder": "Your password is required",
+    "passwordError": "Your password is required.",
+    "cancel": "Cancel",
+    "confirm": "Yes, delete"
+  },
+  "profilePage": {
+    "userDataTitle": "User data",
+    "alertTitle": "You are impersonating this profile as an admin.",
+    "profileSection": {
+      "title": "Profile Information",
+      "description": "Update your account's profile information and email address.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter your nickname, name or fullname",
+      "nameError": "Name must be at least 2 characters long.",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "Enter your email for password recovery",
+      "emailError": "Email is required.",
+      "saveButton": "Save Changes"
+    },
+    "passwordSection": {
+      "title": "Update Password",
+      "description": "Ensure your account is using a long, random password to stay secure.",
+      "currentLabel": "Current Password",
+      "currentPlaceholder": "Enter current password",
+      "currentError": "Current password is required.",
+      "newLabel": "New Password",
+      "newPlaceholder": "Enter your new secure password",
+      "newError": "New password is required.",
+      "confirmLabel": "Password Confirmation",
+      "confirmPlaceholder": "Confirm your new password",
+      "confirmError": "Password confirmation is required.",
+      "saveButton": "Change Password"
+    },
+    "backupSection": {
+      "title": "Backup",
+      "description": "Save or export all your data in a JSON file. Depending on your data, it may take a while. Please don't refresh this page until the save file dialog appears.",
+      "copyButton": "Copy JSON",
+      "downloadButton": "Download Data"
+    },
+    "dangerZoneSection": {
+      "title": "Danger Zone",
+      "description": "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+      "deleteButton": "Delete Account"
+    }
+  },
+  "terms": {
+    "title": "User Registration Terms and Conditions",
+    "introductionTitle": "Introduction",
+    "introductionText": "By registering for an account on our platform, you agree to comply with these terms and conditions. Please read them carefully before proceeding with your registration.",
+    "accountTitle": "Your Account",
+    "accountText": "You are responsible for maintaining the confidentiality of your account credentials. You agree to notify us immediately of any unauthorized use of your account.",
+    "usageTitle": "Acceptable Use",
+    "usageText": "You agree to use our platform for lawful purposes only. Prohibited activities include, but are not limited to:",
+    "usageList": {
+      "fraud": "Engaging in any form of fraud or malicious activity.",
+      "lawViolation": "Violating any local, state, or international laws.",
+      "uploading": "Uploading harmful or illegal content."
+    },
+    "licenseTitle": "License and Intellectual Property",
+    "licenseText": "This platform is licensed under the <link>Apache 2.0 License</link>. You may use, modify, and share the platform in compliance with the terms of this license.",
+    "liabilityTitle": "Limitation of Liability",
+    "liabilityText": "To the maximum extent permitted by law, we are not liable for any damages resulting from your use of this platform. This includes, but is not limited to, data loss, service interruptions, or unauthorized access to your account.",
+    "terminationTitle": "Termination",
+    "terminationText": "We reserve the right to terminate your account at our sole discretion if you violate these terms and conditions.",
+    "changesTitle": "Changes to Terms",
+    "changesText": "We may update these terms from time to time. Any changes will be communicated to you and will take effect immediately upon posting.",
+    "footer": "Licensed under the <link>Apache 2.0 License</link>."
+  },
+  "language": {
+    "en": "English",
+    "es": "Spanish"
+  }
+}

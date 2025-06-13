@@ -3,6 +3,7 @@
 import { signup } from '@/app/register/lib/actions';
 import { AddIcon, ViewIcon } from '@/components/icons';
 import { useActionState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function UserModal() {
   const [state, action, pending] = useActionState(signup, undefined);
@@ -13,6 +14,8 @@ export default function UserModal() {
     }
   }, [state]);
 
+  const t = useTranslations('adminPage');
+
   return (
     <>
       <button
@@ -22,14 +25,14 @@ export default function UserModal() {
         data-bs-target="#userModal"
       >
         <AddIcon />
-        Create new user
+        {t('usersSection.actions.create')}
       </button>
       <div className="modal fade" id="userModal" tabIndex={-1}>
         <form autoComplete="off" action={action}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">New user</h5>
+                <h5 className="modal-title">{t('usersSection.modalCreate.title')}</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -39,14 +42,14 @@ export default function UserModal() {
               </div>
               <div className="modal-body">
                 <div className="mb-3">
-                  <label className="form-label">Name</label>
+                  <label className="form-label">{t('usersSection.modalCreate.nameLabel')}</label>
                   <input
                     name="name"
                     defaultValue={state?.data?.name?.toString()}
                     className={`form-control ${
                       state?.errors?.name && 'is-invalid'
                     }`}
-                    placeholder="Enter name"
+                    placeholder={t('usersSection.modalCreate.namePlaceholder')}
                   />
                   {state?.errors?.name && (
                     <div className="invalid-feedback d-block" role="alert">
@@ -55,14 +58,14 @@ export default function UserModal() {
                   )}
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Email address</label>
+                  <label className="form-label">{t('usersSection.modalCreate.emailLabel')}</label>
                   <input
                     name="email"
                     defaultValue={state?.data?.email?.toString()}
                     className={`form-control ${
                       state?.errors?.email && 'is-invalid'
                     }`}
-                    placeholder="Enter email"
+                    placeholder={t('usersSection.modalCreate.emailPlaceholder')}
                   />
                   {state?.errors?.email &&
                     state?.errors?.email.map((e, i) => (
@@ -72,7 +75,7 @@ export default function UserModal() {
                     ))}
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Password</label>
+                  <label className="form-label">{t('usersSection.modalCreate.passwordLabel')}</label>
                   <div className="input-group input-group-flat">
                     <input
                       type="password"
@@ -81,7 +84,7 @@ export default function UserModal() {
                       className={`form-control ${
                         state?.errors?.password && 'border-danger'
                       }`}
-                      placeholder="Password"
+                      placeholder={t('usersSection.modalCreate.passwordPlaceholder')}
                       autoComplete="off"
                     />
                     <span
@@ -117,7 +120,7 @@ export default function UserModal() {
                       className="alert alert-danger alert-important alert-dismissible mt-3"
                       role="alert"
                     >
-                      <h3 className="mb-1">Account not created</h3>
+                      <h3 className="mb-1">{t('usersSection.modalCreate.accountNotCreated')}</h3>
                       <p>{state.message}</p>
                       <a
                         className="btn-close"
@@ -135,7 +138,7 @@ export default function UserModal() {
                   className="btn btn-link link-secondary"
                   data-bs-dismiss="modal"
                 >
-                  Cancel
+                  {t('usersSection.actions.cancelModal')}
                 </a>
                 <button
                   type="submit"
@@ -144,7 +147,7 @@ export default function UserModal() {
                   }`}
                   disabled={pending}
                 >
-                  Create
+                  {t('usersSection.actions.createModal')}
                 </button>
               </div>
             </div>

@@ -26,6 +26,8 @@ import TrashIcon from './TrashIcon';
 import UserIcon from './UserIcon';
 import ViewIcon from './ViewIcon';
 import WarningIcon from './WarningIcon';
+import FlagUS from './FlagUS';
+import FlagMX from './FlagMX';
 
 export {
   AddIcon,
@@ -55,6 +57,8 @@ export {
   TrashIcon,
   UserIcon,
   ViewIcon,
-  WarningIcon
+  WarningIcon,
+  FlagUS,
+  FlagMX,
 };
 

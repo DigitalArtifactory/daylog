@@ -15,6 +15,7 @@ import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
 import NoteCardPlaceholder from './components/NotePlaceholder';
 import { getNotes } from './lib/actions';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Notes({
   params,
@@ -35,6 +36,8 @@ export default async function Notes({
     { name: board?.title ?? 'Notes', href: `/boards/${id}/notes` },
   ];
 
+  const t = await getTranslations('boardsPage');
+
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -49,7 +52,7 @@ export default async function Notes({
               data-bs-target="#new-note-modal"
             >
               <AddIcon />
-              Create new note
+              {t('actions.createNote')}
             </a>
             <NoteModalForm
               boardId={parseInt(id)}
@@ -63,8 +66,8 @@ export default async function Notes({
           <div className="row row-deck">
             {notes?.length == 0 ? (
               <div className="alert alert-info" role="alert">
-                <h4 className="alert-title">Your notes are empty</h4>
-                <div className="text-secondary">You can create a new note</div>
+                <h4 className="alert-title">{t('emptyNoteTitle')}</h4>
+                <div className="text-secondary">{t('emptyNoteDescription')}</div>
               </div>
             ) : (
               notes?.map((b) => (

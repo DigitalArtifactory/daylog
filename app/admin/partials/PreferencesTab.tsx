@@ -2,6 +2,7 @@
 
 import { useActionState } from 'react';
 import { saveSettings, SettingsType } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function PreferencesTab({initialSettings: initialSettings}: {initialSettings?: SettingsType | null}) {
   const [state, action, pending] = useActionState(
@@ -18,11 +19,13 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
     }
   );
 
+  const t = useTranslations('adminPage');
+
   return (
     <form action={action}>
-      <h3 className="card-title">Security</h3>
+      <h3 className="card-title">{t('preferencesSection.safetyTitle')}</h3>
       <div className="text-secondary">
-        Customize your user accounts access and data security.
+        {t('preferencesSection.safetyDescription')}
       </div>
       <div className="pt-4 mb-3">
         <label className="form-check form-switch">
@@ -36,7 +39,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             id="flexSwitchCheckDefault"
           />
           <span className="form-check-label">
-            Force users to configure 2FA Authentication
+            {t('preferencesSection.fields.require2fa')}
           </span>
         </label>
       </div>
@@ -51,12 +54,12 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             role="switch"
             id="flexSwitchCheckDefaultAllow"
           />
-          <span className="form-check-label">Allow users to Sign Up</span>
+          <span className="form-check-label">{t('preferencesSection.fields.allowSignup')}</span>
         </label>
       </div>
-      <h3 className="card-title">Third party</h3>
+      <h3 className="card-title">{t('preferencesSection.thirdPartyTitle')}</h3>
       <div className="text-secondary">
-        Customize your third party integrations and data sources.
+        {t('preferencesSection.thirdPartyDescription')}
       </div>
       <div className="pt-4 mb-3">
         <label className="form-check form-switch">
@@ -70,24 +73,29 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             id="flexSwitchCheckDefaultAllowUnsplash"
           />
           <span className="form-check-label">
-            Allow Unsplash as a source for images
+            {t('preferencesSection.fields.unsplash')}
           </span>
           <p className="text-muted text-sm mb-0">
-            You need to create an Unsplash account and add your API key in the
-            enviroment variables to use this feature.
+            {t('preferencesSection.unsplashNote')}
           </p>
           <p className="text-muted">
-            Go to{' '}
-            <a href="https://unsplash.com/developers" target="_blank">
-              Unsplash developer page
-            </a>{' '}
-            to create an account and get your API key.
+            {t.rich('preferencesSection.unsplashLinkText', {
+              link: (chunks) => (
+                <a
+                  href="https://unsplash.com/developers"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         </label>
       </div>
-      <h3 className="card-title">Storage</h3>
+      <h3 className="card-title">{t('preferencesSection.storageTitle')}</h3>
       <div className="text-secondary">
-        Customize your storage options for images and files.
+        {t('preferencesSection.storageDescription')}
       </div>
       <div className="pt-4 mb-3">
         <label className="form-check form-switch">
@@ -100,10 +108,9 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             role="switch"
             id="flexSwitchCheckDefaultEnableS3"
           />
-          <span className="form-check-label">Enable S3 Storage</span>
+          <span className="form-check-label">{t('preferencesSection.fields.storage')}</span>
           <p className="text-muted text-sm mb-0">
-            You need to create an S3 bucket and add your credentials in the
-            enviroment variables to use this feature.
+            {t('preferencesSection.storageNote')}
           </p>
         </label>
       </div>
@@ -125,7 +132,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
         disabled={pending}
         className={`btn btn-primary ${pending ? 'btn-loading disabled' : null}`}
       >
-        Save Settings
+        {t('preferencesSection.saveButton')}
       </button>
     </form>
   );

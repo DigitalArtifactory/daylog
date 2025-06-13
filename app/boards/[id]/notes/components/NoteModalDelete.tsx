@@ -5,6 +5,7 @@ import { Note } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { deleteNote } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type NoteModalDeleteType = {
   note: Note;
@@ -14,6 +15,7 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
   const router = useRouter();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [deleting, setDeleting] = useState(false);
+  const t = useTranslations('deleteModal');
 
   const handleDeleteClick = async () => {
     setDeleting(true);
@@ -55,11 +57,10 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
             <div className="modal-status bg-danger"></div>
             <div className="modal-body text-center py-4">
               <WarningIcon />
-              <h3>Are you sure?</h3>
+              <h3>{t('title')}</h3>
               <div className="text-danger fw-bold">{note.title}</div>
               <div className="text-secondary">
-                Do you really want to remove this note? What you&apos;ve done
-                cannot be undone.
+                {t('description')}
               </div>
             </div>
             <div className="modal-footer">
@@ -71,7 +72,7 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
                       className="btn w-100"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t('cancel')}
                     </button>
                   </div>
                   <div className="col">
@@ -82,7 +83,7 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
                       }`}
                       onClick={() => handleDeleteClick()}
                     >
-                      Yes, delete
+                      {t('confirm')}
                     </button>
                   </div>
                 </div>

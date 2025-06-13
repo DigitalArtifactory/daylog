@@ -5,6 +5,7 @@ import Loader from '@/components/Loader';
 import { User } from '@/prisma/generated/client';
 import { useEffect, useState } from 'react';
 import { deleteUser, getUsers, setAdmin as setRole } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function UsersTable({
   currentUserId,
@@ -29,17 +30,19 @@ export default function UsersTable({
     await loadData();
   };
 
+  const t = useTranslations();
+
   return loading ? (
-    <Loader caption="Loading users..." />
+    <Loader caption={t('loading.loadingUsers')} />
   ) : (
     <div className="table-responsive">
       <table className="table table-vcenter card-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
+            <th>{t('adminPage.usersSection.table.name')}</th>
+            <th>{t('adminPage.usersSection.table.email')}</th>
             <th></th>
-            <th>Role</th>
+            <th>{t('adminPage.usersSection.table.role')}</th>
             <th className="w-1"></th>
           </tr>
         </thead>
@@ -58,7 +61,7 @@ export default function UsersTable({
                     onClick={() => handleClickRole(u.id, u.role)}
                     className="btn btn-link"
                   >
-                    Set as Admin
+                    {t('adminPage.usersSection.table.setAsAdmin')}
                   </button>
                 ) : (
                   u.id !== currentUserId && (
@@ -66,7 +69,7 @@ export default function UsersTable({
                       onClick={() => handleClickRole(u.id, u.role)}
                       className="btn btn-link"
                     >
-                      Set as User
+                      {t('adminPage.usersSection.table.setAsUser')}
                     </button>
                   )
                 )}
@@ -74,7 +77,7 @@ export default function UsersTable({
               <td className="text-secondary text-capitalize">{u.role}</td>
               <td>
                 <div className="d-flex gap-3">
-                  <a href={`/profile/${u.id}`}>Edit</a>
+                  <a href={`/profile/${u.id}`}>{t('adminPage.usersSection.actions.edit')}</a>
                   {u.id !== currentUserId && (
                     <>
                       <a
@@ -83,7 +86,7 @@ export default function UsersTable({
                         data-bs-toggle="modal"
                         data-bs-target={`#delete-modal-${u.id}`}
                       >
-                        Delete
+                        {t('adminPage.usersSection.actions.delete')}
                       </a>
                       <div
                         className="modal"
@@ -101,17 +104,16 @@ export default function UsersTable({
                             <div className="modal-status bg-danger"></div>
                             <div className="modal-body text-center py-4">
                               <WarningIcon />
-                              <h3>Are you sure?</h3>
+                              <h3>{t('adminPage.usersSection.modalDelete.title')}</h3>
                               <div className="w-full bg-light p-3 rounded mb-3">
                                 <div className="badge bg-danger text-light mb-1">
-                                  Delete
+                                  {t('adminPage.usersSection.modalDelete.deleteLabel')}
                                 </div>
                                 <div className="text-secondary">{u.name}</div>
                                 <div>{u.email}</div>
                               </div>
                               <div className="text-secondary">
-                                Do you really want to delete this user? What
-                                you&apos;ve done cannot be undone.
+                                {t('adminPage.usersSection.modalDelete.confirmationText')}
                               </div>
                             </div>
                             <div className="modal-footer">
@@ -123,7 +125,7 @@ export default function UsersTable({
                                       className="btn w-100"
                                       data-bs-dismiss="modal"
                                     >
-                                      Cancel
+                                      {t('adminPage.usersSection.actions.cancelModal')}
                                     </a>
                                   </div>
                                   <div className="col">
@@ -138,7 +140,7 @@ export default function UsersTable({
                                       type="submit"
                                       className="btn btn-danger w-full"
                                     >
-                                      Yes, delete
+                                      {t('adminPage.usersSection.actions.confirmModal')}
                                     </button>
                                   </div>
                                 </div>

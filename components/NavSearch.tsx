@@ -4,6 +4,7 @@ import { search, SearchResult } from '@/app/lib/actions';
 import { truncateWord } from '@/utils/text';
 import { useEffect, useRef, useState } from 'react';
 import { ChalkboardIcon, NoteIcon, PuzzledIcon, SearchIcon } from './icons';
+import { useTranslations } from 'next-intl';
 
 export default function NavSearch() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,8 @@ export default function NavSearch() {
     }
   }, [modalRef]);
 
+  const t = useTranslations();
+
   return (
     <>
       <div className="input-icon">
@@ -50,7 +53,7 @@ export default function NavSearch() {
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >
-          <SearchIcon /> Search
+          <SearchIcon /> {t('navigation.search')}
           <div className="d-flex gap-1 mx-1">
             <span className="badge badge-md border">Alt</span>
             <span className="badge badge-md border">K</span>
@@ -76,7 +79,7 @@ export default function NavSearch() {
                   ref={searchInput}
                   type="text"
                   className="form-control form-control-rounded"
-                  placeholder="Press [Backspace] to return to search input"
+                  placeholder={t('searchModal.placeholder')}
                   onChange={async (e) => {
                     const results = await search(e.target.value);
                     setResults(results);
@@ -93,7 +96,7 @@ export default function NavSearch() {
                   <span>
                     <PuzzledIcon />
                   </span>
-                  <div className="text-secondary">Empty results</div>
+                  <div className="text-secondary">{t('searchModal.emptyResults')}</div>
                 </div>
               ) : (
                 <>
@@ -124,11 +127,11 @@ export default function NavSearch() {
                     ))}
                     <div className="row text-secondary">
                       <div className="col">
-                        Press
-                        <span className="badge badge-md border mx-1">
-                          Enter
-                        </span>
-                        to open the selected result.
+                        {t.rich('searchModal.body', {
+                          span: (chunks) => (
+                            <span className="badge badge-md border mx-1">{chunks}</span>
+                          )
+                        })}
                       </div>
                     </div>
                   </div>
@@ -137,11 +140,11 @@ export default function NavSearch() {
             </div>
             <div className="modal-footer text-secondary">
               <div className="d-flex gap-1 mx-1 my-0">
-                Use
-                <span className="badge badge-md border">Arrow Up</span>
-                and
-                <span className="badge badge-md border">Arrow Down</span>
-                to navigate results.
+                {t.rich('searchModal.footer', {
+                  span: (chunks) => (
+                    <span className="badge badge-md border">{chunks}</span>
+                  )
+                })}
               </div>
             </div>
           </div>

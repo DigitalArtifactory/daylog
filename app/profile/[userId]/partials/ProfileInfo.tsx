@@ -4,6 +4,7 @@ import { SaveIcon } from '@/components/icons';
 import { User } from '@/prisma/generated/client';
 import { useActionState } from 'react';
 import { updateProfile } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type ProfileInfoType = {
   profile: User;
@@ -11,21 +12,22 @@ type ProfileInfoType = {
 
 export default function ProfileInfo({ profile }: ProfileInfoType) {
   const [state, action, pending] = useActionState(updateProfile, undefined);
+
+  const t = useTranslations('profilePage.profileSection');
+
   return (
     <form action={action}>
       <div className="card">
         <div className="card-body">
-          <h3 className="card-title">Profile Information</h3>
-          <div className="textsecondary">
-            Update your account&apos;s profile information and email address.
-          </div>
+          <h3 className="card-title">{t('title')}</h3>
+          <div className="textsecondary">{t('description')}</div>
           <div className="d-flex align-items-center pt-4 mt-auto">
             <div className="w-full row">
               <div className="col-md-4 ms-3">
                 <input type="hidden" name="id" value={profile.id ?? 0} />
                 <div className="mb-3">
                   <label className="form-label" htmlFor="name">
-                    Name
+                    {t('nameLabel')}
                   </label>
                   <input
                     id="name"
@@ -37,7 +39,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                         ? state.data.name
                         : profile.name ?? ''
                     }
-                    placeholder="Enter your nickname, name or fullname"
+                    placeholder={t('namePlaceholder')}
                   />
                   {state?.errors?.name && (
                     <div className="invalid-feedback d-block" role="alert">
@@ -47,7 +49,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                 </div>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="email">
-                    E-mail
+                    {t('emailLabel')}
                   </label>
                   <input
                     id="email"
@@ -59,7 +61,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                         ? state.data.email
                         : profile.email ?? ''
                     }
-                    placeholder="Enter your email for password recovery"
+                    placeholder={t('emailPlaceholder')}
                   />
                   {state?.errors?.email &&
                     state?.errors?.email.map((e, i) => (
@@ -107,7 +109,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <SaveIcon /> Save Changes
+            <SaveIcon /> {t('saveButton')}
           </button>
         </div>
       </div>

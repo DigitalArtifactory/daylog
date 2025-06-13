@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UnsplashImagesDropdown from './UnsplashImagesDropdown';
+import { useTranslations } from 'next-intl';
 
 type BoardModalFormType = {
   modalId: string;
@@ -105,6 +106,8 @@ export default function BoardModalForm({
     }
   };
 
+  const t = useTranslations('boardModal');
+
   return (
     <div className="modal fade" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
@@ -112,7 +115,7 @@ export default function BoardModalForm({
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">
-                {mode === 'create' ? 'Create board' : 'Update board'}
+                {mode === 'create' ? t('titleCreate') : t('titleUpdate')}
               </h5>
               <button
                 type="button"
@@ -151,13 +154,16 @@ export default function BoardModalForm({
                         await deleteImage(board.id, board.imageUrl);
                       }}
                     >
-                      <TrashIcon /> Remove image
+                      <TrashIcon /> {t('removeImage')}
                     </button>
                   </div>
                 )}
                 <label htmlFor="image" className="form-label">
-                  Select image from your device{' '}
-                  <span className="text-secondary">(optional)</span>
+                  {t.rich('imageLabel', {
+                    optional: (chunks) => (
+                      <span className="text-secondary">{chunks}</span>
+                    ),
+                  })}
                 </label>
                 <input
                   id="image"
@@ -171,24 +177,24 @@ export default function BoardModalForm({
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label className="form-label">Title</label>
+                <label className="form-label">{t('titleLabel')}</label>
                 <input
                   type="text"
                   className={`form-control ${errors.title && 'is-invalid'}`}
-                  placeholder="Your board title"
+                  placeholder={t('titlePlaceholder')}
                   defaultValue={board?.title}
                   {...register('title', { required: true })}
                 />
                 {errors.title && (
-                  <div className="invalid-feedback">Title is required</div>
+                  <div className="invalid-feedback">{t('titleError')}</div>
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label">Description</label>
+                <label className="form-label">{t('descriptionLabel')}</label>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Type any description"
+                  placeholder={t('descriptionPlaceholder')}
                   defaultValue={board?.description ?? ''}
                   {...register('description')}
                 />
@@ -201,7 +207,7 @@ export default function BoardModalForm({
                 className="btn me-auto"
                 data-bs-dismiss="modal"
               >
-                Close
+                {t('closeButton')}
               </button>
               <button
                 disabled={submiting}
@@ -210,7 +216,7 @@ export default function BoardModalForm({
                   submiting ? 'btn-loading disabled' : null
                 }`}
               >
-                {mode === 'create' ? 'Create' : 'Update'}
+                {mode === 'create' ? t('createButton') : t('updateButton')}
               </button>
             </div>
           </div>
