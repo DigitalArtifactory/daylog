@@ -3,6 +3,7 @@
 import { ExportIcon } from '@/components/icons';
 import { useActionState } from 'react';
 import { backupData } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type BackupType = {
   profile: {
@@ -14,16 +15,17 @@ type BackupType = {
 
 export default function Backup({ profile }: BackupType) {
   const [state, action, pending] = useActionState(backupData, undefined);
+
+  const t = useTranslations('profilePage.backupSection');
+
   return (
     <form action={action}>
       <input type="hidden" name="userId" defaultValue={profile.id} />
       <div className="card mt-3">
         <div className="card-body">
-          <h3 className="card-title">Backup</h3>
+          <h3 className="card-title">{t('title')}</h3>
           <div className="text-secondary">
-            Save or export all your data in a JSON file, depending of your data
-            it may take a while, please don&apos;t refresh in this page until
-            save file dialog appears.
+            {t('description')}
           </div>
           {!state?.success && state?.message && (
             <div
@@ -51,7 +53,7 @@ export default function Backup({ profile }: BackupType) {
                 className="btn btn-sm w-full mt-1"
                 onClick={() => navigator.clipboard.writeText(state.data)}
               >
-                Copy JSON
+                 {t('copyButton')}
               </button>
             </>
           )}
@@ -64,7 +66,7 @@ export default function Backup({ profile }: BackupType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <ExportIcon /> Download Data
+            <ExportIcon /> {t('downloadButton')}
           </button>
         </div>
       </div>

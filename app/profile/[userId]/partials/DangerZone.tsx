@@ -3,6 +3,7 @@
 import { TrashIcon, WarningIcon } from '@/components/icons';
 import { useActionState } from 'react';
 import { deleteAccount } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type BackupType = {
   profile: {
@@ -14,16 +15,17 @@ type BackupType = {
 
 export default function DangerZone({ profile }: BackupType) {
   const [state, action, pending] = useActionState(deleteAccount, undefined);
+
+  const t = useTranslations();
+
   return (
     <form action={action}>
       <input type="hidden" name="userId" defaultValue={profile.id} />
       <div className="card mt-3">
         <div className="card-body">
-          <h3 className="card-title text-danger">Danger Zone</h3>
+          <h3 className="card-title text-danger">{t('profilePage.dangerZoneSection.title')}</h3>
           <div className="text-secondary">
-            Once your account is deleted, all of its resources and data will be
-            permanently deleted. Before deleting your account, please download
-            any data or information that you wish to retain.
+            {t('profilePage.dangerZoneSection.description')}
           </div>
         </div>
         <div className="card-body">
@@ -33,7 +35,7 @@ export default function DangerZone({ profile }: BackupType) {
             data-bs-toggle="modal"
             data-bs-target="#delete-modal"
           >
-            <TrashIcon /> Delete Account
+            <TrashIcon /> {t('profilePage.dangerZoneSection.deleteButton')}
           </button>
           <div className="modal" id="delete-modal" tabIndex={-1}>
             <div className="modal-dialog modal-sm" role="document">
@@ -47,10 +49,9 @@ export default function DangerZone({ profile }: BackupType) {
                 <div className="modal-status bg-danger"></div>
                 <div className="modal-body text-center py-4">
                   <WarningIcon />
-                  <h3>Are you sure?</h3>
+                  <h3>{t('deleteModal.title')}</h3>
                   <div className="text-secondary">
-                    Do you really want to delete your account? What you&apos;ve
-                    done cannot be undone.
+                    {t('deleteModal.description')}
                   </div>
                   {!state?.success && state?.message && (
                     <div
@@ -70,7 +71,7 @@ export default function DangerZone({ profile }: BackupType) {
                       type="password"
                       name="password"
                       className="form-control"
-                      placeholder="Your password is required"
+                      placeholder={t('deleteModal.passwordPlaceholder')}
                     />
                     {state?.errors?.password && (
                       <div className="invalid-feedback d-block" role="alert">
@@ -88,7 +89,7 @@ export default function DangerZone({ profile }: BackupType) {
                           className="btn w-100"
                           data-bs-dismiss="modal"
                         >
-                          Cancel
+                          {t('deleteModal.cancel')}
                         </a>
                       </div>
                       <div className="col">
@@ -99,7 +100,7 @@ export default function DangerZone({ profile }: BackupType) {
                             pending ? 'btn-loading disabled' : null
                           }`}
                         >
-                          Yes, delete
+                          {t('deleteModal.confirm')}
                         </button>
                       </div>
                     </div>

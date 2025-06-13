@@ -3,6 +3,7 @@
 import { SecurityIcon } from '@/components/icons';
 import { useActionState } from 'react';
 import { updatePassword } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type UpdatePassType = {
   userId: number | null;
@@ -15,13 +16,16 @@ type UpdatePassType = {
 
 export default function UpdatePass({ userId, profile }: UpdatePassType) {
   const [state, action, pending] = useActionState(updatePassword, undefined);
+
+  const t = useTranslations('profilePage.passwordSection');
+
   return (
     <form action={action}>
       <div className="card mt-3">
         <div className="card-body">
-          <h3 className="card-title">Update Password</h3>
+          <h3 className="card-title">{t('title')}</h3>
           <div className="text-secondary">
-            Ensure your account is using a long, random password to stay secure.
+            {t('description')}
           </div>
           <div className="d-flex align-items-center pt-4 mt-auto">
             <div className="w-full row">
@@ -30,14 +34,14 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                 {profile.id === userId && (
                   <div className="mb-3">
                     <label className="form-label" htmlFor="current">
-                      Current Password
+                      {t('currentLabel')}
                     </label>
                     <input
                       id="current"
                       type="password"
                       name="current"
                       className="form-control"
-                      placeholder="Enter current password"
+                      placeholder={t('currentPlaceholder')}
                     />
                     {state?.errors?.current && (
                       <div className="invalid-feedback d-block" role="alert">
@@ -48,7 +52,7 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                 )}
                 <div className="mb-3">
                   <label className="form-label" htmlFor="password">
-                    New Password
+                    {t('newLabel')}
                   </label>
                   <input
                     id="password"
@@ -56,7 +60,7 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                     name="password"
                     className="form-control"
                     defaultValue={state?.data?.password?.toString()}
-                    placeholder="Enter your new secure password"
+                    placeholder={t('newPlaceholder')}
                   />
                   {state?.errors?.password && (
                     <div className="invalid-feedback d-block" role="alert">
@@ -66,14 +70,14 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
                 </div>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="confirm">
-                    Pasword Confirmation
+                    {t('confirmLabel')}
                   </label>
                   <input
                     id="confirm"
                     type="password"
                     name="confirm"
                     className="form-control"
-                    placeholder="Confirm your new password"
+                    placeholder={t('confirmPlaceholder')}
                   />
                   {state?.errors?.confirm && (
                     <div className="invalid-feedback d-block" role="alert">
@@ -120,7 +124,7 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <SecurityIcon /> Change Password
+            <SecurityIcon /> {t('saveButton')}
           </button>
         </div>
       </div>

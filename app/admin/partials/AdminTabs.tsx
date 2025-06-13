@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function AdminTabs() {
   const [isClient, setIsClient] = useState(false);
@@ -9,6 +10,8 @@ export default function AdminTabs() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const t = useTranslations('adminPage');
 
   return (
     <ul className="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
@@ -20,12 +23,12 @@ export default function AdminTabs() {
               className="nav-link active"
               data-bs-toggle="tab"
             >
-              Users
+              {t('tabs.users')}
             </Link>
           </li>
           <li className="nav-item">
             <Link href="#tabs-admin-preferences" className="nav-link" data-bs-toggle="tab">
-              Preferences
+              {t('tabs.preferences')}
             </Link>
           </li>
         </>

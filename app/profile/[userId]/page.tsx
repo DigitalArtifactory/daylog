@@ -14,6 +14,7 @@ import DangerZone from './partials/DangerZone';
 import MultiFAAuth from './partials/MultiFAAuth';
 import ProfileInfo from './partials/ProfileInfo';
 import UpdatePass from './partials/UpdatePass';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Profile({
   params,
@@ -49,16 +50,18 @@ export default async function Profile({
 
   const settings = await getSettings();
 
+  const t = await getTranslations('profilePage');
+
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader title="User data" breadcrumbs={breadcrumbs}></PageHeader>
+        <PageHeader title={t('userDataTitle')} breadcrumbs={breadcrumbs}></PageHeader>
         <PageBody>
           {user.role === 'admin' && user.id !== profile.id && (
             <div className="alert alert-important alert-primary" role="alert">
-              You are impersonating this profile as an admin.
+              {t('alertTitle')}
             </div>
           )}
           <ProfileInfo profile={profile} />

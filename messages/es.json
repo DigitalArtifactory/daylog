@@ -1,0 +1,261 @@
+{
+  "register": {
+    "title": "Registro de administrador",
+    "name": "Nombre",
+    "namePlaceholder": "Ingresa tu nombre",
+    "nameError": "El nombre debe tener al menos 2 caracteres.",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo",
+    "emailError": "Por favor, ingresa un correo válido.",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Contraseña",
+    "passwordHint": {
+      "0": "Debe tener al menos 8 caracteres",
+      "1": "Debe contener al menos una letra",
+      "2": "Debe contener al menos un número",
+      "3": "Debe contener al menos un carácter especial"
+    },
+    "disclaimer": "Al registrar tu primer usuario administrador aceptas los <link>términos y condiciones</link>.",
+    "submit": "Crear cuenta de administrador"
+  },
+  "login": {
+    "title": "Inicia sesión en tu cuenta",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "emailError": "Por favor, ingresa un correo electrónico válido.",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "passwordError": "La contraseña es requerida.",
+    "signInButton": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "couldntLogIn": "No se pudo iniciar sesión",
+    "couldntLogInDescription": "Ocurrió un error al validar tus credenciales.",
+    "noAccount": "¿No tienes una cuenta? <link>Regístrate</link>"
+  },
+  "forgotPassword": {
+    "title": "¿Olvidaste tu contraseña?",
+    "description": "Ingresa tu correo electrónico y te enviaremos instrucciones para restablecer tu contraseña.",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo",
+    "emailError": "Por favor, ingresa un correo válido.",
+    "submitButton": "Envíame una nueva contraseña",
+    "back": "No importa, <link>llévame de vuelta</link> a la pantalla de inicio de sesión.",
+    "error": {
+      "title": "No se pudo restablecer",
+      "message": "Este correo no está registrado."
+    }
+  },
+  "navigation": {
+    "home": "Inicio",
+    "boards": "Tableros",
+    "profile": "Perfil",
+    "admin": "Administrador",
+    "search": "Buscar"
+  },
+  "searchModal": {
+    "placeholder": "Buscar…",
+    "emptyResults": "Sin resultados",
+    "body": "Presiona <span>Enter</span> para abrir el resultado seleccionado.",
+    "footer": "Usa <span>Flecha arriba</span> y <span>Flecha abajo</span> para navegar por los resultados.."
+  },
+  "userMenu": {
+    "profile": "Perfil",
+    "signOut": "Cerrar sesión"
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "boards": "Tableros",
+    "profile": "Perfil",
+    "admin": "Administrador"
+  },
+  "adminPage": {
+    "configuration": "Configuración",
+    "tabs": {
+      "users": "Usuarios",
+      "preferences": "Preferencias"
+    },
+    "usersSection": {
+      "sectionTitle": "Usuarios",
+      "sectionDescription": "Administra cuentas de usuario y roles fácilmente.",
+      "table": {
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "role": "Rol",
+        "setAsAdmin": "Establecer como administrador",
+        "setAsUser": "Establecer como usuario"
+      },
+      "actions": {
+        "create": "Crear nuevo usuario",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "createModal": "Crear",
+        "cancelModal": "Cancelar",
+        "confirmModal": "Sí, eliminar"
+      },
+      "modalCreate": {
+        "title": "Nuevo usuario",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Ingrese el nombre",
+        "emailLabel": "Correo electrónico",
+        "emailPlaceholder": "Ingrese el correo electrónico",
+        "passwordLabel": "Contraseña",
+        "passwordPlaceholder": "Contraseña",
+        "accountNotCreated": "Cuenta no creada"
+      },
+      "modalDelete": {
+        "title": "¿Estás seguro?",
+        "deleteLabel": "Eliminar",
+        "confirmationText": "¿Realmente deseas eliminar este usuario? Lo que harás no se podrá deshacer."
+      }
+    },
+    "preferencesSection": {
+      "safetyTitle": "Seguridad",
+      "safetyDescription": "Personaliza el acceso y la seguridad de los datos de las cuentas de usuario.",
+      "thirdPartyTitle": "Terceros",
+      "thirdPartyDescription": "Personaliza tus integraciones y fuentes de datos de terceros.",
+      "fields": {
+        "require2fa": "Forzar a los usuarios a configurar autenticación 2FA",
+        "allowSignup": "Permitir que los usuarios se registren",
+        "unsplash": "Permitir Unsplash como fuente de imágenes",
+        "storage": "Habilitar almacenamiento S3"
+      },
+      "unsplashNote": "Debes crear una cuenta de Unsplash y agregar tu clave API en las variables de entorno para usar esta función.",
+      "unsplashLinkText": "Ir a la <link>página de desarrolladores de Unsplash</link> para crear una cuenta y obtener tu clave API.",
+      "saveButton": "Guardar configuración",
+      "storageTitle": "Almacenamiento",
+      "storageDescription": "Personaliza tus opciones de almacenamiento para imágenes y archivos.",
+      "storageNote": "Debes crear un bucket S3 y agregar tus credenciales en las variables de entorno para usar esta función."
+    }
+  },
+  "homePage": {
+    "welcomeMessage": "Bienvenido",
+    "noBoardsMessage": "Aún no tienes tableros...",
+    "createBoardLink": "Ve a tus tableros y crea uno.",
+    "noNotesMessage": "Aún no tienes notas...",
+    "createNoteLink": "Ve a tus notas y crea una."
+  },
+  "boardsPage": {
+    "allBoards": "Todos los tableros",
+    "emptyBoardTitle": "No tienes tableros",
+    "emptyBoardDescription": "Puedes crear un nuevo tablero",
+    "emptyNoteTitle": "No tienes notas",
+    "emptyNoteDescription": "Puedes crear una nueva nota",
+    "actions": {
+      "createBoard": "Crear nuevo tablero",
+      "createNote": "Crear nueva nota"
+    }
+  },
+  "loading": {
+    "loadingBoards": "Cargando tableros...",
+    "loadingNotes": "Cargando notas...",
+    "loadingUsers": "Cargando usuarios..."
+  },
+  "footer": {
+    "madeWithBy": "Hecho con <icon></icon> por <link>DavidArtifacts</link>",
+    "version": "versión",
+    "sourceCode": "<link><icon></icon> Código fuente</link>",
+    "buyMeCoffee": "<link><icon></icon> Cómprame un café</link>"
+  },
+  "boardModal": {
+    "titleCreate": "Crear tablero",
+    "titleUpdate": "Actualizar tablero",
+    "imageLabel": "Selecciona una imagen desde tu dispositivo <optional>(opcional)</optional>",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Título de tu tablero",
+    "titleError": "El título no puede estar vacío",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Escribe una descripción",
+    "createButton": "Crear",
+    "updateButton": "Actualizar",
+    "closeButton": "Cerrar"
+  },
+  "noteModal": {
+    "titleCreate": "Crear nota",
+    "titleUpdate": "Actualizar nota",
+    "imageLabel": "Selecciona una imagen desde tu dispositivo <optional>(opcional)</optional>",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Título de tu nota",
+    "titleError": "El título no puede estar vacío",
+    "contentLabel": "Contenido",
+    "contentPlaceholder": "Escribe cualquier contenido simple",
+    "removeImage": "Eliminar imagen",
+    "createButton": "Crear",
+    "updateButton": "Actualizar",
+    "closeButton": "Cerrar"
+  },
+  "deleteModal": {
+    "title": "¿Estás seguro?",
+    "description": "¿Realmente deseas eliminar este usuario? Lo que harás no se podrá deshacer.",
+    "passwordPlaceholder": "Tu contraseña es requerida",
+    "passwordError": "Tu contraseña es requerida.",
+    "cancel": "Cancelar",
+    "confirm": "Sí, eliminar"
+  },
+  "profilePage": {
+    "userDataTitle": "Datos del usuario",
+    "alertTitle": "Estás suplantando este perfil como administrador.",
+    "profileSection": {
+      "title": "Información del perfil",
+      "description": "Actualiza la información del perfil de tu cuenta y tu dirección de correo electrónico.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingresa tu apodo, nombre o nombre completo",
+      "nameError": "El nombre debe tener al menos 2 caracteres.",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Ingresa tu correo para recuperar contraseña",
+      "emailError": "El correo electrónico es requerido.",
+      "saveButton": "Guardar cambios"
+    },
+    "passwordSection": {
+      "title": "Actualizar contraseña",
+      "description": "Asegúrate de que tu cuenta use una contraseña segura y aleatoria para mantener la seguridad.",
+      "currentLabel": "Contraseña actual",
+      "currentPlaceholder": "Ingresa tu contraseña actual",
+      "currentError": "La contraseña actual es requerida.",
+      "newLabel": "Nueva contraseña",
+      "newPlaceholder": "Ingresa tu nueva contraseña segura",
+      "newError": "La nueva contraseña es requerida.",
+      "confirmLabel": "Confirmar contraseña",
+      "confirmPlaceholder": "Confirma tu nueva contraseña",
+      "confirmError": "La confirmación de la contraseña es requerida.",
+      "saveButton": "Cambiar contraseña"
+    },
+    "backupSection": {
+      "title": "Respaldo",
+      "description": "Guarda o exporta todos tus datos en un archivo JSON. Dependiendo de tus datos, puede tardar un poco. No recargues esta página hasta que aparezca el diálogo de guardado.",
+      "copyButton": "Copiar JSON",
+      "downloadButton": "Descargar datos"
+    },
+    "dangerZoneSection": {
+      "title": "Zona de peligro",
+      "description": "Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán borrados permanentemente. Antes de eliminar tu cuenta, por favor descarga cualquier dato o información que desees conservar.",
+      "deleteButton": "Eliminar cuenta"
+    }
+  },
+  "terms": {
+    "title": "Términos y condiciones de registro de usuario",
+    "introductionTitle": "Introducción",
+    "introductionText": "Al registrarte en nuestra plataforma, aceptas cumplir con estos términos y condiciones. Por favor, léelos detenidamente antes de continuar con el registro.",
+    "accountTitle": "Tu cuenta",
+    "accountText": "Eres responsable de mantener la confidencialidad de tus credenciales. Aceptas notificarnos de inmediato cualquier uso no autorizado de tu cuenta.",
+    "usageTitle": "Uso aceptable",
+    "usageText": "Aceptas usar nuestra plataforma solo con fines legales. Las actividades prohibidas incluyen, pero no se limitan a:",
+    "usageList": {
+      "fraud": "Participar en cualquier forma de fraude o actividad maliciosa.",
+      "lawViolation": "Violar cualquier ley local, estatal o internacional.",
+      "uploading": "Subir contenido dañino o ilegal."
+    },
+    "licenseTitle": "Licencia y propiedad intelectual",
+    "licenseText": "Esta plataforma está licenciada bajo la <link>Licencia Apache 2.0</link>. Puedes usarla, modificarla y compartirla conforme a los términos de dicha licencia.",
+    "liabilityTitle": "Limitación de responsabilidad",
+    "liabilityText": "En la máxima medida permitida por la ley, no somos responsables por ningún daño derivado del uso de esta plataforma, incluyendo pérdida de datos, interrupciones del servicio o accesos no autorizados.",
+    "terminationTitle": "Terminación",
+    "terminationText": "Nos reservamos el derecho de cancelar tu cuenta a nuestra entera discreción si violas estos términos y condiciones.",
+    "changesTitle": "Cambios en los términos",
+    "changesText": "Podemos actualizar estos términos periódicamente. Cualquier cambio será comunicado y entrará en vigor inmediatamente tras su publicación.",
+    "footer": "Licenciado bajo la <link>Licencia Apache 2.0</link>."
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español"
+  }
+}
