@@ -46,12 +46,12 @@ export default function NavSearch() {
       <div className="input-icon">
         <button
           accessKey="k"
-          className="btn text-secondary rounded-pill justify-content-start px-2"
+          className="btn text-secondary rounded-pill justify-content-start px-3"
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >
           <SearchIcon /> Search
-          <div className="d-flex gap-1 mx-1">
+          <div className="d-flex gap-1 ms-1">
             <span className="badge badge-md border">Alt</span>
             <span className="badge badge-md border">K</span>
           </div>
