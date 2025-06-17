@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { createNote, deleteImage, saveImage, updateNote } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 type NoteModalFormType = {
   modalId: string;
@@ -89,6 +90,8 @@ export default function NoteModalForm({
     }
   };
 
+  const t = useTranslations('noteModal');
+
   return (
     <div className="modal fade" id={modalId} tabIndex={-1}>
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
@@ -103,7 +106,7 @@ export default function NoteModalForm({
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">
-                {mode === 'create' ? 'Create note' : 'Update note'}
+                {mode === 'create' ? t('titleCreate') : t('titleUpdate')}
               </h5>
               <button
                 type="button"
@@ -143,13 +146,16 @@ export default function NoteModalForm({
                       }}
                     >
                       <TrashIcon />
-                      Remove image
+                      {t('removeImage')}
                     </button>
                   </div>
                 )}
                 <label htmlFor="image" className="form-label">
-                  Select image from your device{' '}
-                  <span className="text-secondary">(optional)</span>
+                  {t.rich('imageLabel', {
+                    optional: (chunks) => (
+                      <span className="text-secondary">{chunks}</span>
+                    ),
+                  })}
                 </label>
                 <input
                   id="image"
@@ -163,24 +169,24 @@ export default function NoteModalForm({
             </div>
             <div className="modal-body">
               <div className="mb-3">
-                <label className="form-label">Title</label>
+                <label className="form-label">{t('titleLabel')}</label>
                 <input
                   type="text"
                   className={`form-control ${errors.title && 'is-invalid'}`}
-                  placeholder="Your note title"
+                  placeholder={t('titlePlaceholder')}
                   defaultValue={note?.title}
                   {...register('title', { required: true })}
                 />
                 {errors.title && (
-                  <div className="invalid-feedback">Title is required</div>
+                  <div className="invalid-feedback">{t('titleError')}</div>
                 )}
               </div>
               <div className="mb-3">
-                <label className="form-label">Content</label>
+                <label className="form-label">{t('contentLabel')}</label>
                 <textarea
                   rows={5}
                   className="form-control"
-                  placeholder="Type any simple content"
+                  placeholder={t('contentPlaceholder')}
                   defaultValue={note?.content ?? ''}
                   {...register('content')}
                 />
@@ -193,7 +199,7 @@ export default function NoteModalForm({
                 className="btn me-auto"
                 data-bs-dismiss="modal"
               >
-                Close
+                {t('closeButton')}
               </button>
               <button
                 disabled={submiting}
@@ -202,7 +208,7 @@ export default function NoteModalForm({
                   submiting ? 'btn-loading disabled' : null
                 }`}
               >
-                {mode === 'create' ? 'Create' : 'Update'}
+                {mode === 'create' ? t('createButton') : t('updateButton')}
               </button>
             </div>
           </div>

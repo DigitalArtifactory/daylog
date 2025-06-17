@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import '../public/css/tabler.1.2.0.min.css';
 import './globals.css';
 import MainLayout from './partials/MainLayout';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,10 +27,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${geistSans.className} ${geistMono.variable}`}>
-        <MainLayout>{children}</MainLayout>
+        <NextIntlClientProvider locale={locale}>
+          <MainLayout>{children}</MainLayout>
+        </NextIntlClientProvider>
         <script src="/js/tabler.1.2.0.min.js" defer></script>
       </body>
     </html>

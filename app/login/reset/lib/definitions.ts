@@ -1,11 +1,9 @@
 import { z } from 'zod';
 
-export const ResetFormSchema = z.object({
-  email: z
-    .string()
-    .email({ message: 'Please enter a valid email.' })
-    .trim(),
-});
+export const ResetFormSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().email({ message: t('emailError') }).trim(),
+  });
 
 export type FormState =
   | {

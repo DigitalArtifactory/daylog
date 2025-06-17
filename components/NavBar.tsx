@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavSearch from './NavSearch';
 import { AdminUserIcon, BoardIcon, HomeIcon, UserIcon } from './icons';
+import {useTranslations} from 'next-intl';
 
 export default function NavBar({ user }: { user: User }) {
   const path = usePathname();
@@ -13,6 +14,7 @@ export default function NavBar({ user }: { user: User }) {
   const profilePattern = /^\/profile\/[a-zA-Z0-9_-]+\/?$/;
   const boardPattern = /^\/boards(\/[a-zA-Z0-9_-]+)?\/?$/;
   const notePattern = /^\/boards\/[a-zA-Z0-9_-]+\/notes(\/[a-zA-Z0-9_-]+)?\/?$/;
+  const t = useTranslations('navigation');
 
   return (
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -35,7 +37,7 @@ export default function NavBar({ user }: { user: User }) {
             >
               <HomeIcon />
             </span>
-            <span className="nav-link-title">Home</span>
+            <span className="nav-link-title">{t('home')}</span>
           </Link>
         </li>
         <li
@@ -62,7 +64,7 @@ export default function NavBar({ user }: { user: User }) {
             >
               <BoardIcon />
             </span>
-            <span className="nav-link-title">Boards</span>
+            <span className="nav-link-title">{t('boards')}</span>
           </Link>
         </li>
         <li
@@ -83,7 +85,7 @@ export default function NavBar({ user }: { user: User }) {
             >
               <UserIcon />
             </span>
-            <span className="nav-link-title">Profile</span>
+            <span className="nav-link-title">{t('profile')}</span>
           </a>
         </li>
       </ul>
@@ -107,7 +109,7 @@ export default function NavBar({ user }: { user: User }) {
               >
                 <AdminUserIcon />
               </span>
-              <span className="nav-link-title">Admin</span>
+              <span className="nav-link-title">{t('admin')}</span>
             </a>
           </li>
         </ul>

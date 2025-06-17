@@ -25,6 +25,7 @@ import {
   UpdateMFAFormSchema,
   MFAFormState as UpdateMFAFormState,
 } from './definitions';
+import { getTranslations } from 'next-intl/server';
 
 export async function updateProfile(
   state: ProfileFormState,
@@ -36,7 +37,9 @@ export async function updateProfile(
     email: formData.get('email'),
   };
 
-  const result = ProfileFormSchema.safeParse(data);
+  const t = await getTranslations('profilePage.profileSection');
+
+  const result = ProfileFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {
@@ -106,7 +109,9 @@ export async function updatePassword(
     confirm: formData.get('confirm'),
   };
 
-  const result = PasswordFormSchema.safeParse(data);
+  const t = await getTranslations('profilePage.passwordSection');
+
+  const result = PasswordFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {
@@ -230,7 +235,9 @@ export async function deleteAccount(
     password: formData.get('password'),
   };
 
-  const result = DeleteAccountFormSchema.safeParse(data);
+  const t = await getTranslations('deleteModal');
+
+  const result = DeleteAccountFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {

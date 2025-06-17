@@ -4,9 +4,12 @@ import { EnvelopeIcon } from '@/components/icons';
 import Image from 'next/image';
 import { useActionState } from 'react';
 import { reset } from './lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function Page() {
   const [state, action, pending] = useActionState(reset, undefined);
+
+  const t = useTranslations('forgotPassword');
 
   return (
     <div className="page page-center">
@@ -45,7 +48,7 @@ export default function Page() {
         )}
         {state?.message && (
           <div className="alert alert-danger alert-dismissible" role="alert">
-            <h3 className="mb-1">Could not reset</h3>
+            <h3 className="mb-1">{t('error.title')}</h3>
             <p>{state.message}</p>
             <a
               className="btn-close"
@@ -61,20 +64,19 @@ export default function Page() {
           noValidate={true}
         >
           <div className="card-body">
-            <h2 className="h2 text-center mb-4">Forgot password</h2>
+            <h2 className="h2 text-center mb-4">{t('title')}</h2>
             <p className="text-secondary mb-4">
-              Enter your email address and we will send you instructions to
-              reset your password.
+              {t('description')}
             </p>
             <div className="mb-3">
-              <label className="form-label">Email address</label>
+              <label className="form-label">{t('emailLabel')}</label>
               <input
                 type="email"
                 name="email"
                 className={`form-control ${
                   state?.errors?.email && 'is-invalid'
                 }`}
-                placeholder="Enter email"
+                placeholder={t('emailPlaceholder')}
               />
               {state?.errors?.email && (
                 <div className="invalid-feedback">{state?.errors?.email}</div>
@@ -88,13 +90,23 @@ export default function Page() {
                   pending ? 'btn-loading disabled' : null
                 }`}
               >
-                <EnvelopeIcon /> Send me a new password
+                <EnvelopeIcon /> {t('submitButton')}
               </button>
             </div>
           </div>
         </form>
         <div className="text-center text-secondary mt-3">
-          Never mind, <a href="/login">take me back</a> to the sign in screen.
+          {t.rich('back', {
+            link: (chunks) => (
+              <a
+                href="/login"
+                className="text-primary font-medium"
+                tabIndex={-1}
+              >
+                {chunks}
+              </a>
+            ),
+          })}
         </div>
       </div>
     </div>

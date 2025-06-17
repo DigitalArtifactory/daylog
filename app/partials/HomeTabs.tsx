@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function HomeTabs() {
   const [loading, setLoading] = useState(true);
@@ -46,13 +47,15 @@ export default function HomeTabs() {
     setLoadingNotes(false);
   };
 
+  const t = useTranslations();
+
   return loading ? (
-    <Loader caption="Loading boards..." />
+    <Loader caption={t('loading.loadingBoards')} />
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
       <ConfusedIcon />
-      <div className="text-secondary">You don&apos;t have boards yet...</div>
-      <Link href={'/boards'}>Go to your boards and create one.</Link>
+      <div className="text-secondary">{t('homePage.noBoardsMessage')}</div>
+      <Link href={'/boards'}>{t('homePage.createBoardLink')}</Link>
     </div>
   ) : (
     <>
@@ -166,7 +169,7 @@ export default function HomeTabs() {
                       )
                   )
                 ) : (
-                  <Fragment key={board.id}>{EmptyNotes(board.id)}</Fragment>
+                  <Fragment key={board.id}>{EmptyNotes(board.id, t)}</Fragment>
                 )}
               </div>
             </div>
@@ -176,13 +179,13 @@ export default function HomeTabs() {
   );
 }
 
-function EmptyNotes(boardId: number) {
+function EmptyNotes(boardId: number, t: (key: string) => string) {
   return (
     <div className="text-center mt-5">
       <SurprisedIcon />
-      <div className="text-secondary">You don&apos;t have notes yet...</div>
+      <div className="text-secondary">{t('homePage.noNotesMessage')}</div>
       <Link href={`/boards/${boardId}/notes`}>
-        Go to this board and create one.
+        {t('homePage.createNoteLink')}
       </Link>
     </div>
   );

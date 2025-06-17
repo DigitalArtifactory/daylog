@@ -5,6 +5,7 @@ import { hashPassword } from '@/utils/crypto';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { InitFormState, InitSignupFormSchema } from './definitions';
+import { getTranslations } from 'next-intl/server';
 
 export async function validateAdminUserExists() {
   const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
@@ -17,8 +18,9 @@ export async function signupInit(state: InitFormState, formData: FormData) {
     email: formData.get('email'),
     password: formData.get('password'),
   };
+  const t = getTranslations('register');
 
-  const result = InitSignupFormSchema.safeParse(data);
+  const result = InitSignupFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {

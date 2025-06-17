@@ -5,6 +5,7 @@ import { prisma } from '@/prisma/client';
 import { hashPassword } from '@/utils/crypto';
 import { redirect } from 'next/navigation';
 import { FormState, SignupFormSchema } from './definitions';
+import { getTranslations } from 'next-intl/server';
 
 export async function signup(state: FormState, formData: FormData) {
   const data = {
@@ -14,7 +15,9 @@ export async function signup(state: FormState, formData: FormData) {
     terms: formData.get('terms'),
   };
 
-  const result = SignupFormSchema.safeParse(data);
+  const t = await getTranslations('register');
+
+  const result = SignupFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {

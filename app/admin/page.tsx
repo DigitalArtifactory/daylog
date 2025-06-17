@@ -12,6 +12,7 @@ import AdminTabs from './partials/AdminTabs';
 import PreferencesTab from './partials/PreferencesTab';
 import UserModal from './partials/UserModal';
 import UsersTable from './partials/UsersTable';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Admin() {
   const { user } = await getCurrentSession();
@@ -21,9 +22,12 @@ export default async function Admin() {
   if (user.role !== 'admin') {
     return redirect('/');
   }
+
+  const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
-    { name: 'Admin', href: '/admin' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.admin'), href: '/admin' },
   ];
 
   const initialSettings = await getSettings();
@@ -34,7 +38,7 @@ export default async function Admin() {
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader
-          title="Configuration"
+          title={t('adminPage.configuration')}
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
@@ -47,9 +51,11 @@ export default async function Admin() {
                 <div className="tab-pane active show" id="tabs-admin-users">
                   <div className="d-flex justify-content-between">
                     <div>
-                      <h3 className="card-title">Users</h3>
+                      <h3 className="card-title">
+                        {t('adminPage.usersSection.sectionTitle')}
+                      </h3>
                       <div className="text-secondary">
-                        Manage user accounts, and roles with ease.
+                        {t('adminPage.usersSection.sectionDescription')}
                       </div>
                     </div>
                     <div>

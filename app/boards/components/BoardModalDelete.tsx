@@ -5,6 +5,7 @@ import { TrashIcon, WarningIcon } from '@/components/icons';
 import { Board } from '@/prisma/generated/client';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 type BoardModalDeleteType = {
   board: Board;
@@ -33,6 +34,8 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
     }
   };
 
+  const t = useTranslations('deleteModal');
+
   return (
     <>
       <a
@@ -55,11 +58,10 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
             <div className="modal-status bg-danger"></div>
             <div className="modal-body text-center py-4">
               <WarningIcon />
-              <h3>Are you sure?</h3>
+              <h3>{t('title')}</h3>
               <div className="text-danger fw-bold">{board.title}</div>
               <div className="text-secondary">
-                Do you really want to remove this board? What you&apos;ve done
-                cannot be undone.
+                {t('description')}
               </div>
             </div>
             <div className="modal-footer">
@@ -71,7 +73,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
                       className="btn w-100"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t('cancel')}
                     </button>
                   </div>
                   <div className="col">
@@ -82,7 +84,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
                       }`}
                       onClick={() => handleDeleteClick()}
                     >
-                      Yes, delete
+                      {t('confirm')}
                     </button>
                   </div>
                 </div>

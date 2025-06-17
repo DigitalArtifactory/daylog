@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import NavThemeToggle from './NavThemeToggle';
+import { getTranslations } from 'next-intl/server';
 
 export default async function NavHeader() {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');
   }
+  const t = await getTranslations('userMenu');
 
   return (
     <header className="navbar navbar-expand-sm navbar-light d-print-none">
@@ -73,12 +75,12 @@ export default async function NavHeader() {
             <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
               <li>
                 <Link className="dropdown-item" href={`/profile/${user?.id}`}>
-                  Profile
+                  {t('profile')}
                 </Link>
               </li>
               <li>
                 <form action={signout}>
-                  <button className="dropdown-item">Sign out</button>
+                  <button className="dropdown-item">{t('signOut')}</button>
                 </form>
               </li>
             </ul>

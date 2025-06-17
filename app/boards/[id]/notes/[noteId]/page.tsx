@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
 import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
+import { getTranslations } from 'next-intl/server';
 
 export default async function NotePage({
   params,
@@ -24,9 +25,12 @@ export default async function NotePage({
   }
   const board = await getBoard(parseInt((await params).id));
   const note = await getNote(parseInt((await params).noteId));
+
+const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
-    { name: 'Boards', href: '/boards' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.boards'), href: '/boards' },
     { name: board?.title ?? 'Notes', href: `/boards/${note?.boardsId}/notes` },
     {
       name: note?.title ?? '',

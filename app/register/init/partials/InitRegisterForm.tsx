@@ -4,10 +4,13 @@ import { HideIcon, ViewIcon } from '@/components/icons';
 import Image from 'next/image';
 import { useActionState, useState } from 'react';
 import { signupInit } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function InitRegisterForm() {
   const [state, action, pending] = useActionState(signupInit, undefined);
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const t = useTranslations('register');
 
   return (
     <div className="page page-center">
@@ -37,10 +40,10 @@ export default function InitRegisterForm() {
         )}
         <form autoComplete="off" className="card card-md" action={action}>
           <div className="card-body">
-            <h2 className="card-title text-center mb-4">Admin registration</h2>
+            <h2 className="card-title text-center mb-4">{t('title')}</h2>
             <div className="mb-3">
               <label className="form-label" htmlFor="name">
-                Name
+                {t('name')}
               </label>
               <input
                 id="name"
@@ -49,7 +52,7 @@ export default function InitRegisterForm() {
                 className={`form-control ${
                   state?.errors?.name && 'is-invalid'
                 }`}
-                placeholder="Enter name"
+                placeholder={t('namePlaceholder')}
               />
               {state?.errors?.name && (
                 <div className="invalid-feedback d-block" role="alert">
@@ -59,7 +62,7 @@ export default function InitRegisterForm() {
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="email">
-                Email address
+                {t('email')}
               </label>
               <input
                 id="email"
@@ -68,7 +71,7 @@ export default function InitRegisterForm() {
                 className={`form-control ${
                   state?.errors?.email && 'is-invalid'
                 }`}
-                placeholder="Enter email"
+                placeholder={t('emailPlaceholder')}
               />
               {state?.errors?.email &&
                 state?.errors?.email.map((e, i) => (
@@ -79,7 +82,7 @@ export default function InitRegisterForm() {
             </div>
             <div className="mb-3">
               <label className="form-label" htmlFor="password">
-                Password
+                {t('password')}
               </label>
               <div className="input-group input-group-flat">
                 <input
@@ -90,7 +93,7 @@ export default function InitRegisterForm() {
                   className={`form-control ${
                     state?.errors?.password && 'border-danger'
                   }`}
-                  placeholder="Password"
+                  placeholder={t('passwordPlaceholder')}
                   autoComplete="off"
                 />
                 <span
@@ -126,11 +129,13 @@ export default function InitRegisterForm() {
                 ))}
             </div>
             <div className="mb-3">
-              By register your first Admin user you are accepting the{' '}
-              <a href="/register/terms" tabIndex={-1}>
-                terms and policy
-              </a>
-              .
+              {t.rich('disclaimer', {
+                link: (chunks) => (
+                  <a href="/register/terms" tabIndex={-1} className="underline">
+                    {chunks}
+                  </a>
+                ),
+              })}
             </div>
             <div className="form-footer">
               <button
@@ -140,7 +145,7 @@ export default function InitRegisterForm() {
                   pending ? 'btn-loading disabled' : null
                 }`}
               >
-                Create admin account
+                {t('submit')}
               </button>
             </div>
           </div>

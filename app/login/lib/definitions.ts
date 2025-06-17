@@ -1,13 +1,24 @@
 import { z } from 'zod';
 
-export const SigninFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  password: z.string().min(1, { message: 'Password is required.' }).trim(),
-});
+export const SigninFormSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z
+      .string()
+      .email({ message: t('emailError') })
+      .trim(),
+    password: z
+      .string()
+      .min(1, { message: t('passwordError') })
+      .trim(),
+  });
 
-export const ValidateMFAFormSchema = z.object({
-  password: z.string().min(1, { message: 'Password is required.' }).trim(),
-});
+export const ValidateMFAFormSchema = (t: (key: string) => string) =>
+  z.object({
+    password: z
+      .string()
+      .min(1, { message: t('passwordError') })
+      .trim(),
+  });
 
 export type FormState =
   | {

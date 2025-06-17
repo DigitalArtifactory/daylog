@@ -8,6 +8,7 @@ import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { getCurrentSession } from './login/lib/actions';
 import HomeTabs from './partials/HomeTabs';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Home() {
   const { user } = await getCurrentSession();
@@ -15,7 +16,9 @@ export default async function Home() {
     return redirect('/login');
   }
 
-  const breadcrumbs = [{ name: 'Home', href: '/' }];
+  const t = await getTranslations('');
+
+  const breadcrumbs = [{ name: t('navigation.home'), href: '/' }];
 
   return (
     <Page>
@@ -23,7 +26,7 @@ export default async function Home() {
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader
-          title={`Welcome ${user.name}`}
+          title={t('homePage.welcomeMessage', { name: user.name ?? ""})}
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
