@@ -30,18 +30,18 @@ const NavLanguageToggle = () => {
   };
 
   return (
-    <li className="nav-item dropdown">
+    <div className="dropdown list-inline-item">
       <a
         href="#"
-        className="nav-link dropdown-toggle d-flex align-items-center"
+        className="dropdown-toggle link-secondary"
         data-bs-toggle="dropdown"
         role="button"
         aria-expanded="false"
       >
-        {locale === 'en' ? <FlagUS /> : <FlagMX />}
-        {t(locale)}
+        {locale === 'en' ? <FlagUS /> : <FlagMX />}{""}
+        <span className="ms-2">{t(locale)}</span>
       </a>
-      <div className="dropdown-menu dropdown-menu-end">
+      <div className="dropdown-menu">
         <button
           className="dropdown-item d-flex align-items-center"
           onClick={() => changeLocale('es')}
@@ -57,7 +57,7 @@ const NavLanguageToggle = () => {
           {t('en')}
         </button>
       </div>
-    </li>
+    </div>
   );
 };
 

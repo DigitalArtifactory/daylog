@@ -40,8 +40,10 @@ export default async function Profile({
     );
   }
 
+  const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
+    { name: t('navigation.home'), href: '/' },
     {
       name: profile?.name ?? '',
       href: `/profile/${(await params).userId}`,
@@ -50,18 +52,19 @@ export default async function Profile({
 
   const settings = await getSettings();
 
-  const t = await getTranslations('profilePage');
-
   return (
     <Page>
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader title={t('userDataTitle')} breadcrumbs={breadcrumbs}></PageHeader>
+        <PageHeader
+          title={t('profilePage.userDataTitle')}
+          breadcrumbs={breadcrumbs}
+        ></PageHeader>
         <PageBody>
           {user.role === 'admin' && user.id !== profile.id && (
             <div className="alert alert-important alert-primary" role="alert">
-              {t('alertTitle')}
+              {t('profilePage.alertTitle')}
             </div>
           )}
           <ProfileInfo profile={profile} />

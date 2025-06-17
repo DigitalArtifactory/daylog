@@ -14,6 +14,7 @@ import { Suspense } from 'react';
 import { getSettings } from '../admin/lib/actions';
 import { getCurrentSession } from '../login/lib/actions';
 import { getBoards } from './lib/actions';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Boards() {
   const { user } = await getCurrentSession();
@@ -22,9 +23,12 @@ export default async function Boards() {
   }
   const boards = await getBoards();
   const settings = await getSettings();
+
+  const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
-    { name: 'Boards', href: '/boards' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.boards'), href: '/boards' },
   ];
 
   return (
@@ -32,7 +36,7 @@ export default async function Boards() {
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader title="All boards" breadcrumbs={breadcrumbs}>
+        <PageHeader title={t('boardsPage.allBoards')} breadcrumbs={breadcrumbs}>
           <div className="btn-list">
             <a
               href="#"
@@ -41,7 +45,7 @@ export default async function Boards() {
               data-bs-target="#new-board-modal"
             >
               <AddIcon />
-              Create new board
+              {t('boardsPage.actions.createBoard')}
             </a>
             <BoardModalForm
               modalId="new-board-modal"
@@ -54,8 +58,10 @@ export default async function Boards() {
           <div className="row row-deck">
             {boards?.length == 0 ? (
               <div className="alert alert-info" role="alert">
-                <h4 className="alert-title">Your boards are empty</h4>
-                <div className="text-secondary">You can create a new board</div>
+                <h4 className="alert-title">{t('boardsPage.emptyBoardTitle')}</h4>
+                <div className="text-secondary">
+                  {t('boardsPage.emptyBoardDescription')}
+                </div>
               </div>
             ) : (
               boards?.map((b) => (

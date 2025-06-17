@@ -30,13 +30,14 @@ export default async function Notes({
   const board = await getBoard(parseInt(id));
   const notes = await getNotes(parseInt(id));
   const settings = await getSettings();
+
+  const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
-    { name: 'Boards', href: '/boards' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.boards'), href: '/boards' },
     { name: board?.title ?? 'Notes', href: `/boards/${id}/notes` },
   ];
-
-  const t = await getTranslations('boardsPage');
 
   return (
     <Page>
@@ -52,7 +53,7 @@ export default async function Notes({
               data-bs-target="#new-note-modal"
             >
               <AddIcon />
-              {t('actions.createNote')}
+              {t('boardsPage.actions.createNote')}
             </a>
             <NoteModalForm
               boardId={parseInt(id)}
@@ -66,8 +67,10 @@ export default async function Notes({
           <div className="row row-deck">
             {notes?.length == 0 ? (
               <div className="alert alert-info" role="alert">
-                <h4 className="alert-title">{t('emptyNoteTitle')}</h4>
-                <div className="text-secondary">{t('emptyNoteDescription')}</div>
+                <h4 className="alert-title">{t('boardsPage.emptyNoteTitle')}</h4>
+                <div className="text-secondary">
+                  {t('boardsPage.emptyNoteDescription')}
+                </div>
               </div>
             ) : (
               notes?.map((b) => (

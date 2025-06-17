@@ -2,6 +2,7 @@ import getVersion from '@/app/lib/version';
 import { GitHubIcon, HeartFilledIcon } from './icons';
 import CupIcon from './icons/CupIcon';
 import { useTranslations } from 'next-intl';
+import NavLanguageToggle from './NavLanguageToggle';
 
 export default function PageFooterSponsor() {
   const t = useTranslations('footer');
@@ -41,6 +42,9 @@ export default function PageFooterSponsor() {
                     </a>
                   ),
                 })}
+              </li>
+              <li className="list-inline-item">
+                <NavLanguageToggle />
               </li>
             </ul>
           </div>

@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import NavThemeToggle from './NavThemeToggle';
-import NavLanguageToggle from './NavLanguageToggle';
 import { getTranslations } from 'next-intl/server';
 
 export default async function NavHeader() {
@@ -31,7 +30,6 @@ export default async function NavHeader() {
           </Link>
         </h1>
         <div className="navbar-nav flex-row order-md-last">
-          <NavLanguageToggle />
           <NavThemeToggle />
           <li className="nav-item dropdown">
             <Link

@@ -5,9 +5,12 @@ import { hashPassword } from '@/utils/crypto';
 import { createAndVerifyTransporter } from '@/utils/email';
 import { randomBytes } from 'crypto';
 import { FormState, ResetFormSchema } from './definitions';
+import { getTranslations } from 'next-intl/server';
 
 export async function reset(state: FormState, formData: FormData) {
-  const result = ResetFormSchema.safeParse({
+  const t = await getTranslations('forgotPassword');
+
+  const result = ResetFormSchema(await t).safeParse({
     email: formData.get('email'),
   });
 

@@ -10,10 +10,10 @@
     "password": "Password",
     "passwordPlaceholder": "Password",
     "passwordHint": {
-      "0": "Be at least 8 characters long",
-      "1": "Contain at least one letter",
-      "2": "Contain at least one number",
-      "3": "Contain at least one special character"
+      "0": "Be at least 8 characters long.",
+      "1": "Contain at least one letter.",
+      "2": "Contain at least one number.",
+      "3": "Contain at least one special character."
     },
     "disclaimer": "By registering your first Admin user you are accepting the <link>terms and policy</link>.",
     "submit": "Create admin account"
@@ -128,7 +128,7 @@
     }
   },
   "homePage": {
-    "welcomeMessage": "Welcome",
+    "welcomeMessage": "Welcome, {name}",
     "noBoardsMessage": "You don't have boards yet...",
     "createBoardLink": "Go to your boards and create one.",
     "noNotesMessage": "You don't have notes yet...",

@@ -1,24 +1,29 @@
 import { z } from 'zod';
 
-export const ProfileFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters long.' })
-    .trim(),
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-});
+export const ProfileFormSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z
+      .string()
+      .min(2, { message: t('nameError') })
+      .trim(),
+    email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
+  });
 
-export const PasswordFormSchema = z.object({
-  current: z
-    .string()
-    .min(1, { message: 'Current password is required.' })
-    .trim(),
-  password: z.string().min(1, { message: 'New password is required.' }).trim(),
-  confirm: z
-    .string()
-    .min(1, { message: 'Password confirmation is required.' })
-    .trim(),
-});
+export const PasswordFormSchema = (t: (key: string) => string) =>
+  z.object({
+    current: z
+      .string()
+      .min(1, { message: t('currentError') })
+      .trim(),
+    password: z
+      .string()
+      .min(1, { message: t('newError') })
+      .trim(),
+    confirm: z
+      .string()
+      .min(1, { message: t('confirmError') })
+      .trim(),
+  });
 
 export const UpdateMFAFormSchema = z.object({
   secret: z
@@ -34,10 +39,14 @@ export const DeleteMFAFormSchema = z.object({
 
 export const BackupFormSchema = z.object({ userId: z.number() });
 
-export const DeleteAccountFormSchema = z.object({
-  userId: z.number(),
-  password: z.string().min(1, { message: 'Your password is required.' }).trim(),
-});
+export const DeleteAccountFormSchema = (t: (key: string) => string) =>
+  z.object({
+    userId: z.number(),
+    password: z
+      .string()
+      .min(1, { message: t('passwordError') })
+      .trim(),
+  });
 
 export type PasswordFormState =
   | {

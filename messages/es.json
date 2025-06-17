@@ -10,10 +10,10 @@
     "password": "Contraseña",
     "passwordPlaceholder": "Contraseña",
     "passwordHint": {
-      "0": "Debe tener al menos 8 caracteres",
-      "1": "Debe contener al menos una letra",
-      "2": "Debe contener al menos un número",
-      "3": "Debe contener al menos un carácter especial"
+      "0": "Debe tener al menos 8 caracteres.",
+      "1": "Debe contener al menos una letra.",
+      "2": "Debe contener al menos un número.",
+      "3": "Debe contener al menos un carácter especial."
     },
     "disclaimer": "Al registrar tu primer usuario administrador aceptas los <link>términos y condiciones</link>.",
     "submit": "Crear cuenta de administrador"
@@ -128,7 +128,7 @@
     }
   },
   "homePage": {
-    "welcomeMessage": "Bienvenido",
+    "welcomeMessage": "Bienvenido, {name}",
     "noBoardsMessage": "Aún no tienes tableros...",
     "createBoardLink": "Ve a tus tableros y crea uno.",
     "noNotesMessage": "Aún no tienes notas...",

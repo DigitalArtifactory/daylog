@@ -12,11 +12,12 @@ import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { setSessionTokenCookie } from './cookies';
 import {
-    FormState,
-    SigninFormSchema,
-    ValidateMFAFormSchema,
-    ValidateMFAFormState,
+  FormState,
+  SigninFormSchema,
+  ValidateMFAFormSchema,
+  ValidateMFAFormState,
 } from './definitions';
+import { getTranslations } from 'next-intl/server';
 
 export async function validateAdminUserNotExists() {
   const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
@@ -89,7 +90,9 @@ export type SessionValidationResult =
   | { session: null; user: null };
 
 export async function signin(state: FormState, formData: FormData) {
-  const result = SigninFormSchema.safeParse({
+  const t = getTranslations('login');
+
+  const result = SigninFormSchema(await t).safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
   });
@@ -112,7 +115,7 @@ export async function signin(state: FormState, formData: FormData) {
     if (!record) {
       return {
         data: result.data,
-        message: 'An error occurred while validating your credentials.',
+        message: (await t)('couldntLogInDescription'),
       };
     }
 
@@ -160,7 +163,9 @@ export async function validateMFA(
     password: formData.get('password'),
   };
 
-  const result = ValidateMFAFormSchema.safeParse(data);
+  const t = getTranslations('login');
+
+  const result = ValidateMFAFormSchema(await t).safeParse(data);
 
   if (!result.success) {
     return {

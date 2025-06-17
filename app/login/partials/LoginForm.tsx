@@ -4,6 +4,7 @@ import FormField from '@/components/FormField';
 import Image from 'next/image';
 import { useActionState, useEffect } from 'react';
 import { signin } from '../lib/actions';
+import { useTranslations } from 'next-intl';
 
 export default function LoginForm({ allowReg }: { allowReg: boolean }) {
   const [state, action, pending] = useActionState(signin, undefined);
@@ -13,6 +14,8 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
     const modal = document.getElementsByClassName('modal-backdrop');
     if (modal.length > 0) modal[0].remove();
   }, []);
+
+  const t = useTranslations('login');
 
   return (
     <div className="page page-center">
@@ -32,7 +35,7 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
         </div>
         {state?.message && (
           <div className="alert alert-danger alert-dismissible" role="alert">
-            <h3 className="mb-1">Could not login</h3>
+            <h3 className="mb-1">{t('couldntLogIn')}</h3>
             <p>{state.message}</p>
             <a
               className="btn-close"
@@ -43,22 +46,22 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
         )}
         <div className="card card-md">
           <div className="card-body">
-            <h2 className="h2 text-center mb-4">Login to your account</h2>
+            <h2 className="h2 text-center mb-4">{t('title')}</h2>
             <form action={action} autoComplete="off" noValidate={true}>
               <FormField
-                label="Email address"
+                label={t('emailLabel')}
                 name="email"
                 type="email"
-                placeholder="your@email.com"
+                placeholder={t('emailPlaceholder')}
                 defaultValue={state?.data?.email?.toString()}
                 errors={state?.errors?.email}
                 autoComplete="off"
               />
               <FormField
-                label="Password"
+                label={t('passwordLabel')}
                 name="password"
                 type="password"
-                placeholder="Your password"
+                placeholder={t('passwordPlaceholder')}
                 defaultValue={state?.data?.password?.toString()}
                 errors={state?.errors?.password}
                 autoComplete="off"
@@ -71,11 +74,11 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
                     pending ? 'btn-loading disabled' : null
                   }`}
                 >
-                  Sign in
+                  {t('signInButton')}
                 </button>
                 <div className="text-center text-muted mt-3">
                   <a href="/login/reset" tabIndex={-1}>
-                    Forgot password?
+                    {t('forgotPassword')}
                   </a>
                 </div>
               </div>
@@ -84,10 +87,13 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
         </div>
         {allowReg && (
           <div className="text-center text-secondary mt-3">
-            Don&apos;t have account yet?{' '}
-            <a href="./register" tabIndex={-1}>
-              Sign up
-            </a>
+            {t.rich('noAccount', {
+              link: (chunks) => (
+                <a href="/register" tabIndex={-1}>
+                  {chunks}
+                </a>
+              ),
+            })}
           </div>
         )}
       </div>

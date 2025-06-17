@@ -22,14 +22,15 @@ export default async function Admin() {
   if (user.role !== 'admin') {
     return redirect('/');
   }
+
+  const t = await getTranslations('');
+
   const breadcrumbs = [
-    { name: 'Home', href: '/' },
-    { name: 'Admin', href: '/admin' },
+    { name: t('navigation.home'), href: '/' },
+    { name: t('navigation.admin'), href: '/admin' },
   ];
 
   const initialSettings = await getSettings();
-
-  const t = await getTranslations('adminPage');
 
   return (
     <Page>
@@ -37,7 +38,7 @@ export default async function Admin() {
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader
-          title={t('configuration')}
+          title={t('adminPage.configuration')}
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
@@ -50,9 +51,11 @@ export default async function Admin() {
                 <div className="tab-pane active show" id="tabs-admin-users">
                   <div className="d-flex justify-content-between">
                     <div>
-                      <h3 className="card-title">{t('usersSection.sectionTitle')}</h3>
+                      <h3 className="card-title">
+                        {t('adminPage.usersSection.sectionTitle')}
+                      </h3>
                       <div className="text-secondary">
-                        {t('usersSection.sectionDescription')}
+                        {t('adminPage.usersSection.sectionDescription')}
                       </div>
                     </div>
                     <div>
