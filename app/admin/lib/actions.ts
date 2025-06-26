@@ -3,7 +3,6 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { User } from '@/prisma/generated/client';
-import * as fs from 'fs';
 import { SettingsFormState } from './definitions';
 
 export async function getUsers(): Promise<User[] | null> {
@@ -30,10 +29,29 @@ export type SettingsType = {
 };
 
 export async function getSettings() {
-  if (fs.existsSync('./settings.json')) {
-    const fileContent = fs.readFileSync('./settings.json', 'utf-8');
-    const settings = JSON.parse(fileContent) as SettingsType;
-    return settings;
+  const settings = await prisma.setting.findMany();
+  if (settings && settings.length > 0) {
+    const mappedSettings: SettingsType = {
+      mfa: false,
+      allowReg: false,
+      allowUnsplash: false,
+      enableS3: false,
+    };
+    settings.map((s) => {
+      if (s.key === 'mfa') {
+        mappedSettings.mfa = s.value === 'true';
+      }
+      if (s.key === 'allowReg') {
+        mappedSettings.allowReg = s.value === 'true';
+      }
+      if (s.key === 'allowUnsplash') {
+        mappedSettings.allowUnsplash = s.value === 'true';
+      }
+      if (s.key === 'enableS3') {
+        mappedSettings.enableS3 = s.value === 'true';
+      }
+    });
+    return mappedSettings;
   } else {
     return null;
   }
@@ -50,20 +68,22 @@ export async function saveSettings(
   const allowUnsplash = formSettings.includes('allowUnsplash');
   const enableS3 = formSettings.includes('enableS3');
 
-  if (!fs.existsSync('./settings.json')) {
-    fs.writeFileSync('./settings.json', JSON.stringify({ mfa: mfa }), 'utf-8');
+  const data = [
+    { key: 'mfa', value: mfa.toString() },
+    { key: 'allowReg', value: allowReg.toString() },
+    { key: 'allowUnsplash', value: allowUnsplash.toString() },
+    { key: 'enableS3', value: enableS3.toString() },
+  ];
+
+  for (const setting of data) {
+    await prisma.setting.upsert({
+      where: { key: setting.key },
+      update: { value: setting.value },
+      create: { key: setting.key, value: setting.value },
+    });
   }
 
-  const fileContent = fs.readFileSync('./settings.json', 'utf-8');
-
-  const settings = JSON.parse(fileContent) as SettingsType;
-
-  settings.mfa = mfa;
-  settings.allowReg = allowReg;
-  settings.allowUnsplash = allowUnsplash;
-  settings.enableS3 = enableS3;
-
-  fs.writeFileSync('./settings.json', JSON.stringify(settings));
+  const settings = await getSettings();
 
   return {
     success: true,

@@ -12,11 +12,8 @@ import {
 const formSettings = ['mfa', 'allowReg', 'allowUnsplash', 'enableS3'];
 
 const mocks = vi.hoisted(() => ({
-  fs: { existsSync: vi.fn(), readFileSync: vi.fn(), writeFileSync: vi.fn() },
   getCurrentSession: vi.fn(),
 }));
-
-vi.mock('fs', () => mocks.fs);
 
 vi.mock('@/app/login/lib/actions', () => ({
   getCurrentSession: mocks.getCurrentSession,
@@ -52,17 +49,27 @@ describe('actions', () => {
   });
 
   describe('loadSettings', () => {
-    it('should load settings from file', async () => {
-      const mockSettings = { mfa: true, allowReg: false, allowUnsplash: false };
-      mocks.fs.existsSync.mockReturnValue(true);
-      mocks.fs.readFileSync.mockReturnValue(JSON.stringify(mockSettings));
+    it('should load settings from database', async () => {
+      const mockSettings = {
+        mfa: true,
+        allowReg: false,
+        allowUnsplash: false,
+        enableS3: false,
+      };
+
+      prismaMock.setting.findMany.mockResolvedValue([
+        { key: 'mfa', value: mockSettings.mfa.toString() },
+        { key: 'allowReg', value: mockSettings.allowReg.toString() },
+        { key: 'allowUnsplash', value: mockSettings.allowUnsplash.toString() },
+        { key: 'enableS3', value: mockSettings.enableS3.toString() },
+      ]);
 
       const settings = await getSettings();
       expect(settings).toEqual(mockSettings);
     });
 
-    it('should return null if settings file does not exist', async () => {
-      mocks.fs.existsSync.mockReturnValue(false);
+    it('should return null if settings does not exist', async () => {
+      prismaMock.setting.findMany.mockResolvedValue([]);
 
       const settings = await getSettings();
       expect(settings).toBeNull();
@@ -70,18 +77,19 @@ describe('actions', () => {
   });
 
   describe('saveSettings', () => {
-    it('should save settings to file', async () => {
+    it('should save settings to database', async () => {
       const formData = new FormData();
       formSettings.forEach((item) => {
         formData.append(`settings`, item);
       });
 
-      mocks.fs.existsSync.mockReturnValue(false);
-      mocks.fs.readFileSync.mockReturnValue(
-        JSON.stringify({ mfa: false, allowReg: false, allowUnsplash: false })
+      prismaMock.setting.findMany.mockResolvedValue(
+        formSettings.map((key) => ({ key, value: 'true' }))
       );
 
       const result = await saveSettings({}, formData);
+
+      expect(prismaMock.setting.upsert).toBeCalledTimes(formSettings.length);
       expect(result.success).toBe(true);
       expect(result.data).toEqual({
         mfa: true,
