@@ -42,15 +42,24 @@ export default async function Notes({
       <PageContainer>
         <PageHeader title={board?.title} breadcrumbs={breadcrumbs}>
           <div className="btn-list">
-            <a
-              href="#"
-              className="btn btn-primary d-sm-inline-block"
+            <button
+              accessKey="n"
+              id="new-note-button"
+              className="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target="#new-note-modal"
             >
               <AddIcon />
               Create new note
-            </a>
+              <div className="d-flex gap-1 ms-1">
+                <span className="badge bg-transparent badge-md border border-light text-light">
+                  Alt
+                </span>
+                <span className="badge bg-transparent badge-md border border-light text-light">
+                  N
+                </span>
+              </div>
+            </button>
             <NoteModalForm
               boardId={parseInt(id)}
               modalId="new-note-modal"

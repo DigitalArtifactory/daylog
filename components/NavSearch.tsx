@@ -43,10 +43,10 @@ export default function NavSearch() {
 
   return (
     <>
-      <div className="input-icon">
+      <div className="input-icon pb-sm-1">
         <button
           accessKey="k"
-          className="btn text-secondary rounded-pill justify-content-start px-3"
+          className="btn text-secondary rounded-pill justify-content-start px-3 w-full"
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >

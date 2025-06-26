@@ -34,15 +34,24 @@ export default async function Boards() {
       <PageContainer>
         <PageHeader title="All boards" breadcrumbs={breadcrumbs}>
           <div className="btn-list">
-            <a
-              href="#"
-              className="btn btn-primary d-sm-inline-block"
+            <button
+              accessKey="n"
+              id="new-board-button"
+              className="btn btn-primary"
               data-bs-toggle="modal"
               data-bs-target="#new-board-modal"
             >
               <AddIcon />
               Create new board
-            </a>
+              <div className="d-flex gap-1 ms-1">
+                <span className="badge bg-transparent badge-md border border-light text-light">
+                  Alt
+                </span>
+                <span className="badge bg-transparent badge-md border border-light text-light">
+                  N
+                </span>
+              </div>
+            </button>
             <BoardModalForm
               modalId="new-board-modal"
               mode="create"
