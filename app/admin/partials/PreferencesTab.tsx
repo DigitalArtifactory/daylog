@@ -30,7 +30,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             name="settings"
             className="form-check-input"
             value={'mfa'}
-            defaultChecked={state?.data.mfa || false}
+            defaultChecked={state?.data?.mfa || false}
             type="checkbox"
             role="switch"
             id="flexSwitchCheckDefault"
@@ -46,7 +46,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             name="settings"
             className="form-check-input"
             value={'allowReg'}
-            defaultChecked={state?.data.allowReg || false}
+            defaultChecked={state?.data?.allowReg || false}
             type="checkbox"
             role="switch"
             id="flexSwitchCheckDefaultAllow"
@@ -64,7 +64,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             name="settings"
             className="form-check-input"
             value={'allowUnsplash'}
-            defaultChecked={state?.data.allowUnsplash || false}
+            defaultChecked={state?.data?.allowUnsplash || false}
             type="checkbox"
             role="switch"
             id="flexSwitchCheckDefaultAllowUnsplash"
@@ -95,7 +95,7 @@ export default function PreferencesTab({initialSettings: initialSettings}: {init
             name="settings"
             className="form-check-input"
             value={'enableS3'}
-            defaultChecked={state?.data.enableS3 || false}
+            defaultChecked={state?.data?.enableS3 || false}
             type="checkbox"
             role="switch"
             id="flexSwitchCheckDefaultEnableS3"
