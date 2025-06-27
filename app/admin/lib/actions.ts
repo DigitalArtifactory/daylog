@@ -37,7 +37,7 @@ export async function getSettings() {
       allowUnsplash: false,
       enableS3: false,
     };
-    settings.map((s) => {
+    settings.forEach((s) => {
       if (s.key === 'mfa') {
         mappedSettings.mfa = s.value === 'true';
       }
