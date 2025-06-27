@@ -6,9 +6,9 @@ import {
   saveImage,
   updateBoard,
 } from '@/app/boards/lib/actions';
-import { TrashIcon } from '@/components/icons';
 import { Board, Prisma } from '@/prisma/generated/client';
 import { getImageUrlOrFile, resizeImage } from '@/utils/image';
+import { IconTrash } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -151,7 +151,7 @@ export default function BoardModalForm({
                         await deleteImage(board.id, board.imageUrl);
                       }}
                     >
-                      <TrashIcon /> Remove image
+                      <IconTrash /> Remove image
                     </button>
                   </div>
                 )}

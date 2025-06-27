@@ -1,6 +1,6 @@
 'use client';
 
-import { HideIcon, ViewIcon } from '@/components/icons';
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useActionState, useState } from 'react';
 import { signupInit } from '../lib/actions';
@@ -109,7 +109,7 @@ export default function InitRegisterForm() {
                     type={'checkbox'}
                   />
                   <label htmlFor={'showPassword'}>
-                    {isShowPassword ? <ViewIcon /> : <HideIcon />}
+                    {isShowPassword ? <IconEye /> : <IconEyeOff />}
                   </label>
                 </span>
               </div>

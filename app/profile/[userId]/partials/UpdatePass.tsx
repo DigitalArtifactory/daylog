@@ -1,6 +1,6 @@
 'use client';
 
-import { SecurityIcon } from '@/components/icons';
+import { IconLockPassword } from '@tabler/icons-react';
 import { useActionState } from 'react';
 import { updatePassword } from '../lib/actions';
 
@@ -120,7 +120,7 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <SecurityIcon /> Change Password
+            <IconLockPassword /> <span className="ms-1">Change Password</span>
           </button>
         </div>
       </div>

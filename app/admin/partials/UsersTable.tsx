@@ -1,8 +1,8 @@
 'use client';
 
-import { WarningIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
 import { User } from '@/prisma/generated/client';
+import { IconAlertTriangle } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { deleteUser, getUsers, setAdmin as setRole } from '../lib/actions';
 
@@ -100,7 +100,9 @@ export default function UsersTable({
                             ></button>
                             <div className="modal-status bg-danger"></div>
                             <div className="modal-body text-center py-4">
-                              <WarningIcon />
+                              <div className="text-danger">
+                                <IconAlertTriangle />
+                              </div>
                               <h3>Are you sure?</h3>
                               <div className="w-full bg-light p-3 rounded mb-3">
                                 <div className="badge bg-danger text-light mb-1">

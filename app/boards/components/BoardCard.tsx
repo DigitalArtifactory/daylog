@@ -1,9 +1,9 @@
 import { getSettings } from '@/app/admin/lib/actions';
 import { getBoard } from '@/app/boards/lib/actions';
-import { EditIcon } from '@/components/icons';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
+import { IconEdit } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import TimeDiff from '../../../components/TimeDiff';
@@ -76,7 +76,7 @@ export default async function BoardCard({ boardId }: BoardCardType) {
               data-bs-toggle="modal"
               data-bs-target={`#edit-board-modal-${board.id}}`}
             >
-              <EditIcon />
+              <IconEdit />
             </a>
             <BoardModalForm
               board={board}

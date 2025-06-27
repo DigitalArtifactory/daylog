@@ -1,7 +1,7 @@
 'use client';
 
-import { TrashIcon, WarningIcon } from '@/components/icons';
 import { Note } from '@/prisma/generated/client';
+import { IconAlertTriangle, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { deleteNote } from '../lib/actions';
@@ -41,7 +41,7 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
         data-bs-toggle="modal"
         data-bs-target={`#delete-modal-${note.id}`}
       >
-        <TrashIcon />
+        <IconTrash />
       </a>
       <div className="modal" id={`delete-modal-${note.id}`} tabIndex={-1}>
         <div className="modal-dialog modal-sm" role="document">
@@ -54,7 +54,7 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
             ></button>
             <div className="modal-status bg-danger"></div>
             <div className="modal-body text-center py-4">
-              <WarningIcon />
+              <IconAlertTriangle />
               <h3>Are you sure?</h3>
               <div className="text-danger fw-bold">{note.title}</div>
               <div className="text-secondary">

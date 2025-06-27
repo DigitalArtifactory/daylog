@@ -1,8 +1,8 @@
 'use client';
 
 import { updateBoard } from '@/app/boards/lib/actions';
-import { HeartFilledIcon, HeartIcon } from '@/components/icons';
 import { Board } from '@/prisma/generated/client';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 
 type BoardFavoriteButtonType = {
@@ -26,7 +26,7 @@ export default function BoardFavoriteButton({
       onClick={() => handleFavoriteClick()}
       className="icon ms-3 text-danger"
     >
-      {!board.favorite ? <HeartIcon /> : <HeartFilledIcon />}
+      {!board.favorite ? <IconHeart /> : <IconHeartFilled />}
     </a>
   );
 }

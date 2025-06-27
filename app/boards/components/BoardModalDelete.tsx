@@ -1,8 +1,8 @@
 'use client';
 
 import { deleteBoard } from '@/app/boards/lib/actions';
-import { TrashIcon, WarningIcon } from '@/components/icons';
 import { Board } from '@/prisma/generated/client';
+import { IconAlertTriangle, IconTrash } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
@@ -41,7 +41,7 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
         data-bs-toggle="modal"
         data-bs-target={`#delete-modal-${board.id}`}
       >
-        <TrashIcon />
+        <IconTrash />
       </a>
       <div className="modal" id={`delete-modal-${board.id}`} tabIndex={-1}>
         <div className="modal-dialog modal-sm" role="document">
@@ -54,7 +54,9 @@ export default function BoardModalDelete({ board }: BoardModalDeleteType) {
             ></button>
             <div className="modal-status bg-danger"></div>
             <div className="modal-body text-center py-4">
-              <WarningIcon />
+              <div className="text-danger">
+                <IconAlertTriangle />
+              </div>
               <h3>Are you sure?</h3>
               <div className="text-danger fw-bold">{board.title}</div>
               <div className="text-secondary">

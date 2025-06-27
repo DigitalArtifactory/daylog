@@ -1,6 +1,6 @@
 'use client';
 
-import { EnvelopeIcon } from '@/components/icons';
+import { IconMail } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useActionState } from 'react';
 import { reset } from './lib/actions';
@@ -88,7 +88,7 @@ export default function Page() {
                   pending ? 'btn-loading disabled' : null
                 }`}
               >
-                <EnvelopeIcon /> Send me a new password
+                <IconMail /> Send me a new password
               </button>
             </div>
           </div>

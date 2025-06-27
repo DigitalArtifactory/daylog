@@ -1,6 +1,5 @@
 import getVersion from '@/app/lib/version';
-import { GitHubIcon, HeartFilledIcon } from './icons';
-import CupIcon from './icons/CupIcon';
+import { IconBrandGithub, IconCup, IconHeartFilled } from '@tabler/icons-react';
 
 export default function PageFooterSponsor() {
   return (
@@ -16,7 +15,7 @@ export default function PageFooterSponsor() {
                   className="link-secondary"
                   rel="noopener"
                 >
-                  <GitHubIcon /> Source code
+                  <IconBrandGithub /> Source code
                 </a>
               </li>
               <li className="list-inline-item">
@@ -26,7 +25,7 @@ export default function PageFooterSponsor() {
                   className="link-secondary"
                   rel="noopener"
                 >
-                  <CupIcon /> Buy me a Coffee
+                  <IconCup /> Buy me a Coffee
                 </a>
               </li>
             </ul>
@@ -34,7 +33,7 @@ export default function PageFooterSponsor() {
           <div className="col-12 col-lg-auto mt-3 mt-lg-0">
             <ul className="list-inline list-inline-dots mb-0">
               <li className="list-inline-item">
-                Made with <HeartFilledIcon /> by{' '}
+                Made with <IconHeartFilled /> by{' '}
                 <a
                   href="https://github.com/DavidArtifacts"
                   className="link-secondary"

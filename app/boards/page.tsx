@@ -1,7 +1,6 @@
 import BoardCard from '@/app/boards/components/BoardCard';
 import BoardModalForm from '@/app/boards/components/BoardModalForm';
 import BoardCardPlaceholder from '@/app/boards/components/BoardPlaceholder';
-import { AddIcon } from '@/components/icons';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -9,6 +8,7 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { IconPlus } from '@tabler/icons-react';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { getSettings } from '../admin/lib/actions';
@@ -41,8 +41,8 @@ export default async function Boards() {
               data-bs-toggle="modal"
               data-bs-target="#new-board-modal"
             >
-              <AddIcon />
-              Create new board
+              <IconPlus />
+              <span className='ms-1'>Create new board</span>
               <div className="d-flex gap-1 ms-1">
                 <span className="badge bg-transparent badge-md border border-light text-light">
                   Alt

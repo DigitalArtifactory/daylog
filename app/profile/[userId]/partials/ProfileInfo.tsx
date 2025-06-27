@@ -1,7 +1,7 @@
 'use client';
 
-import { SaveIcon } from '@/components/icons';
 import { User } from '@/prisma/generated/client';
+import { IconDeviceFloppy } from '@tabler/icons-react';
 import { useActionState } from 'react';
 import { updateProfile } from '../lib/actions';
 
@@ -107,7 +107,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <SaveIcon /> Save Changes
+            <IconDeviceFloppy /> <span className="ms-1">Save Changes</span>
           </button>
         </div>
       </div>

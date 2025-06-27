@@ -2,8 +2,13 @@
 
 import { search, SearchResult } from '@/app/lib/actions';
 import { truncateWord } from '@/utils/text';
+import {
+  IconChalkboard,
+  IconMoodPuzzled,
+  IconNote,
+  IconSearch,
+} from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
-import { ChalkboardIcon, NoteIcon, PuzzledIcon, SearchIcon } from './icons';
 
 export default function NavSearch() {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -50,7 +55,8 @@ export default function NavSearch() {
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >
-          <SearchIcon /> Search
+          <IconSearch />
+          <span className='ms-1'>Search</span>
           <div className="d-flex gap-1 ms-1">
             <span className="badge badge-md border">Alt</span>
             <span className="badge badge-md border">K</span>
@@ -83,7 +89,7 @@ export default function NavSearch() {
                   }}
                 />
                 <span className="input-icon-addon">
-                  <SearchIcon />
+                  <IconSearch />
                 </span>
               </div>
             </div>
@@ -91,7 +97,7 @@ export default function NavSearch() {
               {results.length === 0 ? (
                 <div className="text-center">
                   <span>
-                    <PuzzledIcon />
+                    <IconMoodPuzzled />
                   </span>
                   <div className="text-secondary">Empty results</div>
                 </div>
@@ -103,11 +109,11 @@ export default function NavSearch() {
                         <div className="col-auto">
                           {item.type === 'note' ? (
                             <span title="Note">
-                              <NoteIcon />
+                              <IconNote color="orange" />
                             </span>
                           ) : (
                             <span title="Board">
-                              <ChalkboardIcon />
+                              <IconChalkboard color="blue" />
                             </span>
                           )}
                         </div>

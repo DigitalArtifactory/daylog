@@ -1,8 +1,8 @@
 import { getSettings } from '@/app/admin/lib/actions';
-import { EditIcon } from '@/components/icons';
 import TimeDiff from '@/components/TimeDiff';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
+import { IconEdit } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getNote } from '../lib/actions';
@@ -61,7 +61,7 @@ export default async function NoteCard({ noteId }: NoteCardType) {
               data-bs-toggle="modal"
               data-bs-target={`#edit-board-modal-${note.id}}`}
             >
-              <EditIcon />
+              <IconEdit />
             </a>
             <NoteModalForm
               note={note}

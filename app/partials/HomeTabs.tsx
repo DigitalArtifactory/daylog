@@ -1,18 +1,23 @@
 'use client';
 
-import { ConfusedIcon, SurprisedIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
 import { Board, Note } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
+import { IconMoodPuzzled, IconMoodSurprised } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
+import { SettingsType } from '../admin/lib/actions';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 
-export default function HomeTabs() {
+export default function HomeTabs({
+  settings,
+}: {
+  settings?: SettingsType | null;
+}) {
   const [loading, setLoading] = useState(true);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -50,7 +55,7 @@ export default function HomeTabs() {
     <Loader caption="Loading boards..." />
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
-      <ConfusedIcon />
+      <IconMoodPuzzled />
       <div className="text-secondary">You don&apos;t have boards yet...</div>
       <Link href={'/boards'}>Go to your boards and create one.</Link>
     </div>
@@ -179,7 +184,7 @@ export default function HomeTabs() {
 function EmptyNotes(boardId: number) {
   return (
     <div className="text-center mt-5">
-      <SurprisedIcon />
+      <IconMoodSurprised />
       <div className="text-secondary">You don&apos;t have notes yet...</div>
       <Link href={`/boards/${boardId}/notes`}>
         Go to this board and create one.

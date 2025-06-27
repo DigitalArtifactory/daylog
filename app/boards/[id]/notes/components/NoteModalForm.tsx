@@ -1,9 +1,9 @@
 'use client';
 
 import UnsplashImagesDropdown from '@/app/boards/components/UnsplashImagesDropdown';
-import { TrashIcon } from '@/components/icons';
 import { Note } from '@/prisma/generated/client';
 import { getImageUrlOrFile, resizeImage } from '@/utils/image';
+import { IconTrash } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -142,7 +142,7 @@ export default function NoteModalForm({
                         await deleteImage(note.id, note.imageUrl);
                       }}
                     >
-                      <TrashIcon />
+                      <IconTrash />
                       Remove image
                     </button>
                   </div>

@@ -1,15 +1,15 @@
 'use client';
 
 import {
-  BoldIcon,
-  HeadingIcon,
-  ItalicIcon,
-  OrderedListIcon,
-  QuoteIcon,
-  StrikethroughIcon,
-  UnorderedListIcon,
-} from './icons';
-import { ImageIcon, LinkIcon } from './icons/EditorToolbarIcons';
+  IconBold,
+  IconHeading, IconItalic,
+  IconLink,
+  IconList,
+  IconListNumbers,
+  IconPhoto,
+  IconQuote,
+  IconStrikethrough
+} from '@tabler/icons-react';
 
 type EditorToolbarType = {
   onExecute: (prefix: string, postfix: string, comm: string) => void;
@@ -73,7 +73,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Heading"
           onClick={() => executeCommand('heading')}
         >
-          <HeadingIcon />
+          <IconHeading />
         </button>
       </li>
       <li className="nav-item">
@@ -82,7 +82,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Bold"
           onClick={() => executeCommand('bold')}
         >
-          <BoldIcon />
+          <IconBold />
         </button>
       </li>
       <li className="nav-item">
@@ -91,7 +91,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Italic"
           onClick={() => executeCommand('italic')}
         >
-          <ItalicIcon />
+          <IconItalic />
         </button>
       </li>
       <li className="nav-item">
@@ -100,7 +100,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Strikethrough"
           onClick={() => executeCommand('strikethrough')}
         >
-          <StrikethroughIcon />
+          <IconStrikethrough />
         </button>
       </li>
       <li className="nav-item">
@@ -109,7 +109,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Quote"
           onClick={() => executeCommand('quote')}
         >
-          <QuoteIcon />
+          <IconQuote />
         </button>
       </li>
       <li className="nav-item border-end">
@@ -118,7 +118,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Link"
           onClick={() => executeCommand('link')}
         >
-          <LinkIcon />
+          <IconLink />
         </button>
       </li>
       <li className="nav-item">
@@ -127,7 +127,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Ordered List"
           onClick={() => executeCommand('ordered-list')}
         >
-          <OrderedListIcon />
+          <IconListNumbers />
         </button>
       </li>
       <li className="nav-item border-end">
@@ -136,7 +136,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Unordered List"
           onClick={() => executeCommand('unordered-list')}
         >
-          <UnorderedListIcon />
+          <IconList />
         </button>
       </li>
       <li className="nav-item">
@@ -145,7 +145,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           title="Image"
           onClick={() => executeCommand('image')}
         >
-          <ImageIcon />
+          <IconPhoto />
         </button>
       </li>
     </>

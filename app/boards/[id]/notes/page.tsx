@@ -1,6 +1,5 @@
 import { getSettings } from '@/app/admin/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import { AddIcon } from '@/components/icons';
 import NavHeader from '@/components/NavHeader';
 import NavMenu from '@/components/NavMenu';
 import Page from '@/components/Page';
@@ -8,6 +7,7 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
+import { IconPlus } from '@tabler/icons-react';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { getBoard } from '../../lib/actions';
@@ -53,8 +53,8 @@ export default async function Notes({
               data-bs-toggle="modal"
               data-bs-target="#new-note-modal"
             >
-              <AddIcon />
-              Create new note
+              <IconPlus />
+              <span className='ms-1'>Create new note</span>
               <div className="d-flex gap-1 ms-1">
                 <span className="badge bg-transparent badge-md border border-light text-light">
                   Alt

@@ -1,9 +1,12 @@
 'use client';
 
-import { HideIcon, OTPIcon, ViewIcon } from '@/components/icons';
 import OTPInputWrapper from '@/components/OTPInputWrapper';
 import { User } from '@/prisma/generated/client';
 import { generateTOTPSecret, generateTOTPUrl } from '@/utils/totp';
+import {
+  IconEye, IconEyeOff,
+  IconPasswordMobilePhone
+} from '@tabler/icons-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useActionState, useEffect, useState } from 'react';
 import { deleteMFA, updateMFA } from '../lib/actions';
@@ -42,7 +45,7 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
           data-bs-target="#totpModal"
           className="btn btn-danger"
         >
-          <OTPIcon /> Delete Device
+          <IconPasswordMobilePhone /> Delete Device
         </button>
         <div className="modal" id="totpModal" tabIndex={-1}>
           <form action={action}>
@@ -58,7 +61,7 @@ const ModalDelete = ({ profile }: ProfileInfoType) => {
                 <div className="modal-status bg-danger"></div>
                 <div className="modal-body text-center py-4">
                   <span className="text-danger">
-                    <OTPIcon />
+                    <IconPasswordMobilePhone />
                   </span>
                   <h3>Delete your OTP Device</h3>
                   {!state?.success && (
@@ -180,7 +183,8 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
         data-bs-target="#totpModal"
         className="btn btn-primary"
       >
-        <OTPIcon /> Configure a TOTP
+        <IconPasswordMobilePhone />
+        <span className="ms-1">Configure a TOTP</span>
       </button>
       <div className="modal" id="totpModal" tabIndex={-1}>
         <form action={action}>
@@ -195,7 +199,7 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
               ></button>
               <div className="modal-status bg-info"></div>
               <div className="modal-body text-center py-4">
-                <OTPIcon />
+                <IconPasswordMobilePhone />
                 <h3>Configure TOTP</h3>
                 {!state?.success && (
                   <>
@@ -248,7 +252,7 @@ const ModalUpdate = ({ profile }: ProfileInfoType) => {
                             type={'checkbox'}
                           />
                           <label htmlFor={'showPassword'}>
-                            {isShowPassword ? <ViewIcon /> : <HideIcon />}
+                            {isShowPassword ? <IconEye /> : <IconEyeOff />}
                           </label>
                         </span>
                       </div>

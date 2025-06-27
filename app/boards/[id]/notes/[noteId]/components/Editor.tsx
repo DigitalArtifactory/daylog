@@ -1,6 +1,6 @@
 'use client';
 
-import { MarkdownIcon } from '@/components/icons';
+import { IconFileSmile, IconMarkdown } from '@tabler/icons-react';
 import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'react';
 import { getNote } from '../../lib/actions';
@@ -51,7 +51,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
 
   return (
     <div className="card">
-      <div className="card-header">
+      <div className="card-header pt-2">
         <ul className="nav nav-tabs card-header-tabs">
           {isClient ? (
             <>
@@ -144,11 +144,19 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
             }`}
           >
             <div className="w-full h-full p-3">
-              <div className="markdown" style={{ minHeight: 400 }}>
-                <div
-                  dangerouslySetInnerHTML={renderMarkdownToHtml(markdown ?? '')}
-                ></div>
-              </div>
+              {markdown ? (
+                <div className="markdown" style={{ minHeight: 400 }}>
+                  <div
+                    dangerouslySetInnerHTML={renderMarkdownToHtml(
+                      markdown ?? ''
+                    )}
+                  ></div>
+                </div>
+              ) : (
+                <div className="d-flex h-full align-items-center justify-content-center text-secondary opacity-25">
+                  <IconFileSmile size={70} />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -159,8 +167,8 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
           className="btn btn-ghost-secondary btn-sm"
           target="_blank"
         >
-          <MarkdownIcon />
-          Markdown is supported
+          <IconMarkdown />
+          <span className="ms-1">Markdown is supported</span>
         </a>
         {isSaving && (
           <span className="d-flex badge bg-blue-lt align-items-center">

@@ -1,7 +1,7 @@
 'use client';
 
-import { RemoveImageIcon } from '@/components/icons';
 import Loader from '@/components/Loader';
+import { IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -191,7 +191,7 @@ export default function UnsplashImagesDropdown({
             imageSelected('');
           }}
         >
-          <RemoveImageIcon />
+          <IconX />
           Clear selection
         </button>
       </div>

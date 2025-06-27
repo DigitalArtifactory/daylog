@@ -1,7 +1,7 @@
 'use client';
 
-import { HeartFilledIcon, HeartIcon } from '@/components/icons';
 import { Note } from '@/prisma/generated/client';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { updateNote } from '../lib/actions';
 
@@ -24,7 +24,7 @@ export default function NoteFavoriteButton({ note }: NoteFavoriteButtonType) {
       onClick={() => handleFavoriteClick()}
       className="icon ms-3 text-secondary"
     >
-      {!note.favorite ? <HeartIcon /> : <HeartFilledIcon />}
+      {!note.favorite ? <IconHeart /> : <IconHeartFilled />}
     </a>
   );
 }

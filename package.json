@@ -16,6 +16,7 @@
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@prisma/client": "5.22.0",
+    "@tabler/icons-react": "^3.34.0",
     "input-otp": "^1.4.2",
     "marked": "^15.0.3",
     "next": "^15.2.3",

@@ -1,6 +1,6 @@
 'use client';
 
-import { ExportIcon } from '@/components/icons';
+import { IconFileExport } from '@tabler/icons-react';
 import { useActionState } from 'react';
 import { backupData } from '../lib/actions';
 
@@ -64,7 +64,7 @@ export default function Backup({ profile }: BackupType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <ExportIcon /> Download Data
+            <IconFileExport /> <span className="ms-1">Download Data</span>
           </button>
         </div>
       </div>

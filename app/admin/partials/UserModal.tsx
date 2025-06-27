@@ -1,12 +1,14 @@
 'use client';
 
 import { signup } from '@/app/register/lib/actions';
-import { AddIcon, ViewIcon } from '@/components/icons';
-import { useActionState, useEffect } from 'react';
+import { IconEye, IconEyeOff, IconPlus } from '@tabler/icons-react';
+import { useActionState, useEffect, useState } from 'react';
 
 export default function UserModal() {
   const [state, action, pending] = useActionState(signup, undefined);
 
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  
   useEffect(() => {
     if (state?.success) {
       window.location.reload();
@@ -21,8 +23,8 @@ export default function UserModal() {
         data-bs-toggle="modal"
         data-bs-target="#userModal"
       >
-        <AddIcon />
-        Create new user
+        <IconPlus />
+        <span className="ms-1">Create new user</span>
       </button>
       <div className="modal fade" id="userModal" tabIndex={-1}>
         <form autoComplete="off" action={action}>
@@ -72,10 +74,13 @@ export default function UserModal() {
                     ))}
                 </div>
                 <div className="mb-3">
-                  <label className="form-label">Password</label>
+                  <label className="form-label" htmlFor="password">
+                    Password
+                  </label>
                   <div className="input-group input-group-flat">
                     <input
-                      type="password"
+                      id="password"
+                      type={isShowPassword ? 'text' : 'password'}
                       name="password"
                       defaultValue={state?.data?.password?.toString()}
                       className={`form-control ${
@@ -89,15 +94,19 @@ export default function UserModal() {
                         state?.errors?.password && 'border-danger'
                       }`}
                     >
-                      <a
-                        href="#"
-                        className="link-secondary"
+                      <input
+                        id={'showPassword'}
+                        className={'d-none'}
                         data-bs-toggle="tooltip"
                         aria-label="Show password"
+                        defaultChecked={isShowPassword}
                         data-bs-original-title="Show password"
-                      >
-                        <ViewIcon />
-                      </a>
+                        onChange={(e) => setIsShowPassword(e.target.checked)}
+                        type={'checkbox'}
+                      />
+                      <label htmlFor={'showPassword'}>
+                        {isShowPassword ? <IconEye /> : <IconEyeOff />}
+                      </label>
                     </span>
                   </div>
 

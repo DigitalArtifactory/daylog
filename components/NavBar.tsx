@@ -1,10 +1,14 @@
 'use client';
 
 import { User } from '@/prisma/generated/client';
+import {
+  IconChalkboard,
+  IconHome, IconUser,
+  IconUserShield
+} from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavSearch from './NavSearch';
-import { AdminUserIcon, BoardIcon, HomeIcon, UserIcon } from './icons';
 
 export default function NavBar({ user }: { user: User }) {
   const path = usePathname();
@@ -33,7 +37,7 @@ export default function NavBar({ user }: { user: User }) {
                 homePattern.test(path) ? 'text-primary' : ''
               }`}
             >
-              <HomeIcon />
+              <IconHome />
             </span>
             <span className="nav-link-title">Home</span>
           </Link>
@@ -60,7 +64,7 @@ export default function NavBar({ user }: { user: User }) {
                   : ''
               }`}
             >
-              <BoardIcon />
+              <IconChalkboard />
             </span>
             <span className="nav-link-title">Boards</span>
           </Link>
@@ -81,7 +85,7 @@ export default function NavBar({ user }: { user: User }) {
                 profilePattern.test(path) ? 'text-primary' : ''
               }`}
             >
-              <UserIcon />
+              <IconUser />
             </span>
             <span className="nav-link-title">Profile</span>
           </a>
@@ -105,7 +109,7 @@ export default function NavBar({ user }: { user: User }) {
                   adminPattern.test(path) ? 'text-primary' : ''
                 }`}
               >
-                <AdminUserIcon />
+                <IconUserShield />
               </span>
               <span className="nav-link-title">Admin</span>
             </a>

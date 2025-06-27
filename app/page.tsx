@@ -6,6 +6,7 @@ import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
+import { getSettings } from './admin/lib/actions';
 import { getCurrentSession } from './login/lib/actions';
 import HomeTabs from './partials/HomeTabs';
 
@@ -15,8 +16,8 @@ export default async function Home() {
     return redirect('/login');
   }
 
+  const settings = await getSettings();
   const breadcrumbs = [{ name: 'Home', href: '/' }];
-
   return (
     <Page>
       <NavHeader></NavHeader>
@@ -27,7 +28,7 @@ export default async function Home() {
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
-          <HomeTabs />
+          <HomeTabs settings={settings}/>
         </PageBody>
       </PageContainer>
       <PageFooter></PageFooter>

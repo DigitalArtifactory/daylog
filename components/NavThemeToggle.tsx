@@ -1,8 +1,8 @@
 'use client';
 
+import { IconMoon, IconSun } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { MoonIcon, SunIcon } from './icons';
 
 const NavThemeToggle = () => {
   const { theme, setTheme } = useTheme();
@@ -20,7 +20,7 @@ const NavThemeToggle = () => {
         role="button"
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       >
-        {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+        {theme === 'light' ? <IconMoon /> : <IconSun />}
       </a>
     </li>
   );
