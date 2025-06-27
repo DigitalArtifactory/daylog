@@ -15,7 +15,7 @@ export default function OTPInputWrapper({ ...props }: OTPInputWrapperType) {
           {slots.slice(0, 3).map((s, idx) => (
             <Slot key={idx} {...s}></Slot>
           ))}
-          <div>-</div>
+          <div className='text-secondary'>-</div>
           {slots.slice(3).map((s, idx) => (
             <Slot key={idx} {...s}></Slot>
           ))}
@@ -29,7 +29,7 @@ const Slot = (props: SlotProps) => {
   return (
     <div
       className={`d-flex h-3 border py-3 w-4 justify-content-center align-items-center rounded ${
-        props.isActive ? 'border-primary' : 'border-mute'
+        props.isActive ? 'border-primary' : 'border-secondary'
       }`}
     >
       {props.char !== null && <div>{props.char}</div>}
