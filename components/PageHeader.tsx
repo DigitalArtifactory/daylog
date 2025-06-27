@@ -48,16 +48,17 @@ export default function PageHeader({
             <div
               className="rounded rounded-sm border shadow overflow-hidden"
               style={{
-                maxHeight: 38,
+                minHeight: 38,
               }}
             >
               <Image
-                width={38}
+                width={60}
                 height={0}
                 style={{
                   objectFit: 'cover',
                   objectPosition: 'center',
                   maxWidth: '38px',
+                  height: '100%',
                 }}
                 src={getImageUrlOrFile(props.imageUrl)}
                 alt={`Preview image of ${props.title}`}
@@ -65,7 +66,7 @@ export default function PageHeader({
               />
             </div>
           ) : (
-            <div style={{ height: 38 }} />
+            <div style={{ minHeight: 38 }} />
           )}
           <h2 className="page-title" title={props.title ?? ''}>
             {truncateWord(props.title ?? '', 50) ?? (
