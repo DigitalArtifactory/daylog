@@ -54,7 +54,9 @@ export default function NoteModalDelete({ note }: NoteModalDeleteType) {
             ></button>
             <div className="modal-status bg-danger"></div>
             <div className="modal-body text-center py-4">
-              <IconAlertTriangle />
+              <div className="text-danger">
+                <IconAlertTriangle />
+              </div>
               <h3>Are you sure?</h3>
               <div className="text-danger fw-bold">{note.title}</div>
               <div className="text-secondary">
