@@ -43,7 +43,7 @@ export default function PageHeader({
             </ol>
           )}
         </div>
-        <div className="d-flex flex-row gap-1">
+        <div className="d-flex flex-row gap-1 mt-1">
           {props.imageUrl ? (
             <div
               className="rounded rounded-sm border shadow overflow-hidden"
@@ -74,8 +74,8 @@ export default function PageHeader({
               </div>
             )}
           </h2>
+          <div className="ms-auto">{props.children}</div>
         </div>
-        <div className="col-auto ms-auto">{props.children}</div>
       </div>
     </div>
   );
