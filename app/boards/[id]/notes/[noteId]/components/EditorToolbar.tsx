@@ -9,7 +9,7 @@ import {
   StrikethroughIcon,
   UnorderedListIcon,
 } from './icons';
-import { ImageIcon } from './icons/EditorToolbarIcons';
+import { ImageIcon, LinkIcon } from './icons/EditorToolbarIcons';
 
 type EditorToolbarType = {
   onExecute: (prefix: string, postfix: string, comm: string) => void;
@@ -113,11 +113,13 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
         </button>
       </li>
       <li className="nav-item border-end">
-        <a
+        <button
           className="nav-link"
           title="Link"
           onClick={() => executeCommand('link')}
-        ></a>
+        >
+          <LinkIcon />
+        </button>
       </li>
       <li className="nav-item">
         <button
