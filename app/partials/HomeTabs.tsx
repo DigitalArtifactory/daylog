@@ -9,15 +9,10 @@ import { IconMoodPuzzled, IconMoodSurprised } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
-import { SettingsType } from '../admin/lib/actions';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 
-export default function HomeTabs({
-  settings,
-}: {
-  settings?: SettingsType | null;
-}) {
+export default function HomeTabs() {
   const [loading, setLoading] = useState(true);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [isClient, setIsClient] = useState(false);
