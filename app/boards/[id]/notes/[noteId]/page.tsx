@@ -7,8 +7,6 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
-import { getImageUrlOrFile } from '@/utils/image';
-import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
 import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
@@ -39,31 +37,13 @@ export default async function NotePage({
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader title={note?.title} breadcrumbs={breadcrumbs}></PageHeader>
+        <PageHeader
+          title={note?.title}
+          imageUrl={note?.imageUrl}
+          breadcrumbs={breadcrumbs}
+        ></PageHeader>
         <PageBody>
-          <div className="card">
-            {note?.imageUrl && (
-              <div
-                className="card-body p-0 shadow-sm overflow-hidden"
-                style={{
-                  maxHeight: 320,
-                }}
-              >
-                <Image
-                  width={1920}
-                  height={0}
-                  className="card-img-top"
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center',
-                    width: 'auto',
-                  }}
-                  src={getImageUrlOrFile(note.imageUrl)}
-                  alt={`Preview image of ${note.title}`}
-                  priority={true}
-                />
-              </div>
-            )}
+          <div className="card overflow-hidden">
             <div className="card-body p-0 border-0 h-auto">
               {note && <NoteEditorClientWrapper note={note} />}
             </div>

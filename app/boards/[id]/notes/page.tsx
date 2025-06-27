@@ -40,7 +40,11 @@ export default async function Notes({
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader title={board?.title} breadcrumbs={breadcrumbs}>
+        <PageHeader
+          title={board?.title}
+          imageUrl={board?.imageUrl}
+          breadcrumbs={breadcrumbs}
+        >
           <div className="btn-list">
             <button
               accessKey="n"

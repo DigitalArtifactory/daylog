@@ -1,12 +1,15 @@
 'use client';
 
+import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
 type PageHeader = {
   title?: string | null;
+  imageUrl?: string | null;
   breadcrumbs?: Array<{ name: string; href: string }>;
 };
 
@@ -15,7 +18,7 @@ export default function PageHeader({
 }: PropsWithChildren<PageHeader>) {
   const pathname = usePathname();
 
-  async function isCurrentUrl(href: string): Promise<boolean> {
+  function isCurrentUrl(href: string): boolean {
     return href === pathname;
   }
 
@@ -28,7 +31,7 @@ export default function PageHeader({
               {props.breadcrumbs.map(async (item, index) => (
                 <li
                   className={`breadcrumb-item ${
-                    (await isCurrentUrl(item.href)) ? 'active' : null
+                    isCurrentUrl(item.href) ? 'active' : null
                   }`}
                   key={index}
                 >
@@ -38,6 +41,31 @@ export default function PageHeader({
                 </li>
               ))}
             </ol>
+          )}
+        </div>
+        <div className="d-flex flex-row gap-1">
+          {props.imageUrl ? (
+            <div
+              className="rounded rounded-sm border shadow overflow-hidden"
+              style={{
+                maxHeight: 38,
+              }}
+            >
+              <Image
+                width={38}
+                height={0}
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  maxWidth: '38px',
+                }}
+                src={getImageUrlOrFile(props.imageUrl)}
+                alt={`Preview image of ${props.title}`}
+                priority={true}
+              />
+            </div>
+          ) : (
+            <div style={{ height: 38 }} />
           )}
           <h2 className="page-title" title={props.title ?? ''}>
             {truncateWord(props.title ?? '', 50) ?? (
