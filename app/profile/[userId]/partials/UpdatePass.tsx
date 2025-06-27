@@ -120,7 +120,10 @@ export default function UpdatePass({ userId, profile }: UpdatePassType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <IconLockPassword /> <span className="ms-1">Change Password</span>
+            <span className="me-1">
+              <IconLockPassword />
+            </span>
+            Change Password
           </button>
         </div>
       </div>

@@ -64,7 +64,10 @@ export default function Backup({ profile }: BackupType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <IconFileExport /> <span className="ms-1">Download Data</span>
+            <span className="me-1">
+              <IconFileExport />
+            </span>
+            Download Data
           </button>
         </div>
       </div>

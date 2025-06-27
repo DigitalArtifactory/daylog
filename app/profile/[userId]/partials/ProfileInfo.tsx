@@ -107,7 +107,10 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
               pending ? 'btn-loading disabled' : null
             }`}
           >
-            <IconDeviceFloppy /> <span className="ms-1">Save Changes</span>
+            <span className="me-1">
+              <IconDeviceFloppy />
+            </span>
+            Save Changes
           </button>
         </div>
       </div>

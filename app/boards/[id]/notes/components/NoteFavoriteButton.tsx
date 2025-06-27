@@ -24,7 +24,11 @@ export default function NoteFavoriteButton({ note }: NoteFavoriteButtonType) {
       onClick={() => handleFavoriteClick()}
       className="icon ms-3 text-secondary"
     >
-      {!note.favorite ? <IconHeart /> : <IconHeartFilled />}
+      {!note.favorite ? (
+        <IconHeart />
+      ) : (
+        <IconHeartFilled data-testid="filled-heart" />
+      )}
     </a>
   );
 }

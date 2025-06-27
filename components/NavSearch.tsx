@@ -55,8 +55,10 @@ export default function NavSearch() {
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >
-          <IconSearch />
-          <span className='ms-1'>Search</span>
+          <span className="me-1">
+            <IconSearch />
+          </span>
+          Search
           <div className="d-flex gap-1 ms-1">
             <span className="badge badge-md border">Alt</span>
             <span className="badge badge-md border">K</span>
@@ -109,11 +111,17 @@ export default function NavSearch() {
                         <div className="col-auto">
                           {item.type === 'note' ? (
                             <span title="Note">
-                              <IconNote color="orange" />
+                              <IconNote
+                                data-testid="note-icon"
+                                color="orange"
+                              />
                             </span>
                           ) : (
                             <span title="Board">
-                              <IconChalkboard color="blue" />
+                              <IconChalkboard
+                                data-testid="chalkboard-icon"
+                                color="blue"
+                              />
                             </span>
                           )}
                         </div>

@@ -26,7 +26,11 @@ export default function BoardFavoriteButton({
       onClick={() => handleFavoriteClick()}
       className="icon ms-3 text-danger"
     >
-      {!board.favorite ? <IconHeart /> : <IconHeartFilled />}
+      {!board.favorite ? (
+        <IconHeart />
+      ) : (
+        <IconHeartFilled data-testid="filled-heart" />
+      )}
     </a>
   );
 }
