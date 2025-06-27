@@ -67,7 +67,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
 
   return (
     <>
-      <li className="nav-item ms-auto">
+      <li className="nav-item">
         <button
           className="nav-link"
           title="Heading"

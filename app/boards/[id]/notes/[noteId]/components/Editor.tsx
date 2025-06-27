@@ -17,6 +17,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isPreviewVisible, setIsPreviewVisible] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = event.target.value;
@@ -51,26 +52,17 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
   return (
     <div className="card">
       <div className="card-header">
-        <ul className="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+        <ul className="nav nav-tabs card-header-tabs">
           {isClient ? (
             <>
-              <li className="nav-item">
-                <a
-                  href="#tabs-write"
-                  className="nav-link active"
-                  data-bs-toggle="tab"
-                >
-                  Write
-                </a>
-              </li>
-              <li className="nav-item">
-                <a
-                  href="#tabs-preview"
+              <li className="nav-item d-block d-md-none">
+                <button
                   className="nav-link"
-                  data-bs-toggle="tab"
+                  title={isPreviewVisible ? 'Editor' : 'Preview'}
+                  onClick={() => setIsPreviewVisible(!isPreviewVisible)}
                 >
-                  Preview
-                </a>
+                  {isPreviewVisible ? 'Editor' : 'Preview'}
+                </button>
               </li>
               <EditorToolbar
                 onExecute={(prefix, postfix, comm) => {
@@ -120,39 +112,43 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
         </ul>
       </div>
       <div className="card-body p-0">
-        <div className="tab-content">
-          <div className="tab-pane active show" id="tabs-write">
-            <div>
-              {isClient ? (
-                <textarea
-                  ref={textareaRef}
-                  rows={4}
-                  style={{
-                    height: '400px',
-                    fontFamily: 'geistMono',
-                    fontSize: '14px',
-                  }}
-                  name="content"
-                  className="form-control p-3 border-0"
-                  placeholder="Here can be your description"
-                  defaultValue={markdown ?? ''}
-                  onChange={handleChange}
-                />
-              ) : (
-                <div
-                  className="d-flex justify-content-center pt-4"
-                  style={{ height: '37px' }}
-                >
-                  <div className="spinner-border text-secondary"></div>
-                </div>
-              )}
-            </div>
+        <div className="row m-0">
+          <div
+            className={`col px-1 ${
+              isPreviewVisible ? 'd-none d-md-block' : ''
+            }`}
+          >
+            {isClient && (
+              <textarea
+                ref={textareaRef}
+                rows={4}
+                style={{
+                  minHeight: '400px',
+                  fontFamily: 'geistMono',
+                  fontSize: '14px',
+                }}
+                name="content"
+                className="form-control p-3 border-0 rounded-0 h-full"
+                placeholder="Here can be your description"
+                defaultValue={markdown ?? ''}
+                onChange={handleChange}
+              />
+            )}
           </div>
-          <div className="tab-pane" id="tabs-preview">
-            <div className="markdown p-3" style={{ minHeight: 400 }}>
-              <div
-                dangerouslySetInnerHTML={renderMarkdownToHtml(markdown ?? '')}
-              ></div>
+          <div
+            className={`col ${
+              isPreviewVisible &&
+              !window.matchMedia('(min-width: 768px)').matches
+                ? ''
+                : 'd-none d-md-block'
+            }`}
+          >
+            <div className="w-full h-full p-3">
+              <div className="markdown" style={{ minHeight: 400 }}>
+                <div
+                  dangerouslySetInnerHTML={renderMarkdownToHtml(markdown ?? '')}
+                ></div>
+              </div>
             </div>
           </div>
         </div>
