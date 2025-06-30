@@ -1,6 +1,13 @@
+import { getCurrentSession } from '@/app/login/lib/actions';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
+  const { user } = await getCurrentSession();
+
+  if (!user) {
+    return Response.json({ error: 'Not allowed' });
+  }
+
   if (!process.env.UNSPLASH_ACCESS_KEY) {
     return new Response('UNSPLASH_ACCESS_KEY is not set', { status: 500 });
   }
