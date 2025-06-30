@@ -1,11 +1,9 @@
-'use client';
-
+import getVersion from '@/app/lib/version';
 import PageFooterSponsor from './PageFooterSponsor';
 
 export default function PageFooter() {
   const showSponsor =
-    !process.env.NEXT_PUBLIC_SHOW_SPONSOR ||
-    process.env.NEXT_PUBLIC_SHOW_SPONSOR === 'true';
+    !process.env.SHOW_SPONSOR_FOOTER || process.env.SHOW_SPONSOR_FOOTER === 'true';
   return showSponsor ? (
     <PageFooterSponsor />
   ) : (
@@ -28,7 +26,7 @@ export default function PageFooter() {
                   className="link-secondary"
                   rel="noopener"
                 >
-                  v1.0.0-beta1
+                  {getVersion()}
                 </a>
               </li>
             </ul>
