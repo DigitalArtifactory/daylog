@@ -97,11 +97,10 @@ describe('Board Actions', () => {
 
   it('should get all boards', async () => {
     prismaMock.board.findMany.mockResolvedValue([board as Board]);
-    const result = await getBoards();
+    const result = await getBoards('created_desc');
     expect(result).toEqual([board]);
     expect(prismaMock.board.findMany).toHaveBeenCalledWith({
       where: { userId: user.id },
-      orderBy: { favorite: 'desc' },
     });
   });
 
@@ -139,7 +138,7 @@ describe('Board Actions', () => {
       allowUnsplash: false,
       enableS3: true,
     });
-    
+
     const key = await saveImage(boardId, imageBase64);
 
     expect(mocks.uploadFileS3).toHaveBeenCalled();

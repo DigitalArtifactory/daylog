@@ -15,13 +15,19 @@ const mocks = vi.hoisted(() => ({
   getNotes: vi.fn((boardId) =>
     mockNotes.filter((note) => note.boardsId === boardId)
   ),
+  getCurrentSession: vi.fn(),
 }));
 
 vi.mock('../boards/lib/actions', () => ({
   getBoards: mocks.getBoards,
 }));
+
 vi.mock('../boards/[id]/notes/lib/actions', () => ({
   getNotes: mocks.getNotes,
+}));
+
+vi.mock('@/app/login/lib/actions', () => ({
+  getCurrentSession: mocks.getCurrentSession,
 }));
 
 const mockBoards = [
@@ -40,6 +46,9 @@ describe('HomeTabs', () => {
   beforeEach(() => {
     cleanup();
     mocks.getBoards.mockResolvedValue(mockBoards);
+    mocks.getCurrentSession.mockResolvedValue({
+      user: { sortBoardsBy: 'created_desc', sortNotesBy: 'created_desc' },
+    });
   });
 
   it('renders loading state initially', () => {
@@ -59,7 +68,7 @@ describe('HomeTabs', () => {
   it('renders notes of the first board at start', async () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
+    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
     await waitFor(() => {
       expect(screen.getByText('Note 1')).toBeDefined();
       expect(screen.getByText('Note 2')).toBeDefined();
@@ -70,7 +79,7 @@ describe('HomeTabs', () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
     fireEvent.click(screen.getByText('Board 1'));
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
+    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
     await waitFor(() => {
       expect(screen.getByText('Note 1')).toBeInTheDocument();
       expect(screen.getByText('Note 2')).toBeInTheDocument();
@@ -88,9 +97,11 @@ describe('HomeTabs', () => {
     mocks.getNotes.mockResolvedValue([]);
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
-    await waitFor(() => expect(screen.queryByText('Loading boards...')).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.queryByText('Loading boards...')).not.toBeInTheDocument()
+    );
     fireEvent.click(screen.getByText('Board 1'));
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1));
+    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
     await waitFor(() =>
       expect(screen.getAllByText("You don't have notes yet...").length).toBe(
         mockBoards.length

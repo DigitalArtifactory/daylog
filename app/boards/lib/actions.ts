@@ -4,9 +4,7 @@ import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { Board, Prisma } from '@/prisma/generated/client';
 import { saveAndGetImageFile } from '@/utils/file';
-import {
-  removeFile
-} from '@/utils/storage';
+import { removeFile } from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
 
 import fs from 'fs';
@@ -47,14 +45,39 @@ export async function deleteBoard(board: Board): Promise<Board | null> {
   return deleted;
 }
 
-export async function getBoards(): Promise<Board[] | null> {
+export async function getBoards(sort: string): Promise<Board[] | null> {
   const { user } = await getCurrentSession();
 
   const boards = await prisma.board.findMany({
     where: { userId: user?.id },
-    orderBy: { favorite: 'desc' },
   });
-  return boards;
+
+  return boards.sort((a, b) => {
+    switch (sort) {
+      case 'created_desc':
+        return b.createdAt.getTime() - a.createdAt.getTime();
+      case 'created_asc':
+        return a.createdAt.getTime() - b.createdAt.getTime();
+      case 'updated_desc':
+        return b.updatedAt.getTime() - a.updatedAt.getTime();
+      case 'updated_asc':
+        return a.updatedAt.getTime() - b.updatedAt.getTime();
+      case 'title_asc':
+        return a.title.localeCompare(b.title);
+      case 'title_desc':
+        return b.title.localeCompare(a.title);
+      default:
+        return 0;
+    }
+  });
+}
+
+export async function setUserBoardsSort(sort: string): Promise<void> {
+  const { user } = await getCurrentSession();
+  await prisma.user.update({
+    where: { id: user?.id },
+    data: { sortBoardsBy: sort },
+  });
 }
 
 export async function getBoard(boardId: number): Promise<Board | null> {

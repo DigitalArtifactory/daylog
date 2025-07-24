@@ -13,14 +13,21 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { getSettings } from '../admin/lib/actions';
 import { getCurrentSession } from '../login/lib/actions';
+import BoardSortSelector from './components/BoardSortSelector';
 import { getBoards } from './lib/actions';
 
-export default async function Boards() {
+export default async function Boards({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');
   }
-  const boards = await getBoards();
+  const { sort = user.sortBoardsBy || 'created_desc' } = await searchParams;
+  const currentSort = sort as string;
+  const boards = await getBoards(currentSort);
   const settings = await getSettings();
   const breadcrumbs = [
     { name: 'Home', href: '/' },
@@ -33,30 +40,36 @@ export default async function Boards() {
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader title="All boards" breadcrumbs={breadcrumbs}>
-          <div className="btn-list">
-            <button
-              accessKey="n"
-              id="new-board-button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#new-board-modal"
-            >
-              <IconPlus />
-              <span className='ms-1'>Create new board</span>
-              <div className="d-flex gap-1 ms-1">
-                <span className="badge bg-transparent badge-md border border-light text-light">
-                  Alt
-                </span>
-                <span className="badge bg-transparent badge-md border border-light text-light">
-                  N
-                </span>
-              </div>
-            </button>
-            <BoardModalForm
-              modalId="new-board-modal"
-              mode="create"
-              isUnsplashAllowed={settings?.allowUnsplash}
-            ></BoardModalForm>
+          <div
+            className="d-flex align-items-center justify-content-between gap-3
+          "
+          >
+            <BoardSortSelector sortingParam={currentSort} />
+            <div className="btn-list">
+              <button
+                accessKey="n"
+                id="new-board-button"
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#new-board-modal"
+              >
+                <IconPlus />
+                <span className="ms-1">Create new board</span>
+                <div className="d-flex gap-1 ms-1">
+                  <span className="badge bg-transparent badge-md border border-light text-light">
+                    Alt
+                  </span>
+                  <span className="badge bg-transparent badge-md border border-light text-light">
+                    N
+                  </span>
+                </div>
+              </button>
+              <BoardModalForm
+                modalId="new-board-modal"
+                mode="create"
+                isUnsplashAllowed={settings?.allowUnsplash}
+              ></BoardModalForm>
+            </div>
           </div>
         </PageHeader>
         <PageBody>

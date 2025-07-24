@@ -46,13 +46,42 @@ export async function deleteNote(note: Note): Promise<Note | null> {
   return deleted;
 }
 
-export async function getNotes(boardId: number): Promise<Note[] | null> {
+export async function getNotes(
+  boardId: number,
+  sort: string
+): Promise<Note[] | null> {
   const { user } = await getCurrentSession();
   const notes = await prisma.note.findMany({
     where: { boardsId: boardId, boards: { userId: user?.id } },
-    orderBy: { favorite: 'desc' },
   });
-  return notes;
+
+  return notes.sort((a, b) => {
+    switch (sort) {
+      case 'created_desc':
+        return b.createdAt.getTime() - a.createdAt.getTime();
+      case 'created_asc':
+        return a.createdAt.getTime() - b.createdAt.getTime();
+      case 'updated_desc':
+        return b.updatedAt.getTime() - a.updatedAt.getTime();
+      case 'updated_asc':
+        return a.updatedAt.getTime() - b.updatedAt.getTime();
+      case 'title_asc':
+        return a.title.localeCompare(b.title);
+      case 'title_desc':
+        return b.title.localeCompare(a.title);
+      default:
+        return 0;
+    }
+  });
+}
+
+export async function setUserNotesSort(sort: string): Promise<void> {
+  const { user } = await getCurrentSession();
+  console.log('Setting user notes sort to:', sort);
+  await prisma.user.update({
+    where: { id: user?.id },
+    data: { sortNotesBy: sort },
+  });
 }
 
 export async function getNote(noteId: number): Promise<Note | null> {

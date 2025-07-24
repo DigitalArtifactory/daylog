@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
+import { getCurrentSession } from '../login/lib/actions';
 
 export default function HomeTabs() {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,10 @@ export default function HomeTabs() {
 
   useEffect(() => {
     const loadBoards = async () => {
-      const result = await getBoards();
+      const session = await getCurrentSession();
+      const result = await getBoards(
+        session!.user!.sortBoardsBy || 'created_desc'
+      );
       setBoards(result);
       setLoading(false);
 
@@ -41,7 +45,11 @@ export default function HomeTabs() {
 
   const getBoardNotes = async (boardId: number) => {
     setLoadingNotes(true);
-    const result = await getNotes(boardId);
+    const session = await getCurrentSession();
+    const result = await getNotes(
+      boardId,
+      session!.user!.sortNotesBy || 'created_desc'
+    );
     setNotes(result);
     setLoadingNotes(false);
   };
@@ -63,56 +71,60 @@ export default function HomeTabs() {
         style={{ whiteSpace: 'nowrap' }}
       >
         {isClient &&
-          boards.map((board, index) => (
-            <li
-              className={'nav-item rounded shadow'}
-              key={board.id}
-              style={
-                board.imageUrl
-                  ? {
-                      minHeight: '90px',
-                      minWidth: '220px',
-                      objectFit: 'cover',
-                      backgroundSize: '220px',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundImage: `${
-                        index === selectedIndex
-                          ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
-                          : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                      }, url(${getImageUrlOrFile(
-                        `${encodeURI(board.imageUrl)}`
-                      )})`,
-                    }
-                  : {
-                      minHeight: '90px',
-                      minWidth: '220px',
-                      backgroundColor: setBackgroundImage(board.title),
-                    }
-              }
-            >
-              <Link
-                className={`nav-link justify-content-start align-items-start h-100 h3 ${
-                  index === selectedIndex
-                    ? 'active text-white border-white'
-                    : 'text-light'
-                }`}
-                style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
-                id={`tab-${board.id}`}
-                data-bs-toggle="tab"
-                href={`#board-${board.id}`}
-                role="tab"
-                aria-controls={`board-${board.id}`}
-                aria-selected={index === 0 ? 'true' : 'false'}
-                onClick={() => {
-                  getBoardNotes(board.id);
-                  setSelectedIndex(index);
-                }}
+          boards
+            .sort((a, b) => {
+              return +b.favorite - +a.favorite;
+            })
+            .map((board, index) => (
+              <li
+                className={'nav-item rounded shadow'}
+                key={board.id}
+                style={
+                  board.imageUrl
+                    ? {
+                        minHeight: '90px',
+                        minWidth: '220px',
+                        objectFit: 'cover',
+                        backgroundSize: '220px',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundImage: `${
+                          index === selectedIndex
+                            ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
+                            : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
+                        }, url(${getImageUrlOrFile(
+                          `${encodeURI(board.imageUrl)}`
+                        )})`,
+                      }
+                    : {
+                        minHeight: '90px',
+                        minWidth: '220px',
+                        backgroundColor: setBackgroundImage(board.title),
+                      }
+                }
               >
-                {truncateWord(board.title)}
-              </Link>
-            </li>
-          ))}
+                <Link
+                  className={`nav-link justify-content-start align-items-start h-100 h3 ${
+                    index === selectedIndex
+                      ? 'active text-white border-white'
+                      : 'text-light'
+                  }`}
+                  style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
+                  id={`tab-${board.id}`}
+                  data-bs-toggle="tab"
+                  href={`#board-${board.id}`}
+                  role="tab"
+                  aria-controls={`board-${board.id}`}
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                  onClick={() => {
+                    getBoardNotes(board.id);
+                    setSelectedIndex(index);
+                  }}
+                >
+                  {truncateWord(board.title)}
+                </Link>
+              </li>
+            ))}
       </ul>
       <div className="tab-content mt-3" id="boardTabsContent">
         {boards !== null &&

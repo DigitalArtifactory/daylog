@@ -24,6 +24,13 @@ vi.mock('./components/NoteCard', () => ({
 }));
 
 describe('Home Page', () => {
+  const defaultParams = {
+    params: Promise.resolve({ id: '1' }),
+    searchParams: Promise.resolve({
+      sort: 'created_desc',
+    }),
+  };
+
   beforeEach(() => {
     cleanup();
   });
@@ -32,7 +39,7 @@ describe('Home Page', () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
     mocks.getNotes.mockResolvedValue([]);
 
-    await Notes({ params: Promise.resolve({ id: '1' }) });
+    await Notes(defaultParams);
 
     expect(redirect).toHaveBeenCalledWith('/login');
   });
@@ -43,7 +50,7 @@ describe('Home Page', () => {
     });
     mocks.getNotes.mockResolvedValue([{ id: 1 }]);
 
-    render(await Notes({ params: Promise.resolve({ id: '1' }) }));
+    render(await Notes(defaultParams));
 
     expect(screen.getByText('Note 1')).toBeInTheDocument();
   });
@@ -54,7 +61,7 @@ describe('Home Page', () => {
     });
     mocks.getNotes.mockResolvedValue([]);
 
-    render(await Notes({ params: Promise.resolve({ id: '1' }) }));
+    render(await Notes(defaultParams));
 
     expect(screen.getByText('Your notes are empty')).toBeInTheDocument();
   });

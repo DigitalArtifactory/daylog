@@ -1,10 +1,7 @@
 import { prisma } from '@/prisma/client';
 import { Note } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
-import {
-  removeFile,
-  saveBase64File
-} from '@/utils/storage';
+import { removeFile, saveBase64File } from '@/utils/storage';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createNote,
@@ -122,18 +119,17 @@ describe('Note Actions', () => {
   it('should get notes', async () => {
     const boardId = 1;
     const notes: Partial<Note>[] = [
-      { id: 1, title: 'Note 1' },
-      { id: 2, title: 'Note 2' },
+      { id: 1, title: 'Note 1', createdAt: new Date() },
+      { id: 2, title: 'Note 2', createdAt: new Date() },
     ];
 
     prismaMock.note.findMany.mockResolvedValue(notes as Note[]);
 
-    const result = await getNotes(boardId);
+    const result = await getNotes(boardId, 'created_desc');
 
     expect(result).toEqual(notes);
     expect(prismaMock.note.findMany).toHaveBeenCalledWith({
       where: { boardsId: boardId, boards: { userId: user.id } },
-      orderBy: { favorite: 'desc' },
     });
   });
 
@@ -194,7 +190,7 @@ describe('Note Actions', () => {
       allowUnsplash: false,
       enableS3: true,
     });
-    
+
     const key = await saveImage(noteId, imageBase64);
 
     expect(mocks.uploadFileS3).toHaveBeenCalled();

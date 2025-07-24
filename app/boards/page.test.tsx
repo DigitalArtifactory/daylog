@@ -26,13 +26,19 @@ vi.mock('@/app/boards/components/BoardCard', () => ({
 }));
 
 describe('Boards Page', () => {
+  const defaultSearchParams = {
+    searchParams: Promise.resolve({
+      sort: 'created_desc',
+    }),
+  };
+
   beforeEach(() => {
     cleanup();
   });
 
   it('redirects to login if user is not authenticated', async () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
-    render(await Boards());
+    render(await Boards(defaultSearchParams));
 
     expect(redirect).toHaveBeenCalledWith('/login');
   });
@@ -44,7 +50,7 @@ describe('Boards Page', () => {
     });
     mocks.getBoards.mockResolvedValue(mockBoards);
 
-    render(await Boards());
+    render(await Boards(defaultSearchParams));
 
     await waitFor(() => {
       expect(screen.getByTestId(mockBoards[0].id)).toBeInTheDocument();
@@ -57,7 +63,7 @@ describe('Boards Page', () => {
     });
     mocks.getBoards.mockResolvedValue([]);
 
-    render(await Boards());
+    render(await Boards(defaultSearchParams));
 
     await waitFor(() => {
       expect(screen.getByText('Your boards are empty')).toBeInTheDocument();
