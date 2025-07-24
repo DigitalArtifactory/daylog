@@ -26,23 +26,6 @@ export default function HomeTabs() {
     return color;
   }
 
-  useEffect(() => {
-    const loadBoards = async () => {
-      const session = await getCurrentSession();
-      const result = await getBoards(
-        session!.user!.sortBoardsBy || 'created_desc'
-      );
-      setBoards(result);
-      setLoading(false);
-
-      if (result != null && result.length > 0) {
-        getBoardNotes(result[0].id);
-      }
-    };
-    loadBoards();
-    setIsClient(true);
-  }, []);
-
   const getBoardNotes = async (boardId: number) => {
     setLoadingNotes(true);
     const session = await getCurrentSession();
@@ -53,6 +36,28 @@ export default function HomeTabs() {
     setNotes(result);
     setLoadingNotes(false);
   };
+
+  useEffect(() => {
+    const loadBoards = async () => {
+      const session = await getCurrentSession();
+      const result = await getBoards(
+        session!.user!.sortBoardsBy || 'created_desc'
+      );
+      setLoading(false);
+      if (result != null && result.length > 0) {
+        const sortedBoards = result.sort((a, b) => {
+          return +b.favorite - +a.favorite;
+        });
+        setBoards(result);
+        getBoardNotes(sortedBoards[0].id);
+      } else {
+        setBoards([]);
+        setNotes([]);
+      }
+    };
+    loadBoards();
+    setIsClient(true);
+  }, []);
 
   return loading ? (
     <Loader caption="Loading boards..." />
@@ -71,60 +76,56 @@ export default function HomeTabs() {
         style={{ whiteSpace: 'nowrap' }}
       >
         {isClient &&
-          boards
-            .sort((a, b) => {
-              return +b.favorite - +a.favorite;
-            })
-            .map((board, index) => (
-              <li
-                className={'nav-item rounded shadow'}
-                key={board.id}
-                style={
-                  board.imageUrl
-                    ? {
-                        minHeight: '90px',
-                        minWidth: '220px',
-                        objectFit: 'cover',
-                        backgroundSize: '220px',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundImage: `${
-                          index === selectedIndex
-                            ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
-                            : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                        }, url(${getImageUrlOrFile(
-                          `${encodeURI(board.imageUrl)}`
-                        )})`,
-                      }
-                    : {
-                        minHeight: '90px',
-                        minWidth: '220px',
-                        backgroundColor: setBackgroundImage(board.title),
-                      }
-                }
+          boards.map((board, index) => (
+            <li
+              className={'nav-item rounded shadow'}
+              key={board.id}
+              style={
+                board.imageUrl
+                  ? {
+                      minHeight: '90px',
+                      minWidth: '220px',
+                      objectFit: 'cover',
+                      backgroundSize: '220px',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundImage: `${
+                        index === selectedIndex
+                          ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
+                          : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
+                      }, url(${getImageUrlOrFile(
+                        `${encodeURI(board.imageUrl)}`
+                      )})`,
+                    }
+                  : {
+                      minHeight: '90px',
+                      minWidth: '220px',
+                      backgroundColor: setBackgroundImage(board.title),
+                    }
+              }
+            >
+              <Link
+                className={`nav-link justify-content-start align-items-start h-100 h3 ${
+                  index === selectedIndex
+                    ? 'active text-white border-white'
+                    : 'text-light'
+                }`}
+                style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
+                id={`tab-${board.id}`}
+                data-bs-toggle="tab"
+                href={`#board-${board.id}`}
+                role="tab"
+                aria-controls={`board-${board.id}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                onClick={() => {
+                  getBoardNotes(board.id);
+                  setSelectedIndex(index);
+                }}
               >
-                <Link
-                  className={`nav-link justify-content-start align-items-start h-100 h3 ${
-                    index === selectedIndex
-                      ? 'active text-white border-white'
-                      : 'text-light'
-                  }`}
-                  style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
-                  id={`tab-${board.id}`}
-                  data-bs-toggle="tab"
-                  href={`#board-${board.id}`}
-                  role="tab"
-                  aria-controls={`board-${board.id}`}
-                  aria-selected={index === 0 ? 'true' : 'false'}
-                  onClick={() => {
-                    getBoardNotes(board.id);
-                    setSelectedIndex(index);
-                  }}
-                >
-                  {truncateWord(board.title)}
-                </Link>
-              </li>
-            ))}
+                {truncateWord(board.title)}
+              </Link>
+            </li>
+          ))}
       </ul>
       <div className="tab-content mt-3" id="boardTabsContent">
         {boards !== null &&
