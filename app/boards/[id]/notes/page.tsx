@@ -14,20 +14,25 @@ import { getBoard } from '../../lib/actions';
 import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
 import NoteCardPlaceholder from './components/NotePlaceholder';
+import NoteSortSelector from './components/NoteSortSelector';
 import { getNotes } from './lib/actions';
 
 export default async function Notes({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');
   }
   const { id } = await params;
+  const { sort = user.sortNotesBy || 'created_desc' } = await searchParams;
   const board = await getBoard(parseInt(id));
-  const notes = await getNotes(parseInt(id));
+  const currentSort = sort as string;
+  const notes = await getNotes(parseInt(id), currentSort);
   const settings = await getSettings();
   const breadcrumbs = [
     { name: 'Home', href: '/' },
@@ -45,31 +50,40 @@ export default async function Notes({
           imageUrl={board?.imageUrl}
           breadcrumbs={breadcrumbs}
         >
-          <div className="btn-list">
-            <button
-              accessKey="n"
-              id="new-note-button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#new-note-modal"
-            >
-              <IconPlus />
-              <span className='ms-1'>Create new note</span>
-              <div className="d-flex gap-1 ms-1">
-                <span className="badge bg-transparent badge-md border border-light text-light">
-                  Alt
-                </span>
-                <span className="badge bg-transparent badge-md border border-light text-light">
-                  N
-                </span>
-              </div>
-            </button>
-            <NoteModalForm
+          <div
+            className="d-flex align-items-center justify-content-between gap-3
+          "
+          >
+            <NoteSortSelector
+              sortingParam={currentSort}
               boardId={parseInt(id)}
-              modalId="new-note-modal"
-              mode="create"
-              isUnsplashAllowed={settings?.allowUnsplash}
-            ></NoteModalForm>
+            />
+            <div className="btn-list">
+              <button
+                accessKey="n"
+                id="new-note-button"
+                className="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#new-note-modal"
+              >
+                <IconPlus />
+                <span className="ms-1">Create new note</span>
+                <div className="d-flex gap-1 ms-1">
+                  <span className="badge bg-transparent badge-md border border-light text-light">
+                    Alt
+                  </span>
+                  <span className="badge bg-transparent badge-md border border-light text-light">
+                    N
+                  </span>
+                </div>
+              </button>
+              <NoteModalForm
+                boardId={parseInt(id)}
+                modalId="new-note-modal"
+                mode="create"
+                isUnsplashAllowed={settings?.allowUnsplash}
+              ></NoteModalForm>
+            </div>
           </div>
         </PageHeader>
         <PageBody>

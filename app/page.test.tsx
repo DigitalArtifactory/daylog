@@ -39,6 +39,8 @@ describe('Home Page', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       },
       session: {
         id: '',
