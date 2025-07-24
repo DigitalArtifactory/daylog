@@ -43,10 +43,10 @@ export default function PageHeader({
             </ol>
           )}
         </div>
-        <div className="d-flex flex-row gap-1 mt-1">
-          {props.imageUrl ? (
+        <div className="d-flex flex-column flex-md-row gap-1 mt-1">
+          {props.imageUrl && (
             <div
-              className="rounded rounded-sm border shadow overflow-hidden"
+              className="rounded rounded-sm border shadow overflow-hidden me-1"
               style={{
                 minHeight: 38,
               }}
@@ -65,8 +65,6 @@ export default function PageHeader({
                 priority={true}
               />
             </div>
-          ) : (
-            <div style={{ minHeight: 38 }} />
           )}
           <h2 className="page-title" title={props.title ?? ''}>
             {truncateWord(props.title ?? '', 50) ?? (

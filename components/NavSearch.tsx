@@ -59,7 +59,7 @@ export default function NavSearch() {
             <IconSearch />
           </span>
           Search
-          <div className="d-flex gap-1 ms-1">
+          <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
             <span className="badge badge-md border">Alt</span>
             <span className="badge badge-md border">K</span>
           </div>

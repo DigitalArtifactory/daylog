@@ -68,7 +68,7 @@ export default async function Notes({
               >
                 <IconPlus />
                 <span className="ms-1">Create new note</span>
-                <div className="d-flex gap-1 ms-1">
+                <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
                   <span className="badge bg-transparent badge-md border border-light text-light">
                     Alt
                   </span>

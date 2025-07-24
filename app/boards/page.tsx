@@ -40,10 +40,7 @@ export default async function Boards({
       <NavMenu></NavMenu>
       <PageContainer>
         <PageHeader title="All boards" breadcrumbs={breadcrumbs}>
-          <div
-            className="d-flex align-items-center justify-content-between gap-3
-          "
-          >
+          <div className="d-flex w-full w-md-auto align-items-center justify-content-md-between gap-3">
             <BoardSortSelector sortingParam={currentSort} />
             <div className="btn-list">
               <button
@@ -55,7 +52,7 @@ export default async function Boards({
               >
                 <IconPlus />
                 <span className="ms-1">Create new board</span>
-                <div className="d-flex gap-1 ms-1">
+                <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
                   <span className="badge bg-transparent badge-md border border-light text-light">
                     Alt
                   </span>
