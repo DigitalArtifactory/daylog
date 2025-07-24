@@ -134,4 +134,14 @@ describe('Text Utils', () => {
     const result = isUrl('https://example.com');
     expect(result).toBe(true);
   });
+
+  it('returns false for non-URL', () => {
+    const result = isUrl('not a url');
+    expect(result).toBe(false);
+  });
+
+  it('returns false for non-Base64', () => {
+    const result = isBase64('not a base64 string');
+    expect(result).toBe(false);
+  }); 
 });
