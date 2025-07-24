@@ -82,6 +82,8 @@ describe('signup', () => {
       secret: null,
       mfa: false,
       role: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
 
     const result = await signup({}, formData);

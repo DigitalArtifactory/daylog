@@ -35,6 +35,8 @@ describe('validateAdminUserExists', () => {
       secret: null,
       mfa: false,
       terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
 
     await validateAdminUserExists();
@@ -61,6 +63,8 @@ describe('validateAdminUserExists', () => {
         secret: null,
         mfa: false,
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       await validateAdminUserExists();
@@ -109,6 +113,8 @@ describe('validateAdminUserExists', () => {
         secret: null,
         mfa: false,
         terms: 'accept',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await signupInit(state, formData);

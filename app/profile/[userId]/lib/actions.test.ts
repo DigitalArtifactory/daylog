@@ -70,6 +70,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       mocks.getCurrentSession.mockResolvedValue({ user: { id: 1 } });
@@ -97,6 +99,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await updateProfile({}, formData);
@@ -126,6 +130,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       prismaMock.user.update.mockResolvedValue({
         id: 1,
@@ -136,6 +142,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       mocks.hashPassword.mockReturnValue(hashedPassword);
 
@@ -163,6 +171,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       mocks.hashPassword.mockReturnValue(hashedPassword);
       const result = await updatePassword({}, formData);
@@ -189,6 +199,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await backupData({}, formData);
@@ -226,6 +238,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       prismaMock.user.delete.mockResolvedValue({
         id: 1,
@@ -236,6 +250,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await deleteAccount({}, formData);
@@ -275,6 +291,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await getProfile(2);
@@ -295,6 +313,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
 
       const result = await getProfile(2);
@@ -319,6 +339,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       prismaMock.user.update.mockResolvedValue({
         id: 1,
@@ -329,6 +351,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       mocks.validateTOTP.mockReturnValue(true);
 
@@ -372,6 +396,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       prismaMock.user.update.mockResolvedValue({
         id: 1,
@@ -382,6 +408,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       mocks.validateTOTP.mockReturnValue(true);
 
@@ -407,6 +435,8 @@ describe('Profile Actions', () => {
         mfa: false,
         role: '',
         terms: '',
+        sortBoardsBy: 'created_desc',
+        sortNotesBy: 'created_desc',
       });
       mocks.validateTOTP.mockReturnValue(false);
 

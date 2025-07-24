@@ -80,7 +80,9 @@ describe('validateAdminUserNotExists', () => {
       password: '',
       secret: null,
       mfa: false,
-      terms: ''
+      terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
 
     await validateAdminUserNotExists();
@@ -187,7 +189,9 @@ describe('signin', () => {
       name: null,
       secret: null,
       role: '',
-      terms: ''
+      terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
     mocks.getSettings.mockResolvedValue({ mfa: true });
 
@@ -214,7 +218,9 @@ describe('signin', () => {
       name: null,
       secret: null,
       role: '',
-      terms: ''
+      terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
     mocks.getSettings.mockResolvedValue({ mfa: false });
 
@@ -296,7 +302,9 @@ describe('validateMFA', () => {
       password: '',
       mfa: false,
       role: '',
-      terms: ''
+      terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
 
     const formData = mockFormData({ id: '1', password: '123456' });
@@ -310,13 +318,16 @@ describe('validateMFA', () => {
 describe('getUserMFA', () => {
   it('should return MFA status of the user', async () => {
     prismaMock.user.findUnique.mockResolvedValue({
-      id: 1, mfa: true,
+      id: 1,
+      mfa: true,
       name: null,
       email: '',
       password: '',
       secret: null,
       role: '',
-      terms: ''
+      terms: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     });
 
     const result = await getUserMFA(1);

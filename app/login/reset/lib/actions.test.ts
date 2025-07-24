@@ -59,6 +59,8 @@ describe('reset', () => {
       role: 'user',
       terms: 'accept',
       secret: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     };
     prismaMock.user.findFirst.mockResolvedValue(user);
     mocks.sendMail.mockResolvedValue({ messageId: '123' });
@@ -86,6 +88,8 @@ describe('reset', () => {
       role: 'user',
       terms: 'accept',
       secret: '',
+      sortBoardsBy: 'created_desc',
+      sortNotesBy: 'created_desc',
     };
     mocks.createAndVerifyTransporter.mockImplementation(() => {
       throw new Error('Transporter creation failed');
