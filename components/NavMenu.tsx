@@ -9,7 +9,7 @@ export default async function NavMenu() {
   }
 
   return (
-    <header className="navbar navbar-expand-sm navbar-light d-print-none">
+    <header className="navbar navbar-expand-sm navbar-light d-print-none sticky-top">
       <div className="container-xl">
         <div className="container-fluid">
           <button
