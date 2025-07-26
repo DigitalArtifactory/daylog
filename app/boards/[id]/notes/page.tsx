@@ -7,7 +7,7 @@ import PageBody from '@/components/PageBody';
 import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
-import { IconPlus } from '@tabler/icons-react';
+import { IconInfoCircle, IconPlus } from '@tabler/icons-react';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { getBoard } from '../../lib/actions';
@@ -89,9 +89,24 @@ export default async function Notes({
         <PageBody>
           <div className="row row-deck">
             {notes?.length == 0 ? (
-              <div className="alert alert-info" role="alert">
-                <h4 className="alert-title">Your notes are empty</h4>
-                <div className="text-secondary">You can create a new note</div>
+              <div className="col-md-4">
+                <div className="card">
+                  <div className="card-body">
+                    <h5 className="card-title">Your notes are empty</h5>
+                    <div className="d-flex flex-row gap-2">
+                      <span>
+                        <IconInfoCircle />
+                      </span>
+                      <p className="card-text">
+                        Create a new one clicking{' '}
+                        <strong>Create new note</strong> button or using{' '}
+                        <span className="badge bg-info text-white">
+                          Alt + N
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               notes?.map((b) => (
