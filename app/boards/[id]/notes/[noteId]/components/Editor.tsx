@@ -21,6 +21,8 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = event.target.value;
+    localStorage.setItem(`note-${noteId}`, newContent);
+    if (newContent === markdown) return;
     saveContent(newContent);
   };
 
@@ -43,6 +45,18 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
       setIsClient(true);
     };
     loadNote();
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === `note-${noteId}`) {
+        const storedContent = localStorage.getItem(`note-${noteId}`);
+        if (storedContent !== null) {
+          setMarkdown(storedContent);
+          if (textareaRef.current) {
+            textareaRef.current.value = storedContent;
+          }
+        }
+      }
+    });
   }, [noteId]);
 
   const renderMarkdownToHtml = (markdown: string) => {
