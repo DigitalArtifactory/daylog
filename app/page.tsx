@@ -6,14 +6,23 @@ import PageContainer from '@/components/PageContainer';
 import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
+import BoardFavSwitch from './components/BoardFavToggle';
+import { getBoardsCount } from './lib/actions';
 import { getCurrentSession } from './login/lib/actions';
 import HomeTabs from './partials/HomeTabs';
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const { user } = await getCurrentSession();
   if (user === null) {
     return redirect('/login');
   }
+
+  const boardsCount = await getBoardsCount();
+  const { showFav = 'false' } = await searchParams;
 
   const breadcrumbs = [{ name: 'Home', href: '/' }];
   return (
@@ -21,12 +30,13 @@ export default async function Home() {
       <NavHeader></NavHeader>
       <NavMenu></NavMenu>
       <PageContainer>
-        <PageHeader
-          title={`Welcome ${user.name}`}
-          breadcrumbs={breadcrumbs}
-        ></PageHeader>
+        <PageHeader title={`Welcome ${user.name}`} breadcrumbs={breadcrumbs}>
+          {boardsCount > 0 && (
+            <BoardFavSwitch showFavParam={showFav == 'true'} />
+          )}
+        </PageHeader>
         <PageBody>
-          <HomeTabs />
+          <HomeTabs showFav={showFav == 'true'} />
         </PageBody>
       </PageContainer>
       <PageFooter></PageFooter>

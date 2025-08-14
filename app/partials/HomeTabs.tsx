@@ -13,7 +13,11 @@ import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 import { getCurrentSession } from '../login/lib/actions';
 
-export default function HomeTabs() {
+export default function HomeTabs({
+  showFav: showFav = false,
+}: {
+  showFav?: boolean;
+}) {
   const [loading, setLoading] = useState(true);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -45,27 +49,43 @@ export default function HomeTabs() {
       );
       setLoading(false);
       if (result != null && result.length > 0) {
-        const sortedBoards = result.sort((a, b) => {
-          return +b.favorite - +a.favorite;
-        });
-        setBoards(result);
-        getBoardNotes(sortedBoards[0].id);
+        let organizedBoardList = result;
+        if (!showFav) {
+          organizedBoardList = result.sort((a, b) => {
+            return +b.favorite - +a.favorite;
+          });
+        } else {
+          organizedBoardList = result.filter((board) => board.favorite);
+        }
+        setBoards(organizedBoardList);
+        if (organizedBoardList.length > 0)
+          getBoardNotes(organizedBoardList[0].id);
       } else {
         setBoards([]);
         setNotes([]);
       }
     };
+
+    // Reset state on component mount
+    setBoards([]);
+    setNotes([]);
+    setLoading(true);
+
     loadBoards();
     setIsClient(true);
-  }, []);
+  }, [showFav]);
 
   return loading ? (
     <Loader caption="Loading boards..." />
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
       <IconMoodPuzzled />
-      <div className="text-secondary">You don&apos;t have boards yet...</div>
-      <Link href={'/boards'}>Go to your boards and create one.</Link>
+      <div className="text-secondary">
+        You don&apos;t have {showFav ? 'favorite' : null} boards yet...
+      </div>
+      <Link href={'/boards'}>
+        Go to your boards and {showFav ? 'mark one' : 'create one'}.
+      </Link>
     </div>
   ) : (
     <>
