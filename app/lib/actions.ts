@@ -51,3 +51,8 @@ export async function search(keywords: string): Promise<SearchResult[]> {
 
   return results;
 }
+
+export async function getBoardsCount() {
+  const count = await prisma.board.count();
+  return count;
+}
