@@ -13,6 +13,15 @@ body {
   text-overflow: ellipsis;
 }
 
+.line-clamp-8 {
+  display: -webkit-box;
+  line-clamp: 8;
+  -webkit-line-clamp: 8; /* Limit 8 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   background-color: transparent;

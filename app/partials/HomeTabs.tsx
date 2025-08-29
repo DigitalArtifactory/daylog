@@ -1,6 +1,7 @@
 'use client';
 
 import Loader from '@/components/Loader';
+import TimeDiff from '@/components/TimeDiff';
 import { Board, Note } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
@@ -189,10 +190,13 @@ export default function HomeTabs({
                             <div className="card-body">
                               <Link
                                 href={`/boards/${board.id}/notes/${note.id}`}
-                                className="stretched-link text-secondary"
+                                className="stretched-link text-light"
                               >
                                 {note.title}
                               </Link>
+                              <div className="text-secondary">
+                                <TimeDiff updatedAt={board?.updatedAt} />
+                              </div>
                             </div>
                           </div>
                         </div>

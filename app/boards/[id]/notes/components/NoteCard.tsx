@@ -43,13 +43,19 @@ export default async function NoteCard({ noteId }: NoteCardType) {
           ></Image>
         </Link>
       )}
-      <div className="card-body d-flex flex-column">
+      <div className="card-body d-flex flex-column h-full">
         <h3 className="card-title">
           <Link href={`/boards/${note.boardsId}/notes/${note.id}`}>
             {truncateWord(note.title, 35)}
           </Link>
         </h3>
-        <div className="text-secondary line-clamp-2">{note.content}</div>
+        <div
+          className={`text-secondary ${
+            note.imageUrl ? 'line-clamp-2' : 'line-clamp-8'
+          }`}
+        >
+          {note.content}
+        </div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-secondary">
             <TimeDiff updatedAt={note?.updatedAt} />
