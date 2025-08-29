@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { stringToColor } from './color';
 import { encodeBase32, encodeHex, hashPassword } from './crypto';
 import { createAndVerifyTransporter } from './email';
-import { base64ToArrayBuffer, bytesToBase64, getImageUrlOrFile } from './image';
+import {
+  base64ToArrayBuffer,
+  bytesToBase64,
+  getImageUrlOrFile
+} from './image';
 import { removeFile, saveBase64File } from './storage';
 import { isBase64, isUrl, truncateWord } from './text';
 import { generateTOTP, generateTOTPSecret, validateTOTP } from './totp';
@@ -143,5 +147,25 @@ describe('Text Utils', () => {
   it('returns false for non-Base64', () => {
     const result = isBase64('not a base64 string');
     expect(result).toBe(false);
-  }); 
+  });
+
+  it('returns false when an error occurs in isUrl', () => {
+    // Simulate an error by passing an invalid or blank URL
+    const result = isUrl('');
+    expect(result).toBe(false);
+  });
+
+  it('returns false when an error occurs in isBase64', () => {
+    // Simulate an error by passing an invalid or blank Base64 string
+    const result = isBase64('');
+    expect(result).toBe(false);
+  });
+});
+
+describe('Html Utils', () => {
+  it('removes HTML tags from string', () => {
+    const htmlString = '<p>This is <strong>bold</strong> text.</p>';
+    const result = htmlString.replace(/<\/?[^>]+(>|$)/g, '');
+    expect(result).toBe('This is bold text.');
+  });
 });

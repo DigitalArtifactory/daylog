@@ -195,7 +195,7 @@ export default function HomeTabs({
                                 {note.title}
                               </Link>
                               <div className="text-secondary">
-                                <TimeDiff updatedAt={board?.updatedAt} />
+                                <TimeDiff updatedAt={note?.updatedAt} />
                               </div>
                             </div>
                           </div>

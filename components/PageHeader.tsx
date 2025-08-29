@@ -29,7 +29,7 @@ export default function PageHeader({
           <div className="col">
             {props.breadcrumbs && (
               <ol className="breadcrumb breadcrumb-muted">
-                {props.breadcrumbs.map(async (item, index) => (
+                {props.breadcrumbs.map((item, index) => (
                   <li
                     className={`breadcrumb-item ${
                       isCurrentUrl(item.href) ? 'active' : null

@@ -69,6 +69,32 @@ describe('Component Tests', () => {
     expect(container).toBeInTheDocument();
   });
 
+  it('renders PageHeader component with breadcrumbs', () => {
+    const { container } = render(
+      <PageHeader
+        title="Test Title"
+        breadcrumbs={[
+          { name: 'Home', href: '/' },
+          { name: 'Dashboard', href: '/dashboard' },
+        ]}
+      />
+    );
+    expect(container).toBeInTheDocument();
+    expect(container.querySelectorAll('.breadcrumb-item').length).toBe(2);
+  });
+
+  it('renders PageHeader component with imageUrl', () => {
+    const { container } = render(
+      <PageHeader
+        title="Test Title"
+        breadcrumbs={[]}
+        imageUrl="test-image.jpg"
+      />
+    );
+    expect(container).toBeInTheDocument();
+    expect(container.querySelector('img')).toBeInTheDocument();
+  });
+
   it('renders PageFooterSponsor component', () => {
     const { container } = render(<PageFooterSponsor />);
     expect(container).toBeInTheDocument();
@@ -77,6 +103,20 @@ describe('Component Tests', () => {
   it('renders PageFooter component', () => {
     const { container } = render(<PageFooter />);
     expect(container).toBeInTheDocument();
+  });
+
+  it('renders PageFooterSponsor component inside PageFooter', () => {
+    vi.stubEnv('SHOW_SPONSOR_FOOTER', 'true');
+    const { container } = render(<PageFooter />);
+    expect(container).toBeInTheDocument();
+    expect(screen.getByText('Buy me a Coffee')).toBeInTheDocument();
+  });
+
+  it('does not render PageFooterSponsor component inside PageFooter when env is false', () => {
+    vi.stubEnv('SHOW_SPONSOR_FOOTER', 'false');
+    const { container } = render(<PageFooter />);
+    expect(container).toBeInTheDocument();
+    expect(screen.queryByText('Buy me a Coffee')).not.toBeInTheDocument();
   });
 
   it('renders PageContainer component', async () => {

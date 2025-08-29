@@ -35,11 +35,37 @@ const mockBoards = [
   { id: 2, title: 'Board 2', imageUrl: 'image2.jpg' },
 ];
 
+const currentDate = new Date();
+
 const mockNotes = [
-  { id: 1, title: 'Note 1', imageUrl: 'note1.jpg', boardsId: 1 },
-  { id: 2, title: 'Note 2', imageUrl: 'note2.jpg', boardsId: 1 },
-  { id: 3, title: 'Note 1', imageUrl: 'note1.jpg', boardsId: 2 },
-  { id: 4, title: 'Note 2', imageUrl: 'note2.jpg', boardsId: 2 },
+  {
+    id: 1,
+    boardsId: 1,
+    title: 'Note 1',
+    imageUrl: 'note1.jpg',
+    updatedAt: currentDate,
+  },
+  {
+    id: 2,
+    boardsId: 1,
+    title: 'Note 2',
+    imageUrl: 'note2.jpg',
+    updatedAt: currentDate,
+  },
+  {
+    id: 3,
+    boardsId: 2,
+    title: 'Note 1',
+    imageUrl: 'note1.jpg',
+    updatedAt: currentDate,
+  },
+  {
+    id: 4,
+    boardsId: 2,
+    title: 'Note 2',
+    imageUrl: 'note2.jpg',
+    updatedAt: currentDate,
+  },
 ];
 
 describe('HomeTabs', () => {
@@ -68,7 +94,9 @@ describe('HomeTabs', () => {
   it('renders notes of the first board at start', async () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
+    await waitFor(() =>
+      expect(getNotes).toHaveBeenCalledWith(1, 'created_desc')
+    );
     await waitFor(() => {
       expect(screen.getByText('Note 1')).toBeDefined();
       expect(screen.getByText('Note 2')).toBeDefined();
@@ -79,7 +107,9 @@ describe('HomeTabs', () => {
     render(<HomeTabs />);
     await waitFor(() => expect(getBoards).toHaveBeenCalled());
     fireEvent.click(screen.getByText('Board 1'));
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
+    await waitFor(() =>
+      expect(getNotes).toHaveBeenCalledWith(1, 'created_desc')
+    );
     await waitFor(() => {
       expect(screen.getByText('Note 1')).toBeInTheDocument();
       expect(screen.getByText('Note 2')).toBeInTheDocument();
@@ -101,7 +131,9 @@ describe('HomeTabs', () => {
       expect(screen.queryByText('Loading boards...')).not.toBeInTheDocument()
     );
     fireEvent.click(screen.getByText('Board 1'));
-    await waitFor(() => expect(getNotes).toHaveBeenCalledWith(1, "created_desc"));
+    await waitFor(() =>
+      expect(getNotes).toHaveBeenCalledWith(1, 'created_desc')
+    );
     await waitFor(() =>
       expect(screen.getAllByText("You don't have notes yet...").length).toBe(
         mockBoards.length
