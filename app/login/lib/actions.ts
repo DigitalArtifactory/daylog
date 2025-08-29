@@ -99,6 +99,12 @@ export async function signin(state: FormState, formData: FormData) {
   const MAX_FAILED_ATTEMPTS = 5;
   const LOCK_DURATION = 1000 * 60 * 15; // 15 minutes
 
+  // Helper to add random delay (between 300ms and 1200ms)
+  async function randomDelay() {
+    const ms = 300 + Math.floor(Math.random() * 900);
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   try {
     if (!result.success) {
       return {
@@ -107,6 +113,7 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
+    await randomDelay();
     const record = await prisma.user.findFirst({
       where: { email: result.data.email },
     });
@@ -127,7 +134,8 @@ export async function signin(state: FormState, formData: FormData) {
       );
       return {
         data: result.data,
-        message: 'Your account is temporarily locked due to multiple failed login attempts. Please try again later.',
+        message:
+          'Your account is temporarily locked due to multiple failed login attempts. Please try again later.',
       };
     }
 
