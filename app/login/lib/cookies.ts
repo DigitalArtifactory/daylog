@@ -7,7 +7,7 @@ export async function setSessionTokenCookie(
   const cookieStore = await cookies();
   cookieStore.set('session', token, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     expires: expiresAt,
     path: '/',
@@ -18,7 +18,7 @@ export async function deleteSessionTokenCookie(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set('session', '', {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     maxAge: 0,
     path: '/',

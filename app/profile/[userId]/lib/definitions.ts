@@ -20,6 +20,18 @@ export const PasswordFormSchema = z.object({
     .trim(),
 });
 
+
+export const AdminPasswordFormSchema = z.object({
+  current: z
+    .string()
+    .nullable(),
+  password: z.string().min(1, { message: 'New password is required.' }).trim(),
+  confirm: z
+    .string()
+    .min(1, { message: 'Password confirmation is required.' })
+    .trim(),
+});
+
 export const UpdateMFAFormSchema = z.object({
   secret: z
     .string()

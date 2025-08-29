@@ -31,8 +31,8 @@ export default function LoginForm({ allowReg }: { allowReg: boolean }) {
           </a>
         </div>
         {state?.message && (
-          <div className="alert alert-danger alert-dismissible" role="alert">
-            <h3 className="mb-1">Could not login</h3>
+          <div className="d-flex flex-column alert alert-danger alert-dismissible" role="alert">
+            <h3>Could not login</h3>
             <p>{state.message}</p>
             <a
               className="btn-close"

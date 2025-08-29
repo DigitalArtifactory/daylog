@@ -12,10 +12,10 @@ import { redirect } from 'next/navigation';
 import { cache } from 'react';
 import { setSessionTokenCookie } from './cookies';
 import {
-    FormState,
-    SigninFormSchema,
-    ValidateMFAFormSchema,
-    ValidateMFAFormState,
+  FormState,
+  SigninFormSchema,
+  ValidateMFAFormSchema,
+  ValidateMFAFormState,
 } from './definitions';
 
 export async function validateAdminUserNotExists() {
@@ -96,6 +96,9 @@ export async function signin(state: FormState, formData: FormData) {
 
   let goMFA = false;
   let userId: number | null = null;
+  const MAX_FAILED_ATTEMPTS = 5;
+  const LOCK_DURATION = 1000 * 60 * 15; // 15 minutes
+
   try {
     if (!result.success) {
       return {
@@ -104,17 +107,60 @@ export async function signin(state: FormState, formData: FormData) {
       };
     }
 
-    const hashedPassword = hashPassword(result.data.password);
     const record = await prisma.user.findFirst({
-      where: { email: result.data.email, password: hashedPassword },
+      where: { email: result.data.email },
     });
 
     if (!record) {
+      console.warn(
+        `Failed login attempt: No user found with email ${result.data.email}`
+      );
       return {
         data: result.data,
         message: 'An error occurred while validating your credentials.',
       };
     }
+
+    if (record.lockUntil && Date.now() < record.lockUntil.getTime()) {
+      console.warn(
+        `Account locked: User with email ${result.data.email} is temporarily locked until ${record.lockUntil}`
+      );
+      return {
+        data: result.data,
+        message: 'Your account is temporarily locked due to multiple failed login attempts. Please try again later.',
+      };
+    }
+
+    const hashedPassword = hashPassword(result.data.password);
+    if (record.password !== hashedPassword) {
+      await prisma.user.update({
+        where: { id: record.id },
+        data: {
+          failedAttempts: (record.failedAttempts || 0) + 1,
+          lockUntil:
+            (record.failedAttempts || 0) + 1 >= MAX_FAILED_ATTEMPTS
+              ? new Date(Date.now() + LOCK_DURATION)
+              : null,
+        },
+      });
+
+      console.warn(
+        `Failed login attempt: Incorrect password for email ${result.data.email}`
+      );
+      return {
+        data: result.data,
+        message: 'Invalid email or password.',
+      };
+    }
+
+    // Reset failed attempts on successful login
+    await prisma.user.update({
+      where: { id: record.id },
+      data: {
+        failedAttempts: 0,
+        lockUntil: null,
+      },
+    });
 
     const settings = await getSettings();
     if (record.mfa && settings?.mfa) {
@@ -127,9 +173,10 @@ export async function signin(state: FormState, formData: FormData) {
     console.error(e);
     return {
       data: result.data,
-      message: 'An error occurred while sing in to your account.',
+      message: 'An error occurred while signing in to your account.',
     };
   }
+
   if (goMFA && userId !== null) {
     revalidatePath(`/login/otp/${userId}`);
     redirect(`/login/otp/${userId}`);

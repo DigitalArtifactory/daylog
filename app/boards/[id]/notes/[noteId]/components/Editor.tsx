@@ -1,9 +1,8 @@
 'use client';
 
+import { renderMarkdownToHtml } from '@/utils/html';
 import { IconFileSmile, IconMarkdown } from '@tabler/icons-react';
-import { marked } from 'marked';
 import { useEffect, useRef, useState } from 'react';
-import sanitizeHtml from 'sanitize-html';
 import { getNote } from '../../lib/actions';
 import EditorToolbar from './EditorToolbar';
 
@@ -61,15 +60,6 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
   }, [noteId]);
 
   useEffect(() => {
-    const renderMarkdownToHtml = async (markdown: string) => {
-      const html = await marked.parse(markdown, {
-        async: true,
-        gfm: true,
-        breaks: true,
-      });
-      return sanitizeHtml(html);
-    };
-
     const updateHtmlContent = async () => {
       const sanitizedHtml = await renderMarkdownToHtml(markdown ?? '');
       setHtmlContent(sanitizedHtml);

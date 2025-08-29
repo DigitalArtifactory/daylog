@@ -12,6 +12,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { permanentRedirect, redirect } from 'next/navigation';
 import {
+  AdminPasswordFormSchema,
   BackupFormSchema,
   BackupFormState,
   DeleteAccountFormSchema,
@@ -106,7 +107,15 @@ export async function updatePassword(
     confirm: formData.get('confirm'),
   };
 
-  const result = PasswordFormSchema.safeParse(data);
+  const session = await getCurrentSession();
+  const isAdmin = session.user?.role === 'admin';
+
+  let result;
+  if (!isAdmin) {
+    result = PasswordFormSchema.safeParse(data);
+  } else {
+    result = AdminPasswordFormSchema.safeParse(data);
+  }
 
   if (!result.success) {
     return {
@@ -135,9 +144,10 @@ export async function updatePassword(
       };
     }
 
-    const currentHashedPassword = hashPassword(result.data.current);
-
-    if (record?.password !== currentHashedPassword) {
+    if (
+      !isAdmin &&
+      record?.password !== hashPassword(result.data.current ?? '')
+    ) {
       return {
         message: 'Current password is incorrect.',
         data: {
@@ -154,6 +164,12 @@ export async function updatePassword(
         password: hashedPassword,
       },
     });
+
+    if(session.user?.id !== data.id && isAdmin) {
+      await prisma.session.deleteMany({
+        where: { userId: data.id },
+      });
+    }
 
     return {
       success: true,
