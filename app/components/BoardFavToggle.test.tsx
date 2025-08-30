@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BoardFavSwitch from './BoardFavToggle';
 
-var mocks = vi.hoisted(() => {
+const mocks = vi.hoisted(() => {
   return {
     prefetch: vi.fn(),
     push: vi.fn(),
