@@ -159,14 +159,14 @@ export default function HomeTabs({
               aria-labelledby={`tab-${board.id}`}
               key={board.id}
             >
-              <div className="row">
+              <div className="masonry-container">
                 {loadingNotes ? (
                   <Loader caption="Loading notes..." />
                 ) : notes && notes.length > 0 ? (
                   notes.map(
                     (note) =>
                       note.boardsId === board.id && (
-                        <div className="col-md-3" key={note.id}>
+                        <div className="masonry-item" key={note.id}>
                           <div className="card mb-2">
                             {note.imageUrl && (
                               <Link
