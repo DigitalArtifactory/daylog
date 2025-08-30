@@ -1,6 +1,6 @@
 import { prismaMock } from '@/prisma/singleton';
 import { redirect } from 'next/navigation';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createSession,
   generateSessionToken,
@@ -74,7 +74,8 @@ describe('validateAdminUserNotExists', () => {
 
   it('should not redirect if an admin user exists', async () => {
     prismaMock.user.findFirst.mockResolvedValue({
-      id: 1, role: 'admin',
+      id: 1,
+      role: 'admin',
       name: null,
       email: '',
       password: '',
@@ -83,6 +84,8 @@ describe('validateAdminUserNotExists', () => {
       terms: '',
       sortBoardsBy: 'created_desc',
       sortNotesBy: 'created_desc',
+      failedAttempts: null,
+      lockUntil: null,
     });
 
     await validateAdminUserNotExists();
@@ -164,6 +167,10 @@ describe('signin', () => {
     return formData;
   };
 
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
+  });
+
   it('should return errors if form data is invalid', async () => {
     mocks.SigninFormSchema.safeParse.mockReturnValue({
       success: false,
@@ -192,6 +199,8 @@ describe('signin', () => {
       terms: '',
       sortBoardsBy: 'created_desc',
       sortNotesBy: 'created_desc',
+      failedAttempts: null,
+      lockUntil: null,
     });
     mocks.getSettings.mockResolvedValue({ mfa: true });
 
@@ -199,6 +208,8 @@ describe('signin', () => {
       email: 'test@example.com',
       password: 'password',
     });
+    
+    vi.runAllTimers();
     await signin({}, formData);
 
     expect(mocks.revalidatePath).toHaveBeenCalledWith('/login/otp/1');
@@ -221,6 +232,8 @@ describe('signin', () => {
       terms: '',
       sortBoardsBy: 'created_desc',
       sortNotesBy: 'created_desc',
+      failedAttempts: null,
+      lockUntil: null,
     });
     mocks.getSettings.mockResolvedValue({ mfa: false });
 
@@ -305,6 +318,8 @@ describe('validateMFA', () => {
       terms: '',
       sortBoardsBy: 'created_desc',
       sortNotesBy: 'created_desc',
+      failedAttempts: null,
+      lockUntil: null,
     });
 
     const formData = mockFormData({ id: '1', password: '123456' });
@@ -328,6 +343,8 @@ describe('getUserMFA', () => {
       terms: '',
       sortBoardsBy: 'created_desc',
       sortNotesBy: 'created_desc',
+      failedAttempts: null,
+      lockUntil: null,
     });
 
     const result = await getUserMFA(1);
