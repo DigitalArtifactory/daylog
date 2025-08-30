@@ -171,7 +171,7 @@ export default function HomeTabs({
                     (note) =>
                       note.boardsId === board.id && (
                         <div className="masonry-item" key={note.id}>
-                          <div className="card mb-2">
+                          <div className="card">
                             {note.imageUrl && (
                               <Link
                                 href={`/boards/${board.id}/notes/${note.id}`}
