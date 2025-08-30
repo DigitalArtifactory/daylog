@@ -47,6 +47,10 @@ vi.mock('@/utils/totp', () => ({
   validateTOTP: mocks.validateTOTP,
 }));
 
+vi.mock('@/utils/delay', () => ({
+  randomDelay: vi.fn().mockResolvedValue(undefined),
+}));
+
 vi.mock('next/cache', () => ({
   revalidatePath: mocks.revalidatePath,
 }));
@@ -208,8 +212,7 @@ describe('signin', () => {
       email: 'test@example.com',
       password: 'password',
     });
-    
-    vi.runAllTimers();
+
     await signin({}, formData);
 
     expect(mocks.revalidatePath).toHaveBeenCalledWith('/login/otp/1');
