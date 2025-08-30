@@ -26,3 +26,28 @@ body {
 .nav-pills .show > .nav-link {
   background-color: transparent;
 }
+
+.masonry-container {
+  column-count: 1;
+  column-gap: 16px;
+}
+
+.masonry-container .masonry-item {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 16px;
+  break-inside: avoid;
+}
+
+/* Responsive columns */
+@media (min-width: 600px) {
+  .masonry-container {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 900px) {
+  .masonry-container {
+    column-count: 3;
+  }
+}
