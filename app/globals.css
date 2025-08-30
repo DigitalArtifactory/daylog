@@ -29,13 +29,13 @@ body {
 
 .masonry-container {
   column-count: 1;
-  column-gap: 16px;
+  column-gap: 8px;
 }
 
 .masonry-container .masonry-item {
   display: inline-block;
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   break-inside: avoid;
 }
 

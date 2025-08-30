@@ -77,7 +77,9 @@ export default function HomeTabs({
   }, [showFav]);
 
   return loading ? (
-    <Loader caption="Loading boards..." />
+    <div className="text-center mt-5">
+      <Loader caption="Loading boards..." />
+    </div>
   ) : boards == null || boards?.length === 0 ? (
     <div className="text-center">
       <IconMoodPuzzled />
@@ -159,11 +161,13 @@ export default function HomeTabs({
               aria-labelledby={`tab-${board.id}`}
               key={board.id}
             >
-              <div className="masonry-container">
-                {loadingNotes ? (
+              {loadingNotes ? (
+                <div className="text-center mt-5">
                   <Loader caption="Loading notes..." />
-                ) : notes && notes.length > 0 ? (
-                  notes.map(
+                </div>
+              ) : notes && notes.length > 0 ? (
+                <div className="masonry-container">
+                  {notes.map(
                     (note) =>
                       note.boardsId === board.id && (
                         <div className="masonry-item" key={note.id}>
@@ -190,22 +194,22 @@ export default function HomeTabs({
                             <div className="card-body">
                               <Link
                                 href={`/boards/${board.id}/notes/${note.id}`}
-                                className="stretched-link text-light"
+                                className="stretched-link text-secondary"
                               >
                                 {note.title}
                               </Link>
-                              <div className="text-secondary">
+                              <div className="text-muted mt-2">
                                 <TimeDiff updatedAt={note?.updatedAt} />
                               </div>
                             </div>
                           </div>
                         </div>
                       )
-                  )
-                ) : (
-                  <Fragment key={board.id}>{EmptyNotes(board.id)}</Fragment>
-                )}
-              </div>
+                  )}
+                </div>
+              ) : (
+                <Fragment key={board.id}>{EmptyNotes(board.id)}</Fragment>
+              )}
             </div>
           ))}
       </div>
