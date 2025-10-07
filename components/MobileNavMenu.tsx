@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { IconChalkboard, IconPlus, IconUser } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
+import { User } from '@/prisma/generated/client';
 
-export default function MobileNavMenu({ user }: { user: any }) {
+export default function MobileNavMenu({ user }: { user: User }) {
   const theme = useTheme();
 
   return (

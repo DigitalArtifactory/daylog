@@ -6,7 +6,6 @@ import {
   IconChalkboard,
   IconMoodCog,
   IconMoodPuzzled,
-  IconMoodSpark,
   IconNote,
   IconSearch,
 } from '@tabler/icons-react';
@@ -35,6 +34,7 @@ export default function NavSearch() {
         const res = await search(query);
         if (!cancelled) setResults(res);
       } catch (e) {
+        console.error(e);
         if (!cancelled) setResults([]);
       } finally {
         setLoading(false);

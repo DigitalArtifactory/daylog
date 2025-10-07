@@ -6,7 +6,7 @@ import { Board } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
-import { IconMoodPuzzled, IconMoodSurprised, IconPlus } from '@tabler/icons-react';
+import { IconMoodSurprised, IconPlus } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -91,7 +91,7 @@ export default function HomeTabs({
           style={{ whiteSpace: 'nowrap' }}
         >
           {isClient &&
-            boards?.map((board, _) => (
+            boards?.map((board) => (
               <li
                 className={'nav-item rounded-4 shadow'}
                 key={board.id}

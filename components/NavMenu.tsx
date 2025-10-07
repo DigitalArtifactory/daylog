@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import NavBar from './NavBar';
 import Link from 'next/link';
 import Image from 'next/image';
-import { IconChalkboard, IconPlus, IconUser } from '@tabler/icons-react';
 import MobileNavMenu from './MobileNavMenu';
 import NavThemeToggle from './NavThemeToggle';
 

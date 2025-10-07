@@ -6,7 +6,6 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getNotes } from '../boards/[id]/notes/lib/actions';
 import HomeTabs from './HomeTabs';
 
 const mocks = vi.hoisted(() => ({

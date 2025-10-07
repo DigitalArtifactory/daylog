@@ -83,18 +83,18 @@ describe('Component Tests', () => {
     expect(container.querySelectorAll('.breadcrumb-item').length).toBe(2);
   });
 
-  it('renders PageHeader component with imageUrl', () => {
-    const { container } = render(
-      <PageHeader
-        title="Test Title"
-        breadcrumbs={[]}
-        imageUrl="test-image.jpg"
-      />
-    );
-    // TODO: implement image in the new ui
-    // expect(container).toBeInTheDocument();
-    // expect(container.querySelector('img')).toBeInTheDocument();
-  });
+  // TODO: implement image in the new ui
+  // it('renders PageHeader component with imageUrl', () => {
+  //   const { container } = render(
+  //     <PageHeader
+  //       title="Test Title"
+  //       breadcrumbs={[]}
+  //       imageUrl="test-image.jpg"
+  //     />
+  //   );
+  //   expect(container).toBeInTheDocument();
+  //   expect(container.querySelector('img')).toBeInTheDocument();
+  // });
 
   it('renders PageFooterSponsor component', () => {
     const { container } = render(<PageFooterSponsor />);
