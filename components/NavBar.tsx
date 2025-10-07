@@ -4,7 +4,8 @@ import { User } from '@/prisma/generated/client';
 import {
   IconChalkboard,
   IconCircleMinus,
-  IconHome, IconLogout, IconUser,
+  IconHome,
+  IconUser,
   IconUserShield
 } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -68,7 +69,7 @@ export default function NavBar({ user }: { user: User }) {
           className={`nav-item rounded-pill overflow-hidden ${profilePattern.test(path) ? 'text-bg-primary' : ''
             }`}
         >
-          <Link 
+          <Link
             className={`nav-link ${profilePattern.test(path) ? 'text-bg-primary' : ''
               }`}
             href={`/profile/${user?.id}`}
@@ -85,7 +86,7 @@ export default function NavBar({ user }: { user: User }) {
         {user?.role === 'admin' && (
           <li
             className={`nav-item rounded-pill overflow-hidden ${adminPattern.test(path) ? 'text-bg-primary' : ''
-              }`}
+              }`} data-testid="admin-nav"
           >
             <Link
               className={`nav-link ${adminPattern.test(path) ? 'text-bg-primary' : ''
