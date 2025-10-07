@@ -4,10 +4,43 @@ body {
   overflow-x: hidden;
 }
 
+.line-clamp-1 {
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  /* Limit 1 line */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   line-clamp: 2;
-  -webkit-line-clamp: 2; /* Limit 2 lines */
+  -webkit-line-clamp: 2;
+  /* Limit 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.line-clamp-4 {
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  /* Limit 4 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.line-clamp-5 {
+  display: -webkit-box;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
+  /* Limit 5 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -16,14 +49,15 @@ body {
 .line-clamp-8 {
   display: -webkit-box;
   line-clamp: 8;
-  -webkit-line-clamp: 8; /* Limit 8 lines */
+  -webkit-line-clamp: 8;
+  /* Limit 8 lines */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.nav-pills .show>.nav-link {
   background-color: transparent;
 }
 

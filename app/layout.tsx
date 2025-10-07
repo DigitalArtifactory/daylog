@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import '../public/css/tabler.1.2.0.min.css';
+import '../public/css/tabler.1.4.0.min.css';
 import './globals.css';
 import MainLayout from './partials/MainLayout';
 
@@ -9,6 +9,7 @@ const geistSans = localFont({
   variable: '--font-geist-sans',
   weight: '100 900',
 });
+
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-geist-mono',
@@ -30,7 +31,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.className} ${geistMono.variable}`}>
         <MainLayout>{children}</MainLayout>
-        <script src="/js/tabler.1.2.0.min.js" defer></script>
+        <script src="/js/tabler.1.4.0.min.js" defer></script>
       </body>
     </html>
   );

@@ -48,29 +48,30 @@ export default function NavSearch() {
 
   return (
     <>
-      <div className="input-icon pb-sm-1">
+      <div className="input-icon">
         <button
           accessKey="k"
-          className="btn text-secondary rounded-pill justify-content-start px-3 w-full"
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
+          className="btn text-secondary rounded-pill"
         >
-          <span className="me-1">
-            <IconSearch />
+          <span className="me-6 d-flex align-items-center">
+            <IconSearch size={20} style={{ marginRight: '5px' }} />
+            Search
           </span>
-          Search
           <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
             <span className="badge badge-md border">Alt</span>
+            +
             <span className="badge badge-md border">K</span>
           </div>
         </button>
       </div>
       <div
-        ref={modalRef}
-        className="modal modal-lg fade"
-        id="searchModal"
         tabIndex={-1}
+        ref={modalRef}
+        id="searchModal"
         aria-hidden="true"
+        className="modal modal-lg fade"
         aria-labelledby="searchModalLabel"
         onKeyDown={(e) => {
           handleKeyDown(e.key);
@@ -91,7 +92,7 @@ export default function NavSearch() {
                   }}
                 />
                 <span className="input-icon-addon">
-                  <IconSearch />
+                  <IconSearch size={20} />
                 </span>
               </div>
             </div>

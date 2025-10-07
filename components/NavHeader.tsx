@@ -1,9 +1,9 @@
-import { signout } from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import NavThemeToggle from './NavThemeToggle';
+import NavSearch from './NavSearch';
+import SignOutButton from './SignOutButton';
 
 export default async function NavHeader() {
   const { user } = await getCurrentSession();
@@ -12,30 +12,19 @@ export default async function NavHeader() {
   }
 
   return (
-    <header className="navbar navbar-expand-sm navbar-light d-print-none">
+    <header className="navbar navbar-expand-sm d-none d-lg-flex d-print-none navbar-transparent pt-2">
       <div className="container-xl">
-        <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <Link href="/">
-            <Image
-              src="/daylog.svg"
-              alt="daylog"
-              width="0"
-              height="0"
-              className="navbar-brand-image"
-              style={{ width: '110px', height: 'auto' }}
-              priority={true}
-            />
-          </Link>
-        </h1>
-        <div className="navbar-nav flex-row order-md-last">
+        <div className="navbar-nav">
+          <div className='nav-item'>
+            <NavSearch />
+          </div>
+        </div>
+        <div className="navbar-nav">
           <NavThemeToggle />
-          <li className="nav-item dropdown">
+          <li className="nav-item">
             <Link
-              href="#"
-              className="nav-link dropdown-toggle d-flex lh-1 text-reset p-0"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+              href={`/profile/${user?.id}`}
+              className="nav-link d-flex lh-1 text-reset p-0"
             >
               {user?.name ? (
                 <span
@@ -70,18 +59,9 @@ export default async function NavHeader() {
                 )}
               </div>
             </Link>
-            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-              <li>
-                <Link className="dropdown-item" href={`/profile/${user?.id}`}>
-                  Profile
-                </Link>
-              </li>
-              <li>
-                <form action={signout}>
-                  <button className="dropdown-item">Sign out</button>
-                </form>
-              </li>
-            </ul>
+          </li>
+          <li className='nav-item ps-3'>
+            <SignOutButton />
           </li>
         </div>
       </div>

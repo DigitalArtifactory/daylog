@@ -45,11 +45,22 @@ export async function deleteBoard(board: Board): Promise<Board | null> {
   return deleted;
 }
 
-export async function getBoards(sort: string): Promise<Board[] | null> {
+export async function getBoardsCount(): Promise<number> {
+  const { user } = await getCurrentSession();
+
+  const count = await prisma.board.count({
+    where: { userId: user?.id },
+  });
+
+  return count;
+}
+
+export async function getBoards(sort: string, perPage: number = 10): Promise<Board[] | null> {
   const { user } = await getCurrentSession();
 
   const boards = await prisma.board.findMany({
     where: { userId: user?.id },
+    take: perPage,
   });
 
   return boards.sort((a, b) => {

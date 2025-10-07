@@ -15,7 +15,8 @@ import NoteCard from './components/NoteCard';
 import NoteModalForm from './components/NoteModalForm';
 import NoteCardPlaceholder from './components/NotePlaceholder';
 import NoteSortSelector from './components/NoteSortSelector';
-import { getNotes } from './lib/actions';
+import { getNotes, getNotesCount } from './lib/actions';
+import Link from 'next/link';
 
 export default async function Notes({
   params,
@@ -29,10 +30,12 @@ export default async function Notes({
     return redirect('/login');
   }
   const { id } = await params;
-  const { sort = user.sortNotesBy || 'created_desc' } = await searchParams;
+  const { sort = user.sortNotesBy || 'created_desc', perPage = 10 } = await searchParams;
   const board = await getBoard(parseInt(id));
   const currentSort = sort as string;
-  const notes = await getNotes(parseInt(id), currentSort);
+  const currentPerPage = perPage as string;
+  const notesCount = await getNotesCount(parseInt(id));
+  const notes = await getNotes(currentSort, parseInt(currentPerPage), parseInt(id));
   const settings = await getSettings();
   const breadcrumbs = [
     { name: 'Home', href: '/' },
@@ -42,11 +45,16 @@ export default async function Notes({
 
   return (
     <Page>
-      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
+      <NavHeader></NavHeader>
       <PageContainer>
         <PageHeader
           title={board?.title}
+          description={
+            board?.updatedAt
+              ? `Created on ${new Intl.DateTimeFormat('default', { dateStyle: 'medium' }).format(board.createdAt)} at ${new Intl.DateTimeFormat('default', { timeStyle: 'short' }).format(board.createdAt)}`
+              : undefined
+          }
           imageUrl={board?.imageUrl}
           breadcrumbs={breadcrumbs}
         >
@@ -66,7 +74,7 @@ export default async function Notes({
                 data-bs-toggle="modal"
                 data-bs-target="#new-note-modal"
               >
-                <IconPlus />
+                <IconPlus size={20} />
                 <span className="ms-1">Create new note</span>
                 <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
                   <span className="badge bg-transparent badge-md border border-light text-light">
@@ -87,36 +95,47 @@ export default async function Notes({
           </div>
         </PageHeader>
         <PageBody>
-          <div className="row row-deck">
-            {notes?.length == 0 ? (
-              <div className="col-md-4">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Your notes are empty</h5>
-                    <div className="d-flex flex-row gap-2">
-                      <span>
-                        <IconInfoCircle />
-                      </span>
-                      <p className="card-text">
-                        Create a new one clicking{' '}
-                        <strong>Create new note</strong> button or using{' '}
-                        <span className="badge bg-info text-white">
-                          Alt + N
+          <div className='d-flex flex-column justify-content-between'>
+            <div className="masonry-container">
+              {notes?.length == 0 ? (
+                <div className="masonry-item">
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="card-title">Your notes are empty</h5>
+                      <div className="d-flex flex-row gap-2">
+                        <span>
+                          <IconInfoCircle />
                         </span>
-                      </p>
+                        <p className="card-text">
+                          Create a new one clicking{' '}
+                          <strong>Create new note</strong> button or using{' '}
+                          <span className="badge bg-info text-white">
+                            Alt + N
+                          </span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              notes?.map((b) => (
-                <div key={b.id} className="col-md-4 mb-3">
-                  <Suspense fallback={<NoteCardPlaceholder />}>
-                    <NoteCard noteId={b.id}></NoteCard>
-                  </Suspense>
-                </div>
-              ))
-            )}
+              ) : (
+                notes?.map((b) => (
+                  <div key={b.id} className="masonry-item">
+                    <Suspense fallback={<NoteCardPlaceholder />}>
+                      <NoteCard noteId={b.id}></NoteCard>
+                    </Suspense>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="mt-3 d-flex flex-column justify-content-center">
+              <p className="text-center">Showing {notes?.length} of {notesCount} notes</p>
+              {parseInt(currentPerPage) < notesCount &&
+                <Link className="btn btn-ghost btn-primary mx-auto"
+                  href={`/boards/${id}/notes?perPage=${parseInt(currentPerPage) + 10}`}>
+                  Load more
+                </Link>}
+            </div>
           </div>
         </PageBody>
       </PageContainer>

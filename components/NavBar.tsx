@@ -20,22 +20,19 @@ export default function NavBar({ user }: { user: User }) {
 
   return (
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul className="navbar-nav">
         <li
-          className={`nav-item ${
-            homePattern.test(path) ? 'active text-primary' : ''
-          }`}
+          className={`nav-item ${homePattern.test(path) ? 'active text-primary' : ''
+            }`}
         >
           <Link
-            className={`nav-link ${
-              homePattern.test(path) ? 'active text-primary' : ''
-            }`}
+            className={`nav-link ${homePattern.test(path) ? 'active text-primary' : ''
+              }`}
             href="/"
           >
             <span
-              className={`nav-link-icon d-md-none d-lg-inline-block ${
-                homePattern.test(path) ? 'text-primary' : ''
-              }`}
+              className={`nav-link-icon d-md-none d-lg-inline-block ${homePattern.test(path) ? 'text-primary' : ''
+                }`}
             >
               <IconHome />
             </span>
@@ -43,26 +40,23 @@ export default function NavBar({ user }: { user: User }) {
           </Link>
         </li>
         <li
-          className={`nav-item ${
-            boardPattern.test(path) || notePattern.test(path)
-              ? 'active text-primary'
-              : ''
-          }`}
+          className={`nav-item ${boardPattern.test(path) || notePattern.test(path)
+            ? 'active text-primary'
+            : ''
+            }`}
         >
           <Link
-            className={`nav-link ${
-              boardPattern.test(path) || notePattern.test(path)
-                ? 'active text-primary'
-                : ''
-            }`}
+            className={`nav-link ${boardPattern.test(path) || notePattern.test(path)
+              ? 'active text-primary'
+              : ''
+              }`}
             href="/boards"
           >
             <span
-              className={`nav-link-icon d-md-none d-lg-inline-block ${
-                boardPattern.test(path) || notePattern.test(path)
-                  ? 'text-primary'
-                  : ''
-              }`}
+              className={`nav-link-icon d-md-none d-lg-inline-block ${boardPattern.test(path) || notePattern.test(path)
+                ? 'text-primary'
+                : ''
+                }`}
             >
               <IconChalkboard />
             </span>
@@ -70,53 +64,44 @@ export default function NavBar({ user }: { user: User }) {
           </Link>
         </li>
         <li
-          className={`nav-item ${
-            profilePattern.test(path) ? 'active text-primary' : ''
-          }`}
+          className={`nav-item ${profilePattern.test(path) ? 'active text-primary' : ''
+            }`}
         >
           <a
-            className={`nav-link ${
-              profilePattern.test(path) ? 'active text-primary' : ''
-            }`}
+            className={`nav-link ${profilePattern.test(path) ? 'active text-primary' : ''
+              }`}
             href={`/profile/${user?.id}`}
           >
             <span
-              className={`nav-link-icon d-md-none d-lg-inline-block ${
-                profilePattern.test(path) ? 'text-primary' : ''
-              }`}
+              className={`nav-link-icon d-md-none d-lg-inline-block ${profilePattern.test(path) ? 'text-primary' : ''
+                }`}
             >
               <IconUser />
             </span>
             <span className="nav-link-title">Profile</span>
           </a>
         </li>
-      </ul>
-      {user?.role === 'admin' && (
-        <ul data-testid="admin-nav" className="navbar-nav mb-2 mb-lg-0">
+        {user?.role === 'admin' && (
           <li
-            className={`nav-item ${
-              adminPattern.test(path) ? 'active text-primary' : ''
-            }`}
+            className={`nav-item ${adminPattern.test(path) ? 'active text-primary' : ''
+              }`}
           >
             <a
-              className={`nav-link ${
-                adminPattern.test(path) ? 'active text-primary' : ''
-              }`}
+              className={`nav-link ${adminPattern.test(path) ? 'active text-primary' : ''
+                }`}
               href="/admin"
             >
               <span
-                className={`nav-link-icon d-md-none d-lg-inline-block ${
-                  adminPattern.test(path) ? 'text-primary' : ''
-                }`}
+                className={`nav-link-icon d-md-none d-lg-inline-block ${adminPattern.test(path) ? 'text-primary' : ''
+                  }`}
               >
                 <IconUserShield />
               </span>
               <span className="nav-link-title">Admin</span>
             </a>
           </li>
-        </ul>
-      )}
-      <NavSearch />
+        )}
+      </ul>
     </div>
   );
 }
