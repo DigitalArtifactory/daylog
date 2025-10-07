@@ -11,7 +11,7 @@ import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import { IconTrash } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UnsplashImagesDropdown from './UnsplashImagesDropdown';
 
@@ -19,6 +19,7 @@ type BoardModalFormType = {
   modalId: string;
   board?: Board | null;
   mode: 'update' | 'create';
+  open?: boolean;
   isUnsplashAllowed?: boolean;
 };
 
@@ -26,6 +27,7 @@ export default function BoardModalForm({
   modalId,
   board,
   mode,
+  open,
   isUnsplashAllowed = false,
 }: BoardModalFormType) {
   const router = useRouter();
@@ -104,6 +106,18 @@ export default function BoardModalForm({
       console.error('Close button is not available.');
     }
   };
+
+  useEffect(() => {
+    if (open) {
+      const modalTrigger = document.getElementById("new-board-button");
+      if (modalTrigger) {
+        modalTrigger.click();
+        const url = new URL(window.location.href);
+        url.searchParams.delete('openNew');
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+  }, [open]);
 
   return (
     <div className="modal fade" id={modalId} tabIndex={-1}>
@@ -206,9 +220,8 @@ export default function BoardModalForm({
               <button
                 disabled={submiting}
                 type="submit"
-                className={`btn btn-primary ${
-                  submiting ? 'btn-loading disabled' : null
-                }`}
+                className={`btn btn-primary ${submiting ? 'btn-loading disabled' : null
+                  }`}
               >
                 {mode === 'create' ? 'Create' : 'Update'}
               </button>

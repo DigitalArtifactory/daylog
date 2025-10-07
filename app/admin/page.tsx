@@ -67,9 +67,9 @@ export default async function Admin() {
               </div>
             </div>
           </div>
+          <PageFooter></PageFooter>
         </PageBody>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

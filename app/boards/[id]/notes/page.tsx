@@ -58,10 +58,7 @@ export default async function Notes({
           imageUrl={board?.imageUrl}
           breadcrumbs={breadcrumbs}
         >
-          <div
-            className="d-flex align-items-center justify-content-between gap-3
-          "
-          >
+          <div className="d-flex flex-column flex-md-row w-full w-md-auto align-items-center justify-content-md-between gap-1 gap-md-3">
             <NoteSortSelector
               sortingParam={currentSort}
               boardId={parseInt(id)}
@@ -95,7 +92,7 @@ export default async function Notes({
           </div>
         </PageHeader>
         <PageBody>
-          <div className='d-flex flex-column justify-content-between'>
+          <div className="d-flex flex-column justify-content-between">
             <div className="masonry-container">
               {notes?.length == 0 ? (
                 <div className="masonry-item">
@@ -138,8 +135,8 @@ export default async function Notes({
             </div>
           </div>
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

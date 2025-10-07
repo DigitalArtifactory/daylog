@@ -26,9 +26,10 @@ export default async function Boards({
   if (user === null) {
     return redirect('/login');
   }
-  const { sort = user.sortBoardsBy || 'created_desc', perPage = 10 } = await searchParams;
+  const { sort = user.sortBoardsBy || 'created_desc', perPage = 10, openNew = 'false' } = await searchParams;
   const currentSort = sort as string;
   const currentPage = perPage as string;
+  const openNewBoard = openNew === 'true';
   const boardCount = await getBoardsCount();
   const boards = await getBoards(currentSort, parseInt(currentPage));
   const settings = await getSettings();
@@ -47,7 +48,7 @@ export default async function Boards({
           description="You can view all the boards you've created here."
           breadcrumbs={breadcrumbs}
         >
-          <div className="d-flex w-full w-md-auto align-items-center justify-content-md-between gap-3">
+          <div className="d-flex flex-column flex-md-row w-full w-md-auto align-items-center justify-content-md-between gap-1 gap-md-3">
             <BoardSortSelector sortingParam={currentSort} />
             <div className="btn-list">
               <button
@@ -69,8 +70,9 @@ export default async function Boards({
                 </div>
               </button>
               <BoardModalForm
-                modalId="new-board-modal"
                 mode="create"
+                open={openNewBoard}
+                modalId="new-board-modal"
                 isUnsplashAllowed={settings?.allowUnsplash}
               ></BoardModalForm>
             </div>
@@ -121,8 +123,8 @@ export default async function Boards({
             </div>
           </div>
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

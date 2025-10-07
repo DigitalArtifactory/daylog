@@ -34,7 +34,7 @@ describe('Note Page', () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
     mocks.getNote.mockResolvedValue(null);
 
-    await NotePage({ params: Promise.resolve({ noteId: '1' }) });
+    await NotePage({ params: Promise.resolve({ id: '1', noteId: '1' }) });
 
     expect(redirect).toHaveBeenCalledWith('/login');
   });
@@ -45,7 +45,7 @@ describe('Note Page', () => {
     });
     mocks.getNote.mockResolvedValue({ id: 1, title: 'Test Note' });
 
-    render(await NotePage({ params: Promise.resolve({ noteId: '1' }) }));
+    render(await NotePage({ params: Promise.resolve({ id: '1', noteId: '1' }) }));
 
     expect(screen.getByTestId('note')).toBeInTheDocument();
   });

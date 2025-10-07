@@ -33,7 +33,8 @@ export default function HomeTabs({
   const getBoardNotes = async () => {
     setLoadingNotes(true);
     const result = await getNotes(
-      'created_desc'
+      'created_desc',
+      8
     );
     setNotes(result);
     setLoadingNotes(false);
@@ -72,75 +73,67 @@ export default function HomeTabs({
     setIsClient(true);
   }, [showFav]);
 
-  return loading ? (
-    <div className="text-center mt-5">
-      <Loader caption="Loading boards..." />
-    </div>
-  ) : boards == null || boards?.length === 0 ? (
-    <div className="text-center">
-      <IconMoodPuzzled />
-      <div className="text-secondary">
-        You don&apos;t have {showFav ? 'favorite' : null} boards yet...
-      </div>
-      <Link href={'/boards'}>
-        Go to your boards and {showFav ? 'mark one' : 'create one'}.
-      </Link>
-    </div>
-  ) : (
+  return (
     <>
       <div className='d-flex justify-content-between'>
         <h2 className="h2">Your Boards</h2>
         <a className='btn btn-ghost btn-primary' href={'/boards'}>View all</a>
       </div>
-      <ul
-        className="nav nav-pills flex-nowrap overflow-auto gap-4"
-        id="boardTabs"
-        role="tablist"
-        style={{ whiteSpace: 'nowrap' }}
-      >
-        {isClient &&
-          boards.map((board, _) => (
-            <li
-              className={'nav-item rounded-4 shadow'}
-              key={board.id}
-              style={
-                board.imageUrl
-                  ? {
-                    minHeight: '80px',
-                    minWidth: '180px',
-                    objectFit: 'cover',
-                    backgroundSize: '220px',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3)), url(${getImageUrlOrFile(
-                      `${encodeURI(board.imageUrl)}`
-                    )})`,
-                  }
-                  : {
-                    minHeight: '80px',
-                    minWidth: '180px',
-                    backgroundColor: setBackgroundImage(board.title),
-                  }
-              }
-            >
-              <Link
-                className={`nav-link justify-content-start align-items-end fs-3 fw-bold h-100 text-light`}
-                style={{ minWidth: '180px', textShadow: '1px 1px 3px black' }}
-                href={`/boards/${board.id}/notes`}
+      {loading ? (
+        <div className="text-center mt-5">
+          <Loader caption="Loading boards..." />
+        </div>
+      ) : (
+        <ul
+          className="nav nav-pills flex-nowrap overflow-auto gap-4"
+          id="boardTabs"
+          role="tablist"
+          style={{ whiteSpace: 'nowrap' }}
+        >
+          {isClient &&
+            boards?.map((board, _) => (
+              <li
+                className={'nav-item rounded-4 shadow'}
+                key={board.id}
+                style={
+                  board.imageUrl
+                    ? {
+                      minHeight: '80px',
+                      minWidth: '180px',
+                      objectFit: 'cover',
+                      backgroundSize: '220px',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3)), url(${getImageUrlOrFile(
+                        `${encodeURI(board.imageUrl)}`
+                      )})`,
+                    }
+                    : {
+                      minHeight: '80px',
+                      minWidth: '180px',
+                      backgroundColor: setBackgroundImage(board.title),
+                    }
+                }
               >
-                {truncateWord(board.title)}
-              </Link>
-            </li>
-          ))}
-        <li className="nav-item rounded-4 border-secondary overflow-hidden" style={{ minWidth: '180px', borderStyle: 'dashed', borderWidth: '2px' }}>
-          <Link href={'/boards'} className="nav-link d-flex flex-column align-items-center justify-content-center w-full h-full">
-            <IconPlus />
-            New board
-          </Link>
-        </li>
-      </ul>
-      <h2 className="h2 mt-4">{showFav ? 'Favorite' : 'Recent'} Notes</h2>
-
+                <Link
+                  className={`nav-link justify-content-start align-items-end fs-3 fw-bold h-100 text-light`}
+                  style={{ minWidth: '180px', textShadow: '1px 1px 3px black' }}
+                  href={`/boards/${board.id}/notes`}
+                >
+                  {truncateWord(board.title)}
+                </Link>
+              </li>
+            ))}
+          <li className="nav-item rounded-4 border-secondary overflow-hidden" style={{
+            minHeight: '80px', minWidth: '180px', borderStyle: 'dashed', borderWidth: '2px'
+          }}>
+            <Link href={'/boards?openNew=true'} className="nav-link d-flex flex-column align-items-center justify-content-center w-full h-full">
+              <IconPlus />
+              New board
+            </Link>
+          </li>
+        </ul>)}
+      <h2 className="h2 mt-4">Recent Notes</h2>
       {loadingNotes ? (
         <div className="text-center mt-5">
           <Loader caption="Loading notes..." />
@@ -150,8 +143,8 @@ export default function HomeTabs({
           {notes.map(
             (note) =>
               note.boardsId === note.boardsId && (
-                <div className="col col-md-4 col-lg-3 mb-3" key={note.id}>
-                  <div className="card overflow-hidden" style={{ minHeight: '170px', maxHeight: '170px' }}>
+                <div className="col-6 col-md-4 col-lg-3 mb-2 mb-md-3" key={note.id}>
+                  <div className="card overflow-hidden" style={{ minHeight: '200px', maxHeight: '200px' }}>
                     {note.imageUrl && (
                       <Link
                         href={`/boards/${note.boardsId}/notes/${note.id}`}
@@ -164,7 +157,7 @@ export default function HomeTabs({
                           src={getImageUrlOrFile(note.imageUrl)}
                           style={{
                             objectFit: 'cover',
-                            objectPosition: 'top',
+                            objectPosition: 'center',
                           }}
                           alt={truncateWord(note.title, 20)}
                           priority={false}
@@ -186,7 +179,7 @@ export default function HomeTabs({
                       <div className="d-flex align-items-center justify-content-between text-muted">
                         <TimeDiff updatedAt={note?.updatedAt} />
                         <Link href={`/boards/${note.boardsId}/notes`}>
-                          <div className='badge' style={{ backgroundColor: stringToColor(note.boards?.title || '') }}>
+                          <div className='badge' style={{ backgroundColor: stringToColor(note.boards?.title || ''), color: '#fff', fontWeight: 'bold', textShadow: '1px 1px 3px black' }}>
                             {truncateWord(note.boards?.title || '', 10)}
                           </div>
                         </Link>
@@ -198,17 +191,17 @@ export default function HomeTabs({
           )}
         </div>
       ) : (
-        EmptyNotes()
+        EmptyNotes(showFav)
       )}
     </>
   );
 }
 
-function EmptyNotes() {
+function EmptyNotes(showFav: boolean) {
   return (
     <div className="text-center mt-5">
       <IconMoodSurprised />
-      <div className="text-secondary">You don&apos;t have notes yet...</div>
+      <div className="text-secondary">You don&apos;t have {showFav ? 'favorite' : null} notes yet...</div>
       <Link href='/boards'>
         Go to your boards and create one.
       </Link>

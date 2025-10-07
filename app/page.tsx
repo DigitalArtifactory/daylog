@@ -42,8 +42,8 @@ export default async function Home({
         <PageBody>
           <HomeTabs showFav={showFav == 'true'} />
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

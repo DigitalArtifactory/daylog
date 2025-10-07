@@ -54,8 +54,8 @@ export default async function NotePage({
             </div>
           </div>
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

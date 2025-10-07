@@ -15,7 +15,7 @@ const NavThemeToggle = () => {
   if (!mounted) return null;
 
   return (
-    <li className="nav-item px-3">
+    <li className="nav-item">
       <a
         role="button"
         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}

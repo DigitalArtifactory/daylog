@@ -85,3 +85,8 @@ body {
     column-count: 3;
   }
 }
+
+::selection {
+  background-color: var(--tblr-primary);
+  color: #fff;
+}
