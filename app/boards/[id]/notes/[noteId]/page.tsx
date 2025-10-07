@@ -34,23 +34,28 @@ export default async function NotePage({
 
   return (
     <Page>
-      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
+      <NavHeader></NavHeader>
       <PageContainer>
         <PageHeader
           title={note?.title}
+          description={
+            note?.updatedAt
+              ? `Last updated on ${new Intl.DateTimeFormat('default', { dateStyle: 'medium' }).format(note.updatedAt)} at ${new Intl.DateTimeFormat('default', { timeStyle: 'short' }).format(note.updatedAt)}`
+              : undefined
+          }
           imageUrl={note?.imageUrl}
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
-          <div className="card overflow-hidden">
+          <div className="card overflow-hidden mt-2">
             <div className="card-body p-0 border-0 h-auto">
               {note && <NoteEditorClientWrapper note={note} />}
             </div>
           </div>
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

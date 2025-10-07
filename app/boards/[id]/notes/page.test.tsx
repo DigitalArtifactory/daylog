@@ -7,6 +7,7 @@ import Notes from './page';
 
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
+  getNotesCount: vi.fn(),
   getNotes: vi.fn(),
 }));
 
@@ -16,6 +17,7 @@ vi.mock('@/app/login/lib/actions', () => ({
 
 vi.mock('./lib/actions', () => ({
   getNotes: mocks.getNotes,
+  getNotesCount: mocks.getNotesCount,
 }));
 
 vi.mock('./components/NoteModalForm');
@@ -38,6 +40,7 @@ describe('Home Page', () => {
   it('should redirect to login if user is not authenticated', async () => {
     mocks.getCurrentSession.mockResolvedValue({ user: null });
     mocks.getNotes.mockResolvedValue([]);
+    mocks.getNotesCount.mockResolvedValue(0);
 
     await Notes(defaultParams);
 
@@ -49,6 +52,7 @@ describe('Home Page', () => {
       user: { id: 1, name: 'Test User' },
     });
     mocks.getNotes.mockResolvedValue([{ id: 1 }]);
+    mocks.getNotesCount.mockResolvedValue(1);
 
     render(await Notes(defaultParams));
 
@@ -60,6 +64,7 @@ describe('Home Page', () => {
       user: { id: 1, name: 'Test User' },
     });
     mocks.getNotes.mockResolvedValue([]);
+    mocks.getNotesCount.mockResolvedValue(0);
 
     render(await Notes(defaultParams));
 

@@ -1,9 +1,8 @@
-import { signout } from '@/app/lib/actions';
 import { getCurrentSession } from '@/app/login/lib/actions';
-import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import NavThemeToggle from './NavThemeToggle';
+import NavSearch from './NavSearch';
 
 export default async function NavHeader() {
   const { user } = await getCurrentSession();
@@ -12,30 +11,19 @@ export default async function NavHeader() {
   }
 
   return (
-    <header className="navbar navbar-expand-sm navbar-light d-print-none">
+    <header className="navbar navbar-expand-sm d-none d-md-flex d-print-none navbar-transparent pt-2">
       <div className="container-xl">
-        <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <Link href="/">
-            <Image
-              src="/daylog.svg"
-              alt="daylog"
-              width="0"
-              height="0"
-              className="navbar-brand-image"
-              style={{ width: '110px', height: 'auto' }}
-              priority={true}
-            />
-          </Link>
-        </h1>
-        <div className="navbar-nav flex-row order-md-last">
+        <div className="navbar-nav w-100">
+          <div className="nav-item w-50">
+            <NavSearch />
+          </div>
+        </div>
+        <div className="navbar-nav">
           <NavThemeToggle />
-          <li className="nav-item dropdown">
+          <li className="nav-item rounded-pill overflow-hidden">
             <Link
-              href="#"
-              className="nav-link dropdown-toggle d-flex lh-1 text-reset p-0"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+              href={`/profile/${user?.id}`}
+              className="nav-link d-flex gap-1"
             >
               {user?.name ? (
                 <span
@@ -51,37 +39,23 @@ export default async function NavHeader() {
                   <span className="avatar avatar-sm rounded-circle placeholder"></span>
                 </div>
               )}
-              <div className="d-none d-xl-block ps-2">
-                {user ? (
-                  <>
-                    <div>{user?.name}</div>
-                    <div className="mt-1 small text-secondary text-capitalize">
-                      {user?.role}
-                    </div>{' '}
-                  </>
-                ) : (
-                  <div className="d-flex flex-column placeholder-glow">
-                    <div
-                      className="placeholder mb-1"
-                      style={{ width: 75 }}
-                    ></div>
-                    <div className="placeholder" style={{ width: 40 }}></div>
+              {user ? (
+                <div className="d-flex flex-column">
+                  {user?.name}
+                  <div className={`rounded-pill ${user?.role === 'admin' ? 'text-bg-primary' : 'text-bg-secondary'} text-capitalize px-2 fs-6 ms-auto`}>
+                    {user?.role}
                   </div>
-                )}
-              </div>
+                </div>
+              ) : (
+                <div className="d-flex flex-column placeholder-glow">
+                  <div
+                    className="placeholder mb-1"
+                    style={{ width: 75 }}
+                  ></div>
+                  <div className="placeholder" style={{ width: 40 }}></div>
+                </div>
+              )}
             </Link>
-            <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
-              <li>
-                <Link className="dropdown-item" href={`/profile/${user?.id}`}>
-                  Profile
-                </Link>
-              </li>
-              <li>
-                <form action={signout}>
-                  <button className="dropdown-item">Sign out</button>
-                </form>
-              </li>
-            </ul>
           </li>
         </div>
       </div>

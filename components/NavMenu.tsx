@@ -1,6 +1,10 @@
 import { getCurrentSession } from '@/app/login/lib/actions';
 import { redirect } from 'next/navigation';
 import NavBar from './NavBar';
+import Link from 'next/link';
+import Image from 'next/image';
+import MobileNavMenu from './MobileNavMenu';
+import NavThemeToggle from './NavThemeToggle';
 
 export default async function NavMenu() {
   const { user } = await getCurrentSession();
@@ -9,9 +13,25 @@ export default async function NavMenu() {
   }
 
   return (
-    <header className="navbar navbar-expand-sm navbar-light d-print-none sticky-top">
-      <div className="container-xl">
+    <>
+      <aside className="navbar navbar-vertical navbar-expand-sm d-print-none">
         <div className="container-fluid">
+          <h1 className="navbar-brand navbar-brand-autodark my-1">
+            <Link href="/">
+              <Image
+                src="/daylog.svg"
+                alt="daylog"
+                width="0"
+                height="0"
+                className="navbar-brand-image"
+                style={{ width: '110px', height: 'auto' }}
+                priority={true}
+              />
+            </Link>
+          </h1>
+          <div className="navbar-nav ms-auto d-flex d-md-none justify-content-center me-4">
+            <NavThemeToggle />
+          </div>
           <button
             className="navbar-toggler"
             type="button"
@@ -25,7 +45,8 @@ export default async function NavMenu() {
           </button>
           <NavBar user={user} />
         </div>
-      </div>
-    </header>
+      </aside>
+      <MobileNavMenu user={user} />
+    </>
   );
 }

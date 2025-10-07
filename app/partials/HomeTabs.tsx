@@ -2,17 +2,17 @@
 
 import Loader from '@/components/Loader';
 import TimeDiff from '@/components/TimeDiff';
-import { Board, Note } from '@/prisma/generated/client';
+import { Board } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
 import { truncateWord } from '@/utils/text';
-import { IconMoodPuzzled, IconMoodSurprised } from '@tabler/icons-react';
+import { IconMoodSurprised, IconPlus } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
-import { getCurrentSession } from '../login/lib/actions';
+import { NoteWithBoards } from '../boards/[id]/notes/lib/types';
 
 export default function HomeTabs({
   showFav: showFav = false,
@@ -22,8 +22,7 @@ export default function HomeTabs({
   const [loading, setLoading] = useState(true);
   const [loadingNotes, setLoadingNotes] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [notes, setNotes] = useState<Note[] | null>([]);
+  const [notes, setNotes] = useState<NoteWithBoards[] | null>([]);
   const [boards, setBoards] = useState<Board[] | null>([]);
 
   function setBackgroundImage(str: string): string {
@@ -31,12 +30,11 @@ export default function HomeTabs({
     return color;
   }
 
-  const getBoardNotes = async (boardId: number) => {
+  const getBoardNotes = async () => {
     setLoadingNotes(true);
-    const session = await getCurrentSession();
     const result = await getNotes(
-      boardId,
-      session!.user!.sortNotesBy || 'created_desc'
+      'created_desc',
+      8
     );
     setNotes(result);
     setLoadingNotes(false);
@@ -44,23 +42,22 @@ export default function HomeTabs({
 
   useEffect(() => {
     const loadBoards = async () => {
-      const session = await getCurrentSession();
       const result = await getBoards(
-        session!.user!.sortBoardsBy || 'created_desc'
+        'created_desc'
       );
       setLoading(false);
       if (result != null && result.length > 0) {
-        let organizedBoardList = result;
+        let recentBoards = result;
         if (!showFav) {
-          organizedBoardList = result.sort((a, b) => {
+          recentBoards = result.sort((a, b) => {
             return +b.favorite - +a.favorite;
           });
         } else {
-          organizedBoardList = result.filter((board) => board.favorite);
+          recentBoards = result.filter((board) => board.favorite);
         }
-        setBoards(organizedBoardList);
-        if (organizedBoardList.length > 0)
-          getBoardNotes(organizedBoardList[0].id);
+        setBoards(recentBoards);
+        if (recentBoards.length > 0)
+          getBoardNotes();
       } else {
         setBoards([]);
         setNotes([]);
@@ -76,154 +73,137 @@ export default function HomeTabs({
     setIsClient(true);
   }, [showFav]);
 
-  return loading ? (
-    <div className="text-center mt-5">
-      <Loader caption="Loading boards..." />
-    </div>
-  ) : boards == null || boards?.length === 0 ? (
-    <div className="text-center">
-      <IconMoodPuzzled />
-      <div className="text-secondary">
-        You don&apos;t have {showFav ? 'favorite' : null} boards yet...
-      </div>
-      <Link href={'/boards'}>
-        Go to your boards and {showFav ? 'mark one' : 'create one'}.
-      </Link>
-    </div>
-  ) : (
+  return (
     <>
-      <ul
-        className="nav nav-pills flex-nowrap overflow-auto gap-3"
-        id="boardTabs"
-        role="tablist"
-        style={{ whiteSpace: 'nowrap' }}
-      >
-        {isClient &&
-          boards.map((board, index) => (
-            <li
-              className={'nav-item rounded shadow'}
-              key={board.id}
-              style={
-                board.imageUrl
-                  ? {
-                      minHeight: '90px',
-                      minWidth: '220px',
+      <div className='d-flex justify-content-between'>
+        <h2 className="h2">Your Boards</h2>
+        <a className='btn btn-ghost btn-primary' href={'/boards'}>View all</a>
+      </div>
+      {loading ? (
+        <div className="text-center mt-5">
+          <Loader caption="Loading boards..." />
+        </div>
+      ) : (
+        <ul
+          className="nav nav-pills flex-nowrap overflow-auto gap-4"
+          id="boardTabs"
+          role="tablist"
+          style={{ whiteSpace: 'nowrap' }}
+        >
+          {isClient &&
+            boards?.map((board) => (
+              <li
+                className={'nav-item rounded-4 shadow'}
+                key={board.id}
+                style={
+                  board.imageUrl
+                    ? {
+                      minHeight: '80px',
+                      minWidth: '180px',
                       objectFit: 'cover',
                       backgroundSize: '220px',
                       backgroundPosition: 'center',
                       backgroundRepeat: 'no-repeat',
-                      backgroundImage: `${
-                        index === selectedIndex
-                          ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.05), rgba(20, 20, 20, 0.01))'
-                          : 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3))'
-                      }, url(${getImageUrlOrFile(
+                      backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(20, 20, 20, 0.3)), url(${getImageUrlOrFile(
                         `${encodeURI(board.imageUrl)}`
                       )})`,
                     }
-                  : {
-                      minHeight: '90px',
-                      minWidth: '220px',
+                    : {
+                      minHeight: '80px',
+                      minWidth: '180px',
                       backgroundColor: setBackgroundImage(board.title),
                     }
-              }
-            >
-              <Link
-                className={`nav-link justify-content-start align-items-start h-100 h3 ${
-                  index === selectedIndex
-                    ? 'active text-white border-white'
-                    : 'text-light'
-                }`}
-                style={{ minWidth: '200px', textShadow: '1px 1px 3px black' }}
-                id={`tab-${board.id}`}
-                data-bs-toggle="tab"
-                href={`#board-${board.id}`}
-                role="tab"
-                aria-controls={`board-${board.id}`}
-                aria-selected={index === 0 ? 'true' : 'false'}
-                onClick={() => {
-                  getBoardNotes(board.id);
-                  setSelectedIndex(index);
-                }}
+                }
               >
-                {truncateWord(board.title)}
-              </Link>
-            </li>
-          ))}
-      </ul>
-      <div className="tab-content mt-3" id="boardTabsContent">
-        {boards !== null &&
-          boards.length > 0 &&
-          boards.map((board, index) => (
-            <div
-              className={`tab-pane fade ${index === 0 ? 'show active' : ''}`}
-              id={`board-${board.id}`}
-              role="tabpanel"
-              aria-labelledby={`tab-${board.id}`}
-              key={board.id}
-            >
-              {loadingNotes ? (
-                <div className="text-center mt-5">
-                  <Loader caption="Loading notes..." />
-                </div>
-              ) : notes && notes.length > 0 ? (
-                <div className="masonry-container">
-                  {notes.map(
-                    (note) =>
-                      note.boardsId === board.id && (
-                        <div className="masonry-item" key={note.id}>
-                          <div className="card">
-                            {note.imageUrl && (
-                              <Link
-                                href={`/boards/${board.id}/notes/${note.id}`}
-                                className="stretched-link text-secondary"
-                              >
-                                <Image
-                                  width={320}
-                                  height={180}
-                                  src={getImageUrlOrFile(note.imageUrl)}
-                                  className="card-img-top"
-                                  style={{
-                                    objectFit: 'cover',
-                                    objectPosition: 'center',
-                                  }}
-                                  alt={note.title}
-                                  priority={false}
-                                />
-                              </Link>
-                            )}
-                            <div className="card-body">
-                              <Link
-                                href={`/boards/${board.id}/notes/${note.id}`}
-                                className="stretched-link text-secondary"
-                              >
-                                {note.title}
-                              </Link>
-                              <div className="text-muted mt-2">
-                                <TimeDiff updatedAt={note?.updatedAt} />
-                              </div>
-                            </div>
+                <Link
+                  className={`nav-link justify-content-start align-items-end fs-3 fw-bold h-100 text-light`}
+                  style={{ minWidth: '180px', textShadow: '1px 1px 3px black' }}
+                  href={`/boards/${board.id}/notes`}
+                >
+                  {truncateWord(board.title)}
+                </Link>
+              </li>
+            ))}
+          <li className="nav-item rounded-4 border-secondary overflow-hidden" style={{
+            minHeight: '80px', minWidth: '180px', borderStyle: 'dashed', borderWidth: '2px'
+          }}>
+            <Link href={'/boards?openNew=true'} className="nav-link d-flex flex-column align-items-center justify-content-center w-full h-full">
+              <IconPlus />
+              New board
+            </Link>
+          </li>
+        </ul>)}
+      <h2 className="h2 mt-4">Recent Notes</h2>
+      {loadingNotes ? (
+        <div className="text-center mt-5">
+          <Loader caption="Loading notes..." />
+        </div>
+      ) : notes && notes.length > 0 ? (
+        <div className="row">
+          {notes.map(
+            (note) =>
+              note.boardsId === note.boardsId && (
+                <div className="col-6 col-md-4 col-lg-3 mb-2 mb-md-3" key={note.id}>
+                  <div className="card overflow-hidden" style={{ minHeight: '200px', maxHeight: '200px' }}>
+                    {note.imageUrl && (
+                      <Link
+                        href={`/boards/${note.boardsId}/notes/${note.id}`}
+                        className="ratio ratio-21x9"
+                      >
+                        <Image
+                          width={320}
+                          height={180}
+                          className="w-100 img-fluid"
+                          src={getImageUrlOrFile(note.imageUrl)}
+                          style={{
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                          }}
+                          alt={truncateWord(note.title, 20)}
+                          priority={false}
+                        />
+                      </Link>
+                    )}
+                    <div className="card-body d-flex flex-column justify-content-between">
+                      <div className='d-flex flex-column'>
+                        <Link
+                          href={`/boards/${note.boardsId}/notes/${note.id}`}
+                          className="fw-bold line-clamp-1"
+                        >
+                          {note.title}
+                        </Link>
+                        {!note.imageUrl && <p className='text-secondary line-clamp-4'>
+                          {note.content}
+                        </p>}
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between text-muted">
+                        <TimeDiff updatedAt={note?.updatedAt} />
+                        <Link href={`/boards/${note.boardsId}/notes`}>
+                          <div className='badge' style={{ backgroundColor: stringToColor(note.boards?.title || ''), color: '#fff', fontWeight: 'bold', textShadow: '1px 1px 3px black' }}>
+                            {truncateWord(note.boards?.title || '', 10)}
                           </div>
-                        </div>
-                      )
-                  )}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ) : (
-                <Fragment key={board.id}>{EmptyNotes(board.id)}</Fragment>
-              )}
-            </div>
-          ))}
-      </div>
+              )
+          )}
+        </div>
+      ) : (
+        EmptyNotes(showFav)
+      )}
     </>
   );
 }
 
-function EmptyNotes(boardId: number) {
+function EmptyNotes(showFav: boolean) {
   return (
     <div className="text-center mt-5">
       <IconMoodSurprised />
-      <div className="text-secondary">You don&apos;t have notes yet...</div>
-      <Link href={`/boards/${boardId}/notes`}>
-        Go to this board and create one.
+      <div className="text-secondary">You don&apos;t have {showFav ? 'favorite' : null} notes yet...</div>
+      <Link href='/boards'>
+        Go to your boards and create one.
       </Link>
     </div>
   );

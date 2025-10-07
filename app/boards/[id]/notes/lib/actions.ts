@@ -8,6 +8,7 @@ import { removeFile } from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
 
 import fs from 'fs';
+import { NoteWithBoards } from './types';
 
 export async function createNote(
   data: Prisma.NoteCreateInput,
@@ -46,13 +47,26 @@ export async function deleteNote(note: Note): Promise<Note | null> {
   return deleted;
 }
 
+export async function getNotesCount(
+  boardId?: number | null,
+): Promise<number> {
+  const { user } = await getCurrentSession();
+  const count = await prisma.note.count({
+    where: boardId === null ? { boards: { userId: user?.id } } : { boardsId: boardId, boards: { userId: user?.id } },
+  });
+  return count;
+}
+
 export async function getNotes(
-  boardId: number,
-  sort: string
-): Promise<Note[] | null> {
+  sort: string,
+  perPage = 10,
+  boardId?: number | null,
+): Promise<NoteWithBoards[] | null> {
   const { user } = await getCurrentSession();
   const notes = await prisma.note.findMany({
-    where: { boardsId: boardId, boards: { userId: user?.id } },
+    where: boardId === null ? { boards: { userId: user?.id } } : { boardsId: boardId, boards: { userId: user?.id } },
+    include: { boards: true },
+    take: perPage,
   });
 
   return notes.sort((a, b) => {

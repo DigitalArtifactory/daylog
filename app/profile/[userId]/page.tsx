@@ -30,10 +30,13 @@ export default async function Profile({
   if (profile === null) {
     return (
       <Page>
-        <NavHeader></NavHeader>
         <NavMenu></NavMenu>
+        <NavHeader></NavHeader>
         <PageContainer>
-          <div className="mt-3">No profile page found</div>
+          <div className="container-xl">
+            <div className="mt-3">No profile page found</div>
+          </div>
+          <PageFooter></PageFooter>
         </PageContainer>
       </Page>
     );
@@ -51,10 +54,12 @@ export default async function Profile({
 
   return (
     <Page>
-      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
+      <NavHeader></NavHeader>
       <PageContainer>
-        <PageHeader title="User data" breadcrumbs={breadcrumbs}></PageHeader>
+        <PageHeader title="User data"
+          description="Manage your profile and backup your data"
+          breadcrumbs={breadcrumbs} />
         <PageBody>
           {user.role === 'admin' && user.id !== profile.id && (
             <div className="alert alert-important alert-primary" role="alert">
@@ -67,8 +72,8 @@ export default async function Profile({
           {user.id === profile.id && <Backup profile={profile} />}
           <DangerZone profile={profile}></DangerZone>
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

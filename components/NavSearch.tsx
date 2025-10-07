@@ -4,10 +4,12 @@ import { search, SearchResult } from '@/app/lib/actions';
 import { truncateWord } from '@/utils/text';
 import {
   IconChalkboard,
+  IconMoodCog,
   IconMoodPuzzled,
   IconNote,
   IconSearch,
 } from '@tabler/icons-react';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function NavSearch() {
@@ -15,6 +17,34 @@ export default function NavSearch() {
   const searchInput = useRef<HTMLInputElement>(null);
 
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [query, setQuery] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Debounce search calls to avoid querying on every keystroke
+  useEffect(() => {
+    const DEBOUNCE_MS = 350;
+    if (!query) {
+      setResults([]);
+      return;
+    }
+    let cancelled = false;
+    const handle = setTimeout(async () => {
+      try {
+        setLoading(true);
+        const res = await search(query);
+        if (!cancelled) setResults(res);
+      } catch (e) {
+        console.error(e);
+        if (!cancelled) setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, DEBOUNCE_MS);
+    return () => {
+      cancelled = true;
+      clearTimeout(handle);
+    };
+  }, [query]);
 
   const handleKeyDown = (key: string) => {
     const anchors = Array.from(
@@ -48,29 +78,29 @@ export default function NavSearch() {
 
   return (
     <>
-      <div className="input-icon pb-sm-1">
-        <button
-          accessKey="k"
-          className="btn text-secondary rounded-pill justify-content-start px-3 w-full"
-          data-bs-toggle="modal"
-          data-bs-target="#searchModal"
-        >
-          <span className="me-1">
-            <IconSearch />
-          </span>
+      <button
+        accessKey="k"
+        data-bs-toggle="modal"
+        data-bs-target="#searchModal"
+        type='button'
+        className="btn text-secondary rounded-pill justify-content-between"
+      >
+        <span className="d-flex align-items-center">
+          <IconSearch size={20} style={{ marginRight: '5px' }} />
           Search
-          <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
-            <span className="badge badge-md border">Alt</span>
-            <span className="badge badge-md border">K</span>
-          </div>
-        </button>
-      </div>
+        </span>
+        <div className="d-flex gap-1 ms-1 d-none d-md-inline-flex">
+          <span className="badge badge-md border">Alt</span>
+          +
+          <span className="badge badge-md border">K</span>
+        </div>
+      </button>
       <div
-        ref={modalRef}
-        className="modal modal-lg fade"
-        id="searchModal"
         tabIndex={-1}
+        ref={modalRef}
+        id="searchModal"
         aria-hidden="true"
+        className="modal modal-lg fade"
         aria-labelledby="searchModalLabel"
         onKeyDown={(e) => {
           handleKeyDown(e.key);
@@ -85,24 +115,31 @@ export default function NavSearch() {
                   type="text"
                   className="form-control form-control-rounded"
                   placeholder="Press [Backspace] to return to search input"
-                  onChange={async (e) => {
-                    const results = await search(e.target.value);
-                    setResults(results);
-                  }}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                 />
                 <span className="input-icon-addon">
-                  <IconSearch />
+                  <IconSearch size={20} />
                 </span>
               </div>
             </div>
             <div className="modal-body">
               {results.length === 0 ? (
-                <div className="text-center">
-                  <span>
-                    <IconMoodPuzzled />
-                  </span>
-                  <div className="text-secondary">Empty results</div>
-                </div>
+                loading ? (
+                  <div className="text-center text-secondary">
+                    <span>
+                      <IconMoodCog size={28} />
+                    </span>
+                    <div>Searching...</div>
+                  </div>
+                ) : (
+                  <div className="text-center text-secondary">
+                    <span>
+                      <IconMoodPuzzled size={28} />
+                    </span>
+                    <div>Empty results</div>
+                  </div>
+                )
               ) : (
                 <>
                   <div className="divide-y">
@@ -126,13 +163,14 @@ export default function NavSearch() {
                           )}
                         </div>
                         <div className="col">
-                          <a
+                          <Link
+                            target='_top'
                             className="text-secondary focus-ring focus-ring-primary rounded py-1 px-2"
                             href={item.url}
                             aria-current="true"
                           >
                             {truncateWord(item.title, 120)}
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     ))}

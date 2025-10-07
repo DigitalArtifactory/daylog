@@ -30,13 +30,14 @@ export default async function Admin() {
 
   return (
     <Page>
-      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
+      <NavHeader></NavHeader>
       <PageContainer>
         <PageHeader
           title="Configuration"
+          description="Manage your users and preferences"
           breadcrumbs={breadcrumbs}
-        ></PageHeader>
+        />
         <PageBody>
           <div className="card">
             <div className="card-header">
@@ -66,9 +67,9 @@ export default async function Admin() {
               </div>
             </div>
           </div>
+          <PageFooter></PageFooter>
         </PageBody>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

@@ -8,6 +8,7 @@ import Boards from './page';
 
 const mocks = vi.hoisted(() => ({
   getCurrentSession: vi.fn(),
+  getBoardsCount: vi.fn(),
   getBoards: vi.fn(),
 }));
 
@@ -16,6 +17,7 @@ vi.mock('../login/lib/actions', () => ({
 }));
 
 vi.mock('./lib/actions', () => ({
+  getBoardsCount: mocks.getBoardsCount,
   getBoards: mocks.getBoards,
 }));
 
@@ -48,6 +50,7 @@ describe('Boards Page', () => {
     mocks.getCurrentSession.mockResolvedValue({
       user: { id: 1, name: 'Test User' },
     });
+    mocks.getBoardsCount.mockResolvedValue(1);
     mocks.getBoards.mockResolvedValue(mockBoards);
 
     render(await Boards(defaultSearchParams));
@@ -61,6 +64,7 @@ describe('Boards Page', () => {
     mocks.getCurrentSession.mockResolvedValue({
       user: { id: 1, name: 'Test User' },
     });
+    mocks.getBoardsCount.mockResolvedValue(0);
     mocks.getBoards.mockResolvedValue([]);
 
     render(await Boards(defaultSearchParams));

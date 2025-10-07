@@ -24,7 +24,7 @@ export default function BoardFavSwitch({
   };
 
   return (
-    <div className="btn-group" role="group" aria-label="Favorites toggle">
+    <div className="btn-group w-fit ms-auto" role="group" aria-label="Favorites toggle">
       <button
         type="button"
         className={`btn btn-outline-primary ${!showFav ? 'active' : ''}`}
@@ -34,7 +34,7 @@ export default function BoardFavSwitch({
           } as React.ChangeEvent<HTMLInputElement>)
         }
       >
-        Show all
+        Show recent
       </button>
       <button
         type="button"

@@ -27,19 +27,23 @@ export default async function Home({
   const breadcrumbs = [{ name: 'Home', href: '/' }];
   return (
     <Page>
-      <NavHeader></NavHeader>
       <NavMenu></NavMenu>
+      <NavHeader></NavHeader>
       <PageContainer>
-        <PageHeader title={`Welcome ${user.name}`} breadcrumbs={breadcrumbs}>
+        <PageHeader title={`Welcome ${user.name}`}
+          breadcrumbs={breadcrumbs}
+          description={`Here is a quick look of your ${showFav == 'true' ? 'favorite' : 'recent'} boards`}>
           {boardsCount > 0 && (
-            <BoardFavSwitch showFavParam={showFav == 'true'} />
+            <div className="d-flex w-full justify-content-end">
+              <BoardFavSwitch showFavParam={showFav == 'true'} />
+            </div>
           )}
         </PageHeader>
         <PageBody>
           <HomeTabs showFav={showFav == 'true'} />
         </PageBody>
+        <PageFooter></PageFooter>
       </PageContainer>
-      <PageFooter></PageFooter>
     </Page>
   );
 }

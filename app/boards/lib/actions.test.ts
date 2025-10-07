@@ -101,6 +101,7 @@ describe('Board Actions', () => {
     expect(result).toEqual([board]);
     expect(prismaMock.board.findMany).toHaveBeenCalledWith({
       where: { userId: user.id },
+      take: 10,
     });
   });
 

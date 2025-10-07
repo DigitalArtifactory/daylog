@@ -25,16 +25,16 @@ describe('BoardFavSwitch', () => {
   it('renders both buttons', () => {
     render(<BoardFavSwitch />);
     expect(
-      screen.getByRole('button', { name: /show all/i })
+      screen.getByRole('button', { name: /show recent/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: /favorites/i })
     ).toBeInTheDocument();
   });
 
-  it('activates "Show all" button by default', () => {
+  it('activates "Show recent" button by default', () => {
     render(<BoardFavSwitch />);
-    const showAllBtn = screen.getByRole('button', { name: /show all/i });
+    const showAllBtn = screen.getByRole('button', { name: /show recent/i });
     const favBtn = screen.getByRole('button', { name: /favorites/i });
     expect(showAllBtn.className).toContain('active');
     expect(favBtn.className).not.toContain('active');
@@ -42,7 +42,7 @@ describe('BoardFavSwitch', () => {
 
   it('activates "Favorites" button when showFavParam is true', () => {
     render(<BoardFavSwitch showFavParam={true} />);
-    const showAllBtn = screen.getByRole('button', { name: /show all/i });
+    const showAllBtn = screen.getByRole('button', { name: /show recent/i });
     const favBtn = screen.getByRole('button', { name: /favorites/i });
     expect(favBtn.className).toContain('active');
     expect(showAllBtn.className).not.toContain('active');
@@ -50,7 +50,7 @@ describe('BoardFavSwitch', () => {
 
   it('toggles active button on click', () => {
     render(<BoardFavSwitch />);
-    const showAllBtn = screen.getByRole('button', { name: /show all/i });
+    const showAllBtn = screen.getByRole('button', { name: /show recent/i });
     const favBtn = screen.getByRole('button', { name: /favorites/i });
 
     // Click "Favorites"
@@ -58,7 +58,7 @@ describe('BoardFavSwitch', () => {
     expect(favBtn.className).toContain('active');
     expect(showAllBtn.className).not.toContain('active');
 
-    // Click "Show all"
+    // Click "Show recent"
     fireEvent.click(showAllBtn);
     expect(showAllBtn.className).toContain('active');
     expect(favBtn.className).not.toContain('active');

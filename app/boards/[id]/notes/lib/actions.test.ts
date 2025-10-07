@@ -116,7 +116,7 @@ describe('Note Actions', () => {
     });
   });
 
-  it('should get notes', async () => {
+  it('should get notes with boards', async () => {
     const boardId = 1;
     const notes: Partial<Note>[] = [
       { id: 1, title: 'Note 1', createdAt: new Date() },
@@ -125,11 +125,13 @@ describe('Note Actions', () => {
 
     prismaMock.note.findMany.mockResolvedValue(notes as Note[]);
 
-    const result = await getNotes(boardId, 'created_desc');
+    const result = await getNotes('created_desc', 10, boardId);
 
     expect(result).toEqual(notes);
     expect(prismaMock.note.findMany).toHaveBeenCalledWith({
       where: { boardsId: boardId, boards: { userId: user.id } },
+      include: { boards: true },
+      take: 10,
     });
   });
 
