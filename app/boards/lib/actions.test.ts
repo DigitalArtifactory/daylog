@@ -103,7 +103,7 @@ describe('Board Actions', () => {
     expect(prismaMock.board.findMany).toHaveBeenCalledWith({
       where: { userId: user.id },
       take: 10,
-      orderBy: [getSorting('created_desc')],q
+      orderBy: [getSorting('created_desc')],
     });
   });
 
