@@ -4,6 +4,7 @@ import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import { Board, Prisma } from '@/prisma/generated/client';
 import { saveAndGetImageFile } from '@/utils/file';
+import getSorting from '@/utils/sorting';
 import { removeFile } from '@/utils/storage';
 import { isBase64, isUrl } from '@/utils/text';
 
@@ -58,29 +59,14 @@ export async function getBoardsCount(): Promise<number> {
 export async function getBoards(sort: string, perPage: number = 10): Promise<Board[] | null> {
   const { user } = await getCurrentSession();
 
+  const sorting = getSorting(sort);
   const boards = await prisma.board.findMany({
     where: { userId: user?.id },
     take: perPage,
+    orderBy: [sorting]
   });
 
-  return boards.sort((a, b) => {
-    switch (sort) {
-      case 'created_desc':
-        return b.createdAt.getTime() - a.createdAt.getTime();
-      case 'created_asc':
-        return a.createdAt.getTime() - b.createdAt.getTime();
-      case 'updated_desc':
-        return b.updatedAt.getTime() - a.updatedAt.getTime();
-      case 'updated_asc':
-        return a.updatedAt.getTime() - b.updatedAt.getTime();
-      case 'title_asc':
-        return a.title.localeCompare(b.title);
-      case 'title_desc':
-        return b.title.localeCompare(a.title);
-      default:
-        return 0;
-    }
-  });
+  return boards;
 }
 
 export async function setUserBoardsSort(sort: string): Promise<void> {

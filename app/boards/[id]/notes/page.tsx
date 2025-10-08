@@ -30,7 +30,7 @@ export default async function Notes({
     return redirect('/login');
   }
   const { id } = await params;
-  const { sort = user.sortNotesBy || 'created_desc', perPage = 10 } = await searchParams;
+  const { sort = user.sortNotesBy, perPage = 10 } = await searchParams;
   const board = await getBoard(parseInt(id));
   const currentSort = sort as string;
   const currentPerPage = perPage as string;

@@ -26,7 +26,7 @@ export default async function Boards({
   if (user === null) {
     return redirect('/login');
   }
-  const { sort = user.sortBoardsBy || 'created_desc', perPage = 10, openNew = 'false' } = await searchParams;
+  const { sort = user.sortBoardsBy, perPage = 10, openNew = 'false' } = await searchParams;
   const currentSort = sort as string;
   const currentPage = perPage as string;
   const openNewBoard = openNew === 'true';

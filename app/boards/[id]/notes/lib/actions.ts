@@ -9,6 +9,7 @@ import { isBase64, isUrl } from '@/utils/text';
 
 import fs from 'fs';
 import { NoteWithBoards } from './types';
+import getSorting from '@/utils/sorting';
 
 export async function createNote(
   data: Prisma.NoteCreateInput,
@@ -63,35 +64,20 @@ export async function getNotes(
   boardId?: number | null,
 ): Promise<NoteWithBoards[] | null> {
   const { user } = await getCurrentSession();
+
+  const sorting = getSorting(sort);
   const notes = await prisma.note.findMany({
     where: boardId === null ? { boards: { userId: user?.id } } : { boardsId: boardId, boards: { userId: user?.id } },
     include: { boards: true },
     take: perPage,
+    orderBy: [sorting]
   });
 
-  return notes.sort((a, b) => {
-    switch (sort) {
-      case 'created_desc':
-        return b.createdAt.getTime() - a.createdAt.getTime();
-      case 'created_asc':
-        return a.createdAt.getTime() - b.createdAt.getTime();
-      case 'updated_desc':
-        return b.updatedAt.getTime() - a.updatedAt.getTime();
-      case 'updated_asc':
-        return a.updatedAt.getTime() - b.updatedAt.getTime();
-      case 'title_asc':
-        return a.title.localeCompare(b.title);
-      case 'title_desc':
-        return b.title.localeCompare(a.title);
-      default:
-        return 0;
-    }
-  });
+  return notes;
 }
 
 export async function setUserNotesSort(sort: string): Promise<void> {
   const { user } = await getCurrentSession();
-  console.log('Setting user notes sort to:', sort);
   await prisma.user.update({
     where: { id: user?.id },
     data: { sortNotesBy: sort },
