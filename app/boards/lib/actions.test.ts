@@ -11,6 +11,7 @@ import {
   saveImage,
   updateBoard,
 } from './actions';
+import getSorting from '@/utils/sorting';
 
 // Mock S3 environment variables for tests
 process.env.S3_ENDPOINT = 'https://mock-s3-endpoint';
@@ -102,6 +103,7 @@ describe('Board Actions', () => {
     expect(prismaMock.board.findMany).toHaveBeenCalledWith({
       where: { userId: user.id },
       take: 10,
+      orderBy: [getSorting('created_desc')],q
     });
   });
 

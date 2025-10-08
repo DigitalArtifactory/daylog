@@ -12,6 +12,7 @@ import {
   saveImage,
   updateNote,
 } from './actions';
+import getSorting from '@/utils/sorting';
 
 // Mock S3 environment variables for tests
 process.env.S3_ENDPOINT = 'https://mock-s3-endpoint';
@@ -131,6 +132,7 @@ describe('Note Actions', () => {
     expect(prismaMock.note.findMany).toHaveBeenCalledWith({
       where: { boardsId: boardId, boards: { userId: user.id } },
       include: { boards: true },
+      orderBy: [getSorting('created_desc')],
       take: 10,
     });
   });
