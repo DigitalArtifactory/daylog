@@ -6,7 +6,7 @@ import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import { IconTrash } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { createNote, deleteImage, saveImage, updateNote } from '../lib/actions';
 
@@ -14,6 +14,7 @@ type NoteModalFormType = {
   modalId: string;
   boardId: number;
   note?: Note | null;
+  open?: boolean;
   mode: 'update' | 'create';
   isUnsplashAllowed?: boolean;
 };
@@ -22,6 +23,7 @@ export default function NoteModalForm({
   modalId,
   boardId,
   note,
+  open,
   mode,
   isUnsplashAllowed = false,
 }: NoteModalFormType) {
@@ -88,6 +90,18 @@ export default function NoteModalForm({
       console.error('Close button is not available.');
     }
   };
+
+  useEffect(() => {
+    if (open) {
+      const modalTrigger = document.getElementById("new-note-button");
+      if (modalTrigger) {
+        modalTrigger.click();
+        const url = new URL(window.location.href);
+        url.searchParams.delete('openNew');
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+  }, [open]);
 
   return (
     <div className="modal fade" id={modalId} tabIndex={-1}>
@@ -198,9 +212,8 @@ export default function NoteModalForm({
               <button
                 disabled={submiting}
                 type="submit"
-                className={`btn btn-primary ${
-                  submiting ? 'btn-loading disabled' : null
-                }`}
+                className={`btn btn-primary ${submiting ? 'btn-loading disabled' : null
+                  }`}
               >
                 {mode === 'create' ? 'Create' : 'Update'}
               </button>

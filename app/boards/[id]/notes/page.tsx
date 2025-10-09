@@ -30,10 +30,11 @@ export default async function Notes({
     return redirect('/login');
   }
   const { id } = await params;
-  const { sort = user.sortNotesBy, perPage = 10 } = await searchParams;
+  const { sort = user.sortNotesBy, perPage = 10, openNew = 'false' } = await searchParams;
   const board = await getBoard(parseInt(id));
   const currentSort = sort as string;
   const currentPerPage = perPage as string;
+  const openNewNote = openNew === 'true';
   const notesCount = await getNotesCount(parseInt(id));
   const notes = await getNotes(currentSort, parseInt(currentPerPage), parseInt(id));
   const settings = await getSettings();
@@ -86,6 +87,7 @@ export default async function Notes({
                 boardId={parseInt(id)}
                 modalId="new-note-modal"
                 mode="create"
+                open={openNewNote}
                 isUnsplashAllowed={settings?.allowUnsplash}
               ></NoteModalForm>
             </div>
