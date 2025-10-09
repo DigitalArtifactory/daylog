@@ -41,7 +41,7 @@ export default async function NavHeader() {
               )}
               {user ? (
                 <div className="d-flex flex-column">
-                  {user?.name}
+                  <div className="text-nowrap">{user?.name}</div>
                   <div className={`rounded-pill ${user?.role === 'admin' ? 'text-bg-primary' : 'text-bg-secondary'} text-capitalize px-2 fs-6 ms-auto`}>
                     {user?.role}
                   </div>
