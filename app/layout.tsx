@@ -3,7 +3,6 @@ import localFont from 'next/font/local';
 import '../public/css/tabler.1.4.0.min.css';
 import './globals.css';
 import MainLayout from './partials/MainLayout';
-import Template from '@/components/Template';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
