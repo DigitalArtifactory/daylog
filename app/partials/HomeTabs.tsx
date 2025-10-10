@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { getNotes } from '../boards/[id]/notes/lib/actions';
 import { getBoards } from '../boards/lib/actions';
 import { NoteWithBoards } from '../boards/[id]/notes/lib/types';
+import { motion } from 'framer-motion';
 
 export default function HomeTabs({
   showFav: showFav = false,
@@ -84,7 +85,10 @@ export default function HomeTabs({
           <Loader caption="Loading boards..." />
         </div>
       ) : (
-        <ul
+        <motion.ul
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ ease: "easeIn", duration: 0.50 }}
           className="nav nav-pills flex-nowrap overflow-auto gap-4"
           id="boardTabs"
           role="tablist"
@@ -132,14 +136,18 @@ export default function HomeTabs({
               New board
             </Link>
           </li>
-        </ul>)}
+        </motion.ul>)}
       <h2 className="h2 mt-4">Recent Notes</h2>
       {loadingNotes ? (
         <div className="text-center mt-5">
           <Loader caption="Loading notes..." />
         </div>
       ) : notes && notes.length > 0 ? (
-        <div className="row">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ease: "easeOut", duration: 0.50 }}
+          className="row">
           {notes.map(
             (note) =>
               note.boardsId === note.boardsId && (
@@ -189,7 +197,7 @@ export default function HomeTabs({
                 </div>
               )
           )}
-        </div>
+        </motion.div>
       ) : (
         EmptyNotes(showFav)
       )}
