@@ -2,6 +2,9 @@
 
 import {
   IconBold,
+  IconCode,
+  IconCodeAsterisk,
+  IconCodeDots,
   IconHeading, IconItalic,
   IconLink,
   IconList,
@@ -24,6 +27,7 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
       | 'strikethrough'
       | 'quote'
       | 'code'
+      | 'code-block'
       | 'link'
       | 'unordered-list'
       | 'ordered-list'
@@ -47,6 +51,9 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
         break;
       case 'code':
         props.onExecute('`', '`', comm);
+        break;
+      case 'code-block':
+        props.onExecute('```', '```', comm);
         break;
       case 'link':
         props.onExecute('[', '](url)', comm);
@@ -139,13 +146,31 @@ export default function EditorToolbar({ ...props }: EditorToolbarType) {
           <IconList />
         </button>
       </li>
-      <li className="nav-item">
+      <li className="nav-item border-end">
         <button
           className="nav-link"
           title="Image"
           onClick={() => executeCommand('image')}
         >
           <IconPhoto />
+        </button>
+      </li>
+      <li className="nav-item">
+        <button
+          className="nav-link"
+          title="Code"
+          onClick={() => executeCommand('code')}
+        >
+          <IconCode />
+        </button>
+      </li>
+      <li className="nav-item">
+        <button
+          className="nav-link"
+          title="Code Block"
+          onClick={() => executeCommand('code-block')}
+        >
+          <IconCodeDots />
         </button>
       </li>
     </>

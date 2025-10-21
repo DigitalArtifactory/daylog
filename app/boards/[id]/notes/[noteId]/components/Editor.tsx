@@ -112,7 +112,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
                       textarea.value.substring(end);
 
                     // Update the cursor position to the start of the new text
-                    textarea.selectionStart = textarea.selectionEnd = start;
+                    textarea.selectionStart = textarea.selectionEnd = start + prefix.length;
 
                     textarea.focus();
                     saveContent(textarea.value);
