@@ -150,7 +150,7 @@ export default function HomeTabs({
           className="row">
           {notes.map(
             (note) =>
-              note.boardsId === note.boardsId && (
+              note.boardsId && (
                 <div className="col-6 col-md-4 col-lg-3 mb-2 mb-md-3" key={note.id}>
                   <div className="card overflow-hidden" style={{ minHeight: '200px', maxHeight: '200px' }}>
                     {note.imageUrl && (
