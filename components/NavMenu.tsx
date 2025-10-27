@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import NavBar from './NavBar';
 import Link from 'next/link';
 import Image from 'next/image';
-import MobileNavMenu from './MobileNavMenu';
+import NavMobileMenu from './MobileNavMenu';
 import NavThemeToggle from './NavThemeToggle';
 
 export default async function NavMenu() {
@@ -46,7 +46,7 @@ export default async function NavMenu() {
           <NavBar user={user} />
         </div>
       </aside>
-      <MobileNavMenu user={user} />
+      <NavMobileMenu user={user} />
     </>
   );
 }

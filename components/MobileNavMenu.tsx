@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export default function MobileNavMenu({ user }: { user: User }) {
+export default function NavMobileMenu({ user }: { user: User }) {
   const theme = useTheme();
   const pathname = usePathname()
 
@@ -32,11 +32,11 @@ export default function MobileNavMenu({ user }: { user: User }) {
           <Link className={`nav-link ${boardPattern.test(pathname) && !clickedAdd || notePattern.test(pathname) && !clickedAdd ? 'text-primary' : ''}`} href="/boards" onClick={() => setClickedAdd(false)}>
             <IconChalkboard size={24} />
           </Link>
-          {RegExp('/boards/\\d+/notes$').test(pathname) ?
-            <Link className={`nav-link ${clickedAdd ? 'text-primary' : ''}`} href={`${pathname}?openNew=true`} onClick={() => setClickedAdd(true)}>
+          {notePattern.test(pathname) ?
+            <Link data-testid="add-note" className={`nav-link ${clickedAdd ? 'text-primary' : ''}`} href={`${pathname}?openNew=true`} onClick={() => setClickedAdd(true)}>
               <IconLibraryPlus size={24} />
             </Link>
-            : <Link className={`nav-link ${clickedAdd ? 'text-primary' : ''}`} href="/boards?openNew=true" onClick={() => setClickedAdd(true)}>
+            : <Link data-testid="add-board" className={`nav-link ${clickedAdd ? 'text-primary' : ''}`} href="/boards?openNew=true" onClick={() => setClickedAdd(true)}>
               <IconSquarePlus size={24} />
             </Link>}
         </div>

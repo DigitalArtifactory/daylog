@@ -2,6 +2,16 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NavSearch from './NavSearch';
 
+var mocks = vi.hoisted(() => ({
+  search: vi.fn(async (query: string) => {
+    if (!query) return [];
+    return [
+      { type: 'note', title: 'Test Note', url: '/note/1' },
+      { type: 'board', title: 'Test Board', url: '/board/1' },
+    ];
+  })
+}))
+
 // Mock icons
 vi.mock('./icons', () => ({
   ChalkboardIcon: () => <span data-testid="chalkboard-icon" />,
@@ -12,21 +22,28 @@ vi.mock('./icons', () => ({
 
 // Mock search action
 vi.mock('@/app/lib/actions', () => ({
-  search: vi.fn(async (query: string) => {
-    if (!query) return [];
-    return [
-      { type: 'note', title: 'Test Note', url: '/note/1' },
-      { type: 'board', title: 'Test Board', url: '/board/1' },
-    ];
-  }),
+  search: mocks.search,
 }));
 
 describe('NavSearch', () => {
   beforeEach(() => {
-    // Clear document body between tests
-    document.body.innerHTML = '';
     cleanup();
+    vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
   });
+
+  it('show searching text when search is loading', async () => {
+    mocks.search.mockImplementationOnce(() => {
+      setTimeout(() => { }, 1000);
+      return new Promise(() => { });
+    })
+    render(<NavSearch />);
+    const input = screen.getByPlaceholderText(/Press \[Backspace\] to return to search input/i);
+    fireEvent.change(input, { target: { value: 'test' } });
+    await waitFor(() => {
+      expect(screen.getByText(/Searching.../i)).toBeInTheDocument();
+    });
+
+  })
 
   it('renders search button and modal', () => {
     render(<NavSearch />);
@@ -41,6 +58,7 @@ describe('NavSearch', () => {
     render(<NavSearch />);
     // Open modal by simulating click
     fireEvent.click(screen.getByRole('button', { name: /Search/i }));
+    vi.advanceTimersByTime(350);
     // Input is empty, so should show empty results
     expect(await screen.findByText(/Empty results/i)).toBeInTheDocument();
   });
@@ -50,7 +68,7 @@ describe('NavSearch', () => {
     fireEvent.click(screen.getByRole('button', { name: /Search/i }));
     const input = screen.getByPlaceholderText(/Press \[Backspace\] to return to search input/i);
     fireEvent.change(input, { target: { value: 'test' } });
-
+    vi.advanceTimersByTime(350);
     await waitFor(() => {
       expect(screen.getByText('Test Note')).toBeInTheDocument();
       expect(screen.getByText('Test Board')).toBeInTheDocument();
@@ -72,7 +90,7 @@ describe('NavSearch', () => {
     fireEvent.click(screen.getByRole('button', { name: /Search/i }));
     const input = screen.getByPlaceholderText(/Press \[Backspace\] to return to search input/i);
     fireEvent.change(input, { target: { value: 'test' } });
-
+    vi.advanceTimersByTime(350);
     await waitFor(() => {
       expect(screen.getByText('Test Note')).toBeInTheDocument();
       expect(screen.getByText('Test Board')).toBeInTheDocument();

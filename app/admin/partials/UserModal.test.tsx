@@ -66,4 +66,21 @@ describe('UserModal', () => {
     expect(nameError).toBeInTheDocument();
     expect(emailError).toBeInTheDocument();
   });
+
+  it('displays password validation error', () => {
+    mocks.useActionState.mockReturnValueOnce([
+      {
+        data: {},
+        errors: { password: ['Password is required'] },
+        success: false,
+      },
+      vi.fn(),
+      false,
+    ]);
+    render(<UserModal />);
+    const button = screen.getByRole('button', { name: /create new user/i });
+    fireEvent.click(button);
+    const passwordError = screen.getByText(/password is required/i);
+    expect(passwordError).toBeInTheDocument();
+  })
 });

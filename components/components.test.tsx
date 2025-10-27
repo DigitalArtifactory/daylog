@@ -15,6 +15,8 @@ import PageFooterSponsor from './PageFooterSponsor';
 import PageHeader from './PageHeader';
 import Placeholder from './Placeholder';
 import TimeDiff from './TimeDiff';
+import NavMobileMenu from './MobileNavMenu';
+import NavMenu from './NavMenu';
 
 vi.mock('input-otp', () => ({
   __esModule: true,
@@ -39,6 +41,11 @@ vi.mock('@/app/login/lib/actions', () => ({
       },
     };
   },
+}));
+
+const mockUsePathname = vi.fn();
+vi.mock('next/navigation', () => ({
+  usePathname: () => mockUsePathname(),
 }));
 
 describe('Component Tests', () => {
@@ -138,7 +145,7 @@ describe('Component Tests', () => {
   });
 
   it('renders OTPInputWrapper component', () => {
-    const { container } = render(<OTPInputWrapper onChange={() => {}} />);
+    const { container } = render(<OTPInputWrapper onChange={() => { }} />);
     expect(container).toBeInTheDocument();
   });
 
@@ -153,7 +160,7 @@ describe('Component Tests', () => {
         <div className={`slot ${isActive ? 'active' : ''}`}>{char}q</div>
       ),
     }));
-    const { container } = render(<OTPInputWrapper onChange={() => {}} />);
+    const { container } = render(<OTPInputWrapper onChange={() => { }} />);
     expect(container).toBeInTheDocument();
     expect(screen.getByText('-')).toBeInTheDocument();
   });
@@ -195,5 +202,27 @@ describe('Component Tests', () => {
   it('renders FormField component', () => {
     const { container } = render(<FormField label="Test Label" name="test" />);
     expect(container).toBeInTheDocument();
+  });
+
+  it('renders NavMenu component', () => {
+    const { container } = render(<NavMenu />);
+    expect(container).toBeInTheDocument();
+  });
+
+  it('renders NavMobileMenu component', () => {
+    const { container } = render(<NavMobileMenu user={{ id: 1, role: 'user' } as User} />);
+    expect(container).toBeInTheDocument();
+  });
+
+  it('shows add-note button when on notes page', () => {
+    mockUsePathname.mockReturnValue('/boards/1/notes');
+    render(<NavMobileMenu user={{ id: 1, role: 'user' } as User} />);
+    expect(screen.getByTestId('add-note')).toBeInTheDocument();
+  });
+
+  it('shows add-board button when not on notes page', () => {
+    mockUsePathname.mockReturnValue('/boards');
+    render(<NavMobileMenu user={{ id: 1, role: 'user' } as User} />);
+    expect(screen.getByTestId('add-board')).toBeInTheDocument();
   });
 });

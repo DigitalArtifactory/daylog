@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { stringToColor } from './color';
 import { encodeBase32, encodeHex, hashPassword } from './crypto';
 import { createAndVerifyTransporter } from './email';
@@ -10,6 +10,7 @@ import {
 import { removeFile, saveBase64File } from './storage';
 import { isBase64, isUrl, truncateWord } from './text';
 import { generateTOTP, generateTOTPSecret, validateTOTP } from './totp';
+import { randomDelay } from './delay';
 
 const mocks = vi.hoisted(() => ({
   createTransport: vi.fn(),
@@ -167,5 +168,19 @@ describe('Html Utils', () => {
     const htmlString = '<p>This is <strong>bold</strong> text.</p>';
     const result = htmlString.replace(/<\/?[^>]+(>|$)/g, '');
     expect(result).toBe('This is bold text.');
+  });
+});
+
+describe('Delay Utils', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
+  })
+
+  it('delays execution', async () => {
+    const start = Date.now();
+    await randomDelay();
+    vi.advanceTimersByTime(300);
+    const end = Date.now();
+    expect(end - start).toBeGreaterThanOrEqual(300);
   });
 });
