@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NavSearch from './NavSearch';
 
-var mocks = vi.hoisted(() => ({
+const mocks = vi.hoisted(() => ({
   search: vi.fn(async (query: string) => {
     if (!query) return [];
     return [
