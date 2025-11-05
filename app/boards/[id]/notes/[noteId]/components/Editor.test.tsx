@@ -81,7 +81,7 @@ describe('Editor', () => {
       target: { value: 'Updated content' },
     });
 
-    expect(screen.getByText('Saving changes...')).toBeInTheDocument();
+    expect(screen.getByTitle('Saving changes...')).toBeInTheDocument();
   });
 
   it('renders markdown preview', async () => {
@@ -91,9 +91,7 @@ describe('Editor', () => {
     await waitFor(() => {
       expect(screen.getByRole('textbox')).toHaveValue(mockNote.content);
     });
-
-    fireEvent.click(screen.getByText('Preview'));
-
+    
     expect(
       screen.getByText('Test content', { selector: 'p' })
     ).toBeInTheDocument();

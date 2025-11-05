@@ -90,3 +90,64 @@ body {
   background-color: var(--tblr-primary);
   color: #fff;
 }
+
+body .w-md-editor-text-pre>code,
+body .w-md-editor-text-input {
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+body .w-md-editor-bar {
+  right: 15px;
+}
+
+body .w-md-editor-toolbar {
+  background-color: transparent !important;
+  padding-left: 12px;
+}
+
+
+body .w-md-editor-toolbar li.active>button {
+  background-color: var(--tblr-primary);
+  color: #fff;
+}
+
+body .w-md-editor-toolbar li>button {
+  padding: 8px;
+  height: 40px;
+  width: 40px;
+  color: var(--tblr-gray-500);
+}
+
+body .w-md-editor-toolbar li>button>svg {
+  width: 18px;
+  height: 18px;
+}
+
+body .w-md-editor-toolbar li>button:hover {
+  background-color: var(--tblr-primary);
+  color: #fff;
+}
+
+body .w-md-editor {
+  background-color: var(--tblr-card-bg) !important;
+}
+
+
+body .w-md-editor-content {
+  padding-left: 4px;
+  padding-bottom: 4px;
+}
+
+body .w-md-editor-area {
+  border-radius: 0;
+  border-radius: 0 0 0 6px;
+}
+
+body .w-md-editor-text {
+  background-color: var(--tblr-body-bg) !important;
+}
+
+body .wmde-markdown {
+  background-color: var(--tblr-card-bg) !important;
+}

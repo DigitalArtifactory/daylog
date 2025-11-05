@@ -1,7 +1,7 @@
 import { getSettings } from '@/app/admin/lib/actions';
 import TimeDiff from '@/components/TimeDiff';
 import { getImageUrlOrFile } from '@/utils/image';
-import { truncateWord } from '@/utils/text';
+import { removeMarkdownTags, truncateWord } from '@/utils/text';
 import { IconEdit } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,12 +49,8 @@ export default async function NoteCard({ noteId }: NoteCardType) {
             {truncateWord(note.title, 35)}
           </Link>
         </h3>
-        <div
-          className={`text-secondary ${
-            note.imageUrl ? 'line-clamp-2' : 'line-clamp-8'
-          }`}
-        >
-          {note.content}
+        <div className={`text-secondary ${note.imageUrl ? 'line-clamp-2' : 'line-clamp-8'}`}>
+          {removeMarkdownTags(note.content ?? '')}
         </div>
         <div className="d-flex align-items-center justify-content-between pt-4 mt-auto">
           <div className="text-secondary">
