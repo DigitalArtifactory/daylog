@@ -61,7 +61,7 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
       <MDEditor
         height={620}
         minHeight={620}
-        autoFocusEnd={true}
+        autoFocus={true}
         value={markdown ?? ''}
         onChange={(value) => handleChange(value ?? '')}
         previewOptions={{
