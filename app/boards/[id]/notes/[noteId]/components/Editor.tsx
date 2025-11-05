@@ -59,8 +59,8 @@ export default function Editor({ noteId, onUpdate }: EditorType) {
   return (
     <div className="relative" data-color-mode={theme}>
       <MDEditor
-        height={480}
-        minHeight={480}
+        height={620}
+        minHeight={620}
         autoFocusEnd={true}
         value={markdown ?? ''}
         onChange={(value) => handleChange(value ?? '')}

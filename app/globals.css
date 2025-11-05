@@ -142,9 +142,6 @@ body .w-md-editor-content {
 body .w-md-editor-area {
   border-radius: 0;
   border-radius: 0 0 0 6px;
-}
-
-body .w-md-editor-text {
   background-color: var(--tblr-body-bg) !important;
 }
 
