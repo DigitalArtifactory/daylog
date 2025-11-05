@@ -5,7 +5,7 @@ import TimeDiff from '@/components/TimeDiff';
 import { Board } from '@/prisma/generated/client';
 import { stringToColor } from '@/utils/color';
 import { getImageUrlOrFile } from '@/utils/image';
-import { truncateWord } from '@/utils/text';
+import { removeMarkdownTags, truncateWord } from '@/utils/text';
 import { IconMoodSurprised, IconPlus } from '@tabler/icons-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -181,7 +181,7 @@ export default function HomeTabs({
                           {note.title}
                         </Link>
                         {!note.imageUrl && <p className='text-secondary line-clamp-4'>
-                          {note.content}
+                          {removeMarkdownTags(note.content || '')}
                         </p>}
                       </div>
                       <div className="d-flex align-items-center justify-content-between text-muted">

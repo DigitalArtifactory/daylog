@@ -48,7 +48,7 @@ export default async function NotePage({
           breadcrumbs={breadcrumbs}
         ></PageHeader>
         <PageBody>
-          <div className="card overflow-hidden mt-2">
+          <div className="card mt-2">
             <div className="card-body p-0 border-0 h-auto">
               {note && <NoteEditorClientWrapper note={note} />}
             </div>

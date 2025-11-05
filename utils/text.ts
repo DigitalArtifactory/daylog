@@ -20,3 +20,30 @@ export function isUrl(str: string) {
     return false;
   }
 }
+
+export function removeMarkdownTags(text: string) {
+  return text
+    // Remove code blocks ```...```
+    .replace(/```[\s\S]*?```/g, '')
+    // Remove inline code `...`
+    .replace(/`[^`]*`/g, '')
+    // Remove images ![alt](url)
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    // Remove links [text](url)
+    .replace(/\[.*?\]\(.*?\)/g, '')
+    // Remove bold/italic markers (*, _, **, __)
+    .replace(/(\*\*|__|\*|_)/g, '')
+    // Remove headings (e.g. # Title)
+    .replace(/^#+\s*/gm, '')
+    // Remove blockquotes >
+    .replace(/^\s*>+\s?/gm, '')
+    // Remove lists (-, *, +, or numbered)
+    .replace(/^\s*([-*+]|\d+\.)\s+/gm, '')
+    // Remove HTML tags (optional if Markdown includes them)
+    .replace(/<\/?[^>]+(>|$)/g, '')
+    // Keep only letters, numbers, and spaces
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    // Collapse multiple spaces into one
+    .replace(/\s+/g, ' ')
+    .trim();
+}
