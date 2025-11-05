@@ -133,10 +133,10 @@ body .w-md-editor {
   background-color: var(--tblr-card-bg) !important;
 }
 
-
-body .w-md-editor-content {
+body .w-md-editor-content pre>code {
   padding-left: 4px;
   padding-bottom: 4px;
+  color: var(--tblr-body-color) !important;
 }
 
 body .w-md-editor-area {
