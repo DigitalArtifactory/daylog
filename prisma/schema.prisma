@@ -59,6 +59,7 @@ model Note {
   favorite  Boolean  @default(false)
   boards    Board?   @relation(fields: [boardsId], references: [id], onDelete: Cascade)
   boardsId  Int?
+  pictures  Picture[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
@@ -66,4 +67,13 @@ model Note {
 model Setting {
   key   String  @id
   value String?
+}
+
+model Picture {
+  id        Int      @id @default(autoincrement())
+  notes     Note?    @relation(fields: [notesId], references: [id], onDelete: Cascade)
+  notesId   Int?
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

@@ -6,7 +6,7 @@ import { s3Client } from './lib/s3Client';
 
 export async function GET(req: NextRequest) {
   try {
-    const { user } = await getCurrentSession();
+    const { user } = await getCurrentSession(req);
 
     if (!user) {
       return Response.json({ error: 'Not allowed' });
@@ -44,7 +44,8 @@ export async function GET(req: NextRequest) {
     const response = await s3Client.send(command);
 
     const body = await response.Body?.transformToByteArray();
-    return new Response(body, {
+    const buffer = Buffer.from(body ?? '');
+    return new Response(buffer, {
       status: 200,
       headers: {
         'Content-Type': response.ContentType || 'application/octet-stream',

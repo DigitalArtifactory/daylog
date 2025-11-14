@@ -16,7 +16,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
       <div className="card">
         <div className="card-body">
           <h3 className="card-title">Profile Information</h3>
-          <div className="textsecondary">
+          <div className="text-secondary">
             Update your account&apos;s profile information and email address.
           </div>
           <div className="d-flex align-items-center pt-4 mt-auto">
@@ -35,7 +35,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                     defaultValue={
                       typeof state?.data?.name === 'string'
                         ? state.data.name
-                        : profile.name ?? ''
+                        : (profile.name ?? '')
                     }
                     placeholder="Enter your nickname, name or fullname"
                   />
@@ -57,7 +57,7 @@ export default function ProfileInfo({ profile }: ProfileInfoType) {
                     defaultValue={
                       typeof state?.data?.email === 'string'
                         ? state.data.email
-                        : profile.email ?? ''
+                        : (profile.email ?? '')
                     }
                     placeholder="Enter your email for password recovery"
                   />

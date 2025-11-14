@@ -1,86 +1,269 @@
 'use client';
 
+import { Note, Picture } from '@/prisma/generated/client';
 import { useEffect, useRef, useState } from 'react';
-import { getNote } from '../../lib/actions';
+import {
+  savePicture,
+  updateNote,
+  getPictures,
+  deletePicture,
+  deleteImage,
+} from '../../lib/actions';
+import Image from 'next/image';
+import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import MDEditor from '@uiw/react-md-editor';
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize from 'rehype-sanitize';
 import { useTheme } from 'next-themes';
+import { IconPhoto, IconPhotoPlus, IconX } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 
-type EditorType = {
-  noteId: number;
-  onUpdate?: (content: string, callback: () => void) => void;
+type NoteEditorWrapperType = {
+  note: Note;
 };
 
-export default function Editor({ noteId, onUpdate }: EditorType) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+export default function Editor({ note }: NoteEditorWrapperType) {
+  const router = useRouter();
 
-  const [markdown, setMarkdown] = useState<string | null>(null);
+  const [markdown, setMarkdown] = useState(note.content ?? '');
   const [isSaving, setIsSaving] = useState(false);
+  const [pictures, setPictures] = useState<Picture[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { theme } = useTheme();
 
-  const handleChange = (value: string) => {
-    localStorage.setItem(`note-${noteId}`, value);
-    if (value === markdown) return;
-    saveContent(value);
-  };
-
   function saveContent(content: string) {
-    setMarkdown(content);
+    localStorage.setItem(`note-${note.id}`, content);
     setIsSaving(true);
-    if (onUpdate)
-      onUpdate(content, () => {
-        setIsSaving(false);
-      });
+    debounceSave(content, () => {
+      setIsSaving(false);
+    });
   }
 
   useEffect(() => {
-    const loadNote = async () => {
-      const note = await getNote(noteId);
-      if (note) {
-        setMarkdown(note.content);
-      }
-    };
-    loadNote();
-
     window.addEventListener('storage', (event) => {
-      if (event.key === `note-${noteId}`) {
-        const storedContent = localStorage.getItem(`note-${noteId}`);
+      if (event.key === `note-${note.id}`) {
+        const storedContent = localStorage.getItem(`note-${note.id}`);
         if (storedContent !== null) {
           setMarkdown(storedContent);
-          if (textareaRef.current) {
-            textareaRef.current.value = storedContent;
-          }
         }
       }
     });
-  }, [noteId]);
+
+    const loadPictures = async () => {
+      const pictures = await getPictures(note.id);
+      setPictures(pictures);
+    };
+
+    loadPictures();
+  }, [note]);
+
+  useEffect(() => {
+    if (markdown !== localStorage.getItem(`note-${note.id}`)) {
+      saveContent(markdown);
+    }
+  }, [markdown]);
+
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
+    null
+  );
+
+  const debounceSave = (content: string, callback: () => void) => {
+    // Clear the previous timer
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    // Set a new timer
+    const timeout = setTimeout(() => {
+      updateNoteHandler(content);
+      callback();
+    }, 1000); // Waits for 1 second of inactivity before saving
+
+    setDebounceTimer(timeout);
+  };
+
+  const updateNoteHandler = async (content: string) => {
+    if (!note) return;
+    note.content = content;
+    if (note) await updateNote(note);
+  };
+
+  const handlePlaceImage = (imageUrl: string) => {
+    const textarea = document.getElementsByClassName(
+      'w-md-editor-text-input'
+    )[0] as HTMLTextAreaElement;
+    let leftContent = markdown.substring(0, textarea.selectionStart);
+    let rightContent = markdown.substring(textarea.selectionStart);
+    const newContent =
+      leftContent + '![alt text](' + imageUrl + ')' + rightContent;
+
+    setMarkdown(newContent);
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      resizeImage(file, 1920, 1080, async (resizedDataUrl) => {
+        const imageUrl = await savePicture(note.id, resizedDataUrl);
+        if (!imageUrl) return;
+        router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
+        router.refresh();
+      });
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
+
+  const handleDeletePicture = async (pictureId: number) => {
+    try {
+      await deletePicture(note.id, pictureId);
+      router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
+      router.refresh();
+    } catch (error) {
+      console.error('Error deleting picture:', error);
+    }
+  };
 
   return (
-    <div className="relative" data-color-mode={theme}>
-      <MDEditor
-        height={480}
-        minHeight={480}
-        autoFocusEnd={true}
-        value={markdown ?? ''}
-        onChange={(value) => handleChange(value ?? '')}
-        previewOptions={{
-          rehypePlugins: [[rehypeSanitize]],
-        }}
-      />
-      {isSaving && (
-        <div className='bg-primary pulse' aria-label='Saving changes...' title='Saving changes...' style={{
-          position: 'absolute',
-          top: -5,
-          left: -5,
-          width: 12,
-          height: 12,
-          borderRadius: '50%',
-          zIndex: 9999,
-          animation: 'pulse 2s infinite',
-          cursor: 'pointer',
-        }}></div>
-      )}
+    <div className="d-flex flex-column">
+      <div className="card mt-2">
+        <div className="card-body p-0 border-0 h-auto">
+          <div className="relative" data-color-mode={theme}>
+            <MDEditor
+              height={480}
+              minHeight={480}
+              autoFocusEnd={true}
+              value={markdown}
+              onChange={(value) => setMarkdown(value ?? '')}
+              previewOptions={{
+                rehypePlugins: [[rehypeSanitize]],
+              }}
+            />
+            {isSaving && (
+              <div
+                className="bg-primary pulse"
+                aria-label="Saving changes..."
+                title="Saving changes..."
+                style={{
+                  position: 'absolute',
+                  top: -5,
+                  left: -5,
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  zIndex: 9999,
+                  animation: 'pulse 2s infinite',
+                  cursor: 'pointer',
+                }}
+              ></div>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="card mt-2">
+        <div className="card-body">
+          <h3 className="card-title">Pictures</h3>
+          <div className="text-secondary">
+            Click a picture to place it in the editor at the cursor position.
+          </div>
+          <div className="row row-cols-2 row-cols-md-6 row-cols-lg-8 pt-4">
+            {note &&
+              note.imageUrl &&
+              PicturePreview({
+                imageUrl: note.imageUrl,
+                onClick: () => {
+                  handlePlaceImage(getImageUrlOrFile(note.imageUrl!));
+                },
+                onDelete: () => {
+                  deleteImage(note.id, note.imageUrl);
+                  router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
+                  router.refresh();
+                },
+              })}
+            {pictures.map((picture, key) => (
+              <PicturePreview
+                onDelete={() => handleDeletePicture(picture.id)}
+                key={key}
+                imageUrl={picture.imageUrl}
+                onClick={() => {
+                  handlePlaceImage(getImageUrlOrFile(picture.imageUrl));
+                }}
+              />
+            ))}
+          </div>
+
+          {pictures.length === 0 && (
+            <div className="d-flex gap-2 align-items-center text-muted w-full">
+              <div>No pictures</div>
+            </div>
+          )}
+        </div>
+        <div className="card-body">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="d-none"
+          />
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <span className="me-1">
+              <IconPhotoPlus />
+            </span>
+            Add picture
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
+
+const PicturePreview = ({
+  imageUrl,
+  onClick,
+  onDelete,
+}: {
+  imageUrl: string;
+  onClick: () => void;
+  onDelete: () => void;
+}) => {
+  return (
+    <div className="col position-relative">
+      <div
+        className="position-absolute top-0 end-0 z-1 bg-dark rounded-circle me-3 mt-1 cursor-pointer"
+        onClick={onDelete}
+      >
+        <IconX />
+      </div>
+      <div
+        role="button"
+        onClick={onClick}
+        className="ratio ratio-1x1 rounded-4 overflow-hidden cursor-pointer"
+      >
+        <Image
+          width={140}
+          height={140}
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
+          src={getImageUrlOrFile(imageUrl)}
+          alt="Note image preview"
+          priority={false}
+          placeholder="blur"
+          blurDataURL={getImageUrlOrFile(imageUrl)}
+        ></Image>
+      </div>
+    </div>
+  );
+};

@@ -2,7 +2,7 @@ import { getCurrentSession } from '@/app/login/lib/actions';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const { user } = await getCurrentSession();
+  const { user } = await getCurrentSession(req);
 
   if (!user) {
     return Response.json({ error: 'Not allowed' });

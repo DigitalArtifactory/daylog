@@ -9,7 +9,7 @@ import PageFooter from '@/components/PageFooter';
 import PageHeader from '@/components/PageHeader';
 import { redirect } from 'next/navigation';
 import { getNote } from '../lib/actions';
-import NoteEditorClientWrapper from './partials/NoteEditorClientWrapper';
+import Editor from './components/Editor';
 
 export default async function NotePage({
   params,
@@ -41,19 +41,18 @@ export default async function NotePage({
           title={note?.title}
           description={
             note?.updatedAt
-              ? `Last updated on ${new Intl.DateTimeFormat('default', { dateStyle: 'medium' }).format(note.updatedAt)} at ${new Intl.DateTimeFormat('default', { timeStyle: 'short' }).format(note.updatedAt)}`
+              ? `Last updated on ${new Intl.DateTimeFormat('default', {
+                  dateStyle: 'medium',
+                }).format(note.updatedAt)} at ${new Intl.DateTimeFormat(
+                  'default',
+                  { timeStyle: 'short' }
+                ).format(note.updatedAt)}`
               : undefined
           }
           imageUrl={note?.imageUrl}
           breadcrumbs={breadcrumbs}
         ></PageHeader>
-        <PageBody>
-          <div className="card mt-2">
-            <div className="card-body p-0 border-0 h-auto">
-              {note && <NoteEditorClientWrapper note={note} />}
-            </div>
-          </div>
-        </PageBody>
+        <PageBody>{note && <Editor note={note} />}</PageBody>
         <PageFooter></PageFooter>
       </PageContainer>
     </Page>

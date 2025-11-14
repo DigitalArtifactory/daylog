@@ -18,6 +18,7 @@ import {
   ValidateMFAFormSchema,
   ValidateMFAFormState,
 } from './definitions';
+import { NextRequest } from 'next/server';
 
 export async function validateAdminUserNotExists() {
   const admin = await prisma.user.findFirst({ where: { role: 'admin' } });
@@ -190,9 +191,14 @@ export async function signin(state: FormState, formData: FormData) {
 }
 
 export const getCurrentSession = cache(
-  async (): Promise<SessionValidationResult> => {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('session')?.value ?? null;
+  async (req?: NextRequest | null): Promise<SessionValidationResult> => {
+    let token: string | null = null;
+    if (req) {
+      token = req.cookies.get('session')?.value ?? null;
+    } else {
+      const cookieStore = await cookies();
+      token = cookieStore.get('session')?.value ?? null;
+    }
     if (token === null) {
       return { session: null, user: null };
     }
