@@ -1,7 +1,7 @@
 'use client';
 
 import { Note, Picture } from '@/prisma/generated/client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   savePicture,
   updateNote,
@@ -32,14 +32,6 @@ export default function Editor({ note }: NoteEditorType) {
 
   const { theme } = useTheme();
 
-  function saveContent(content: string) {
-    localStorage.setItem(`note-${note.id}`, content);
-    setIsSaving(true);
-    debounceSave(content, () => {
-      setIsSaving(false);
-    });
-  }
-
   useEffect(() => {
     window.addEventListener('storage', (event) => {
       if (event.key === `note-${note.id}`) {
@@ -56,43 +48,57 @@ export default function Editor({ note }: NoteEditorType) {
     };
 
     loadPictures();
-  }, [note]);
-
-  useEffect(() => {
-    if (markdown !== localStorage.getItem(`note-${note.id}`)) {
-      saveContent(markdown);
-    }
-  }, [markdown]);
+  }, [note.id]);
 
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null
   );
 
-  const debounceSave = (content: string, callback: () => void) => {
-    // Clear the previous timer
-    if (debounceTimer) clearTimeout(debounceTimer);
-
-    // Set a new timer
-    const timeout = setTimeout(() => {
-      updateNoteHandler(content);
-      callback();
-    }, 1000); // Waits for 1 second of inactivity before saving
-
-    setDebounceTimer(timeout);
-  };
-
-  const updateNoteHandler = async (content: string) => {
+  const updateNoteHandler = useCallback(async (content: string) => {
     if (!note) return;
     note.content = content;
     if (note) await updateNote(note);
-  };
+  }, [note]);
+
+  const debounceSave = useCallback(
+    (content: string, callback: () => void) => {
+      // Clear the previous timer
+      if (debounceTimer) clearTimeout(debounceTimer);
+
+      // Set a new timer
+      const timeout = setTimeout(() => {
+        updateNoteHandler(content);
+        callback();
+      }, 1000); // Waits for 1 second of inactivity before saving
+
+      setDebounceTimer(timeout);
+    },
+    [updateNoteHandler, debounceTimer]
+  );
+
+  const saveContent = useCallback(
+    (content: string) => {
+      localStorage.setItem(`note-${note.id}`, content);
+      setIsSaving(true);
+      debounceSave(content, () => {
+        setIsSaving(false);
+      });
+    },
+    [note.id, debounceSave]
+  );
+
+  useEffect(() => {
+    if (markdown !== localStorage.getItem(`note-${note.id}`)) {
+      saveContent(markdown);
+    }
+  }, [markdown, note.id, saveContent]);
 
   const handlePlaceImage = (imageUrl: string) => {
     const textarea = document.getElementsByClassName(
       'w-md-editor-text-input'
     )[0] as HTMLTextAreaElement;
-    let leftContent = markdown.substring(0, textarea.selectionStart);
-    let rightContent = markdown.substring(textarea.selectionStart);
+    const leftContent = markdown.substring(0, textarea.selectionStart);
+    const rightContent = markdown.substring(textarea.selectionStart);
     const newContent =
       leftContent + '![alt text](' + imageUrl + ')' + rightContent;
 

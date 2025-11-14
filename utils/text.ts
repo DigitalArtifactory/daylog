@@ -27,7 +27,8 @@ export function removeMarkdownTags(text: string) {
   const tokens = marked.lexer(text);
   return tokens.map(token => token.raw)
     .join(' ')
-    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .replace(/!\[.*?\]\(.*?\)/g, "")
     .replace(/\s+/g, ' ')
+    .replace(/[^a-zA-Z0-9\s]/g, '')
     .trim();
 }
