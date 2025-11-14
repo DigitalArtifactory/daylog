@@ -1,6 +1,6 @@
 # daylog
 
-![daylog_portrait](resources/readme_portrait.jpg)
+![daylog_portrait](resources/readme_logo.png)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DavidArtifacts_daylog&metric=alert_status&token=454f2e190f81f0af13315e8abff724843c1e5665)](https://sonarcloud.io/summary/new_code?id=DavidArtifacts_daylog)
 
@@ -16,6 +16,16 @@ If you want to use the stable version of daylog, you can find it [here](https://
 - **Notes:** Your notes can be simple text or formatted using Markdown.
 - **Editor:** daylog includes a Markdown editor with essential formatting options, perfect for beginners.
 - **Search:** Easily find notes or boards with a single keyword using the built-in search feature.
+- **Dark/Light mode:** daylog supports both dark and light modes, making it easy on the eyes.
+- **Responsive design:** daylog is designed to be responsive and works well on both desktop and mobile devices.
+- **Unsplash integration:** daylog includes a built-in image search feature using Unsplash, allowing you to easily find and insert images into your notes.
+- **2FA:** daylog includes a built-in 2FA feature, allowing you to add an extra layer of security to your account.
+- **S3 integration:** daylog includes a built-in s3 integration feature, allowing you to store your notes and boards uploaded images in a cloud storage service.
+### Screenshots
+
+![daylog_portrait](resources/readme_portrait_1.png)
+
+![daylog_landscape](resources/readme_portrait_2.png)
 
 ### Production Installation
 
@@ -70,8 +80,8 @@ To install and run daylog in a production environment, follow these steps:
 Your daylog application should now be running in a production environment.
 
 ### TODOs
-- [ ] Improve grammar 📖
-- [ ] Enhance MD editor 🖊
+- [x] Improve grammar 📖
+- [x] Enhance MD editor 🖊
 - [ ] Improve user security (data encryption, account recovery, email verification) 🔐
 - [x] Create breadcrumbs navigation 🚢
 - [ ] Create public link sharing option ✉
@@ -82,20 +92,22 @@ Your daylog application should now be running in a production environment.
 
 ### Build with
 
-- NextJS
-- Prisma ORM
-- Bootstrap
-- Tabler UI
-- Marked
-- Zod
-- Nodemailer
-- Crypto
+- [NextJS](https://nextjs.org/)
+- [Prisma ORM](https://www.prisma.io/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Tabler UI](https://tabler.io/)
+- [Marked](https://github.com/markedjs/marked)
+- [Zod](https://github.com/colinhacks/zod)
+- [Nodemailer](https://github.com/nodemailer/nodemailer)
+- [Crypto](https://nodejs.org/api/crypto.html)
 
 ### External components
 
-- qrcode.react
-- relative-time-element
-- input-otp
+- [qrcode.react](https://github.com/zpao/qrcode.react)
+- [relative-time-element](https://github.com/github/relative-time-element)
+- [input-otp](https://github.com/guilhermerodz/input-otp)
+- [react-md-editor](https://github.com/uiw/react-md-editor)
+- [rehype-sanitize](https://github.com/rehypejs/rehype-sanitize)
 
 ### Local Development
 
