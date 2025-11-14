@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
   });
 
   if (!userImages && !userPictures) {
-    return Response.json({ error: 'Image not found' }, { status: 404 });
+    return Response.json({ error: 'Image or picture not found' }, { status: 404 });
   }
 
   if (typeof filePath !== 'string') {
