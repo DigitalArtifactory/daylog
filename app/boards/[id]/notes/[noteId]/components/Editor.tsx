@@ -14,14 +14,14 @@ import { getImageUrlOrFile, resizeImage } from '@/utils/image';
 import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from 'rehype-sanitize';
 import { useTheme } from 'next-themes';
-import { IconPhoto, IconPhotoPlus, IconX } from '@tabler/icons-react';
+import { IconPhotoPlus, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 
-type NoteEditorWrapperType = {
+type NoteEditorType = {
   note: Note;
 };
 
-export default function Editor({ note }: NoteEditorWrapperType) {
+export default function Editor({ note }: NoteEditorType) {
   const router = useRouter();
 
   const [markdown, setMarkdown] = useState(note.content ?? '');
@@ -136,6 +136,7 @@ export default function Editor({ note }: NoteEditorWrapperType) {
         <div className="card-body p-0 border-0 h-auto">
           <div className="relative" data-color-mode={theme}>
             <MDEditor
+              data-testid="editor"
               height={480}
               minHeight={480}
               autoFocusEnd={true}

@@ -39,6 +39,8 @@ describe('NavSearch', () => {
     render(<NavSearch />);
     const input = screen.getByPlaceholderText(/Press \[Backspace\] to return to search input/i);
     fireEvent.change(input, { target: { value: 'test' } });
+    // skip 1s debounce time
+    vi.advanceTimersByTime(1000);
     await waitFor(() => {
       expect(screen.getByText(/Searching.../i)).toBeInTheDocument();
     });

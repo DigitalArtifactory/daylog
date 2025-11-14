@@ -8,10 +8,10 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Note } from '@/prisma/generated/client';
 import Editor from './Editor';
-import { updateNote } from '../../lib/actions';
 
 const mocks = vi.hoisted(() => ({
-  getNote: vi.fn(),
+  updateNote: vi.fn(),
+  getPictures: vi.fn(),
 }));
 
 Object.defineProperty(window, 'matchMedia', {
@@ -29,7 +29,8 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 vi.mock('../../lib/actions', () => ({
-  getNote: mocks.getNote,
+  updateNote: mocks.updateNote,
+  getPictures: mocks.getPictures,
 }));
 
 vi.mock('next/navigation', () => ({
@@ -38,24 +39,7 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('../components/Editor', () => ({
-  __esModule: true,
-  default: vi.fn(({ onUpdate }) => (
-    <div>
-      <textarea
-        data-testid="editor"
-        onChange={(e) => onUpdate(e.target.value, () => {})}
-      />
-    </div>
-  )),
-}));
-
-vi.mock('../../lib/actions', () => ({
-  updateNote: vi.fn(),
-}));
-
 describe('Editor', () => {
-  const noteId = 1;
   const mockNote = {
     id: 1,
     content: 'Initial content',
@@ -66,11 +50,8 @@ describe('Editor', () => {
 
   beforeEach(() => {
     cleanup();
-  });
-
-  beforeEach(() => {
-    cleanup();
     vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
+    mocks.getPictures.mockResolvedValueOnce([]);
   });
 
   afterEach(() => {
@@ -78,7 +59,6 @@ describe('Editor', () => {
   });
 
   it('loads and displays note content', async () => {
-    mocks.getNote.mockResolvedValueOnce(mockNote);
     render(<Editor note={mockNote} />);
 
     await waitFor(() => {
@@ -86,30 +66,13 @@ describe('Editor', () => {
     });
   });
 
-  it('calls onUpdate when content changes', async () => {
-    const onUpdate = vi.fn((content, callback) => callback());
-    mocks.getNote.mockResolvedValueOnce(mockNote);
+  it('loads pictures at component mount', async () => {
     render(<Editor note={mockNote} />);
 
-    await waitFor(() => {
-      expect(screen.getByRole('textbox')).toHaveValue(mockNote.content);
-    });
-
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: 'Updated content' },
-    });
-
-    expect(onUpdate).toHaveBeenCalledWith(
-      'Updated content',
-      expect.any(Function)
-    );
+    expect(mocks.getPictures).toHaveBeenCalledWith(mockNote.id);
   });
 
   it('displays saving indicator when content is being saved', async () => {
-    const onUpdate = vi.fn(() => {
-      // Never calls the callback for testing loading...
-    });
-    mocks.getNote.mockResolvedValueOnce(mockNote);
     render(<Editor note={mockNote} />);
 
     await waitFor(() => {
@@ -123,41 +86,20 @@ describe('Editor', () => {
     expect(screen.getByTitle('Saving changes...')).toBeInTheDocument();
   });
 
-  it('renders markdown preview', async () => {
-    mocks.getNote.mockResolvedValueOnce(mockNote);
+  it('renders the Editor component', async () => {
     render(<Editor note={mockNote} />);
 
+    const editor = screen.getByRole('textbox');
     await waitFor(() => {
-      expect(screen.getByRole('textbox')).toHaveValue(mockNote.content);
+      expect(editor).toHaveValue(mockNote.content);
     });
 
-    expect(
-      screen.getByText('Test content', { selector: 'p' })
-    ).toBeInTheDocument();
+    expect(editor).toBeInTheDocument();
   });
 
-  it('renders the Editor component', () => {
+  it('editor updates note after debounce timer', async () => {
     render(<Editor note={mockNote} />);
-    expect(screen.getByTestId('editor')).toBeInTheDocument();
-  });
-
-  it('calls updateNoteHandler after debounce', async () => {
-    render(<Editor note={mockNote} />);
-    const editor = screen.getByTestId('editor');
-
-    fireEvent.change(editor, { target: { value: 'Updated content' } });
-    // skip 1s debounce time
-    vi.advanceTimersByTime(1000);
-
-    expect(updateNote).toHaveBeenCalledWith({
-      ...mockNote,
-      content: 'Updated content',
-    });
-  });
-
-  it('clears previous debounce timer', async () => {
-    render(<Editor note={mockNote} />);
-    const editor = screen.getByTestId('editor');
+    const editor = screen.getByRole('textbox');
 
     fireEvent.change(editor, { target: { value: 'First update' } });
     // skip 1s debounce time
@@ -167,7 +109,7 @@ describe('Editor', () => {
     // skip 1s debounce time
     vi.advanceTimersByTime(1000);
 
-    expect(updateNote).toHaveBeenCalledWith({
+    expect(mocks.updateNote).toHaveBeenCalledWith({
       ...mockNote,
       content: 'Second update',
     });

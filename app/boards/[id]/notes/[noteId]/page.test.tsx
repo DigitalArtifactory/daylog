@@ -7,19 +7,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import NotePage from './page';
 
 const mocks = vi.hoisted(() => ({
-  getCurrentSession: vi.fn(),
   getNote: vi.fn(),
-}));
-
-vi.mock('@/app/login/lib/actions', () => ({
-  getCurrentSession: mocks.getCurrentSession,
+  getCurrentSession: vi.fn(),
 }));
 
 vi.mock('../lib/actions', () => ({
   getNote: mocks.getNote,
 }));
 
-vi.mock('./partials/NoteEditorClientWrapper', () => ({
+vi.mock('@/app/login/lib/actions', () => ({
+  getCurrentSession: mocks.getCurrentSession,
+}));
+
+vi.mock('./components/Editor', () => ({
   default: vi.fn(({ note }: { note: Note }) => (
     <div data-testid="note">{note.title}</div>
   )),
