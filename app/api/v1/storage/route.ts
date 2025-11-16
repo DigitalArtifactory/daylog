@@ -21,6 +21,10 @@ export async function GET(req: NextRequest) {
 
     const key = req.nextUrl.searchParams.get('key');
 
+    if (!key) {
+      return new Response('Key is required', { status: 400 });
+    }
+
     // Validate if the image belongs to current user
     const userImages = await prisma.board.findFirst({
       where: {
@@ -29,12 +33,15 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    if (!userImages) {
-      return Response.json({ error: 'Image not found' });
-    }
+    const userPictures = await prisma.picture.findFirst({
+      where: {
+        imageUrl: key,
+        OR: [{ notes: { boards: { userId: user.id } } }],
+      },
+    });
 
-    if (!key) {
-      return new Response('Key is required', { status: 400 });
+    if (!userImages && !userPictures) {
+      return Response.json({ error: 'Image or picture not found' });
     }
 
     const command = new S3.GetObjectCommand({
