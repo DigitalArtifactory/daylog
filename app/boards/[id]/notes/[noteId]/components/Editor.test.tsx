@@ -40,7 +40,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('@uiw/react-md-editor', () => {
-  const MDEditor = ({ value, onChange, ...props }: any) => {
+  const MDEditor = ({ value, onChange, ...props }: { value: string; onChange?: (value: string) => void }) => {
     return (
       <textarea
         data-testid="mocked-md-editor"
@@ -157,7 +157,7 @@ describe('Editor', () => {
     await waitFor(() => {
       expect(mocks.updateNote).toHaveBeenCalledWith({
         ...mockNote,
-        content: '![alt text](https://example.com/image.jpg)Initial content',
+        content: '![alt text](https://example.com/image.jpg)Second update',
       });
     });
   });
