@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'unsplash.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
+    // For limitations with Image component from Next.js
+    // https://nextjs.org/docs/app/api-reference/components/image#reference
+    // cannot use optimized images with urls that requires authentication from headers...
+    // however api/v1/images and api/v1/storage are optimized with Sharp https://github.com/lovell/sharp
     unoptimized: true,
   },
   headers: async () => {

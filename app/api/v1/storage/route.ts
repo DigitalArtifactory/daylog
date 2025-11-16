@@ -3,6 +3,7 @@ import { prisma } from '@/prisma/client';
 import * as S3 from '@aws-sdk/client-s3';
 import { NextRequest } from 'next/server';
 import { s3Client } from './lib/s3Client';
+import sharp from 'sharp';
 
 export async function GET(req: NextRequest) {
   try {
@@ -45,10 +46,17 @@ export async function GET(req: NextRequest) {
 
     const body = await response.Body?.transformToByteArray();
     const buffer = Buffer.from(body ?? '');
-    return new Response(buffer, {
+
+    // Optimize image with Sharp
+    const optimizedImage = await sharp(buffer)
+      .resize({ width: 480 })
+      .webp()
+      .toBuffer();
+
+    return new Response(Buffer.from(optimizedImage), {
       status: 200,
       headers: {
-        'Content-Type': response.ContentType || 'application/octet-stream',
+        'Content-Type': 'image/webp',
       },
     });
   } catch (error) {

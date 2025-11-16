@@ -2,6 +2,7 @@ import { getCurrentSession } from '@/app/login/lib/actions';
 import { prisma } from '@/prisma/client';
 import fs from 'fs';
 import { NextRequest } from 'next/server';
+import sharp from 'sharp';
 
 export async function GET(req: NextRequest) {
   const { user } = await getCurrentSession(req);
@@ -43,11 +44,18 @@ export async function GET(req: NextRequest) {
   // Read the image file as a buffer
   const imageBuffer = fs.readFileSync(filePath);
   const buffer = Buffer.from(imageBuffer);
+
+  // Optimize image with Sharp
+  const optimizedImage = await sharp(buffer)
+    .resize({ width: 800 })
+    .webp()
+    .toBuffer();
+
   if (imageBuffer) {
-    return new Response(buffer, {
+    return new Response(Buffer.from(optimizedImage), {
       headers: {
-        'Content-Type': 'image/png',
-        'Content-Length': imageBuffer.length.toString(),
+        'Content-Type': 'image/webp',
+        'Content-Length': optimizedImage.length.toString(),
       },
     });
   } else {

@@ -187,8 +187,8 @@ export default function Editor({ note }: NoteEditorType) {
                 onClick: () => {
                   handlePlaceImage(getImageUrlOrFile(note.imageUrl!));
                 },
-                onDelete: () => {
-                  deleteImage(note.id, note.imageUrl);
+                onDelete: async () => {
+                  await deleteImage(note.id, note.imageUrl);
                   router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
                   router.refresh();
                 },
@@ -250,7 +250,7 @@ const PicturePreview = ({
   return (
     <div className="col position-relative">
       <div
-        className="position-absolute top-0 end-0 z-1 bg-dark rounded-circle me-3 mt-1 cursor-pointer"
+        className="position-absolute top-0 end-0 z-1 bg-dark rounded-circle me-3 mt-1 cursor-pointer text-light"
         onClick={onDelete}
       >
         <IconX />
