@@ -43,7 +43,7 @@ export default function Editor({ note }: NoteEditorType) {
     });
 
     const loadPictures = async () => {
-      const pictures = await getPictures(note.id);
+      const pictures = await getPictures(note.id) ?? [];
       setPictures(pictures);
     };
 
@@ -195,8 +195,9 @@ export default function Editor({ note }: NoteEditorType) {
               })}
             {pictures.map((picture, key) => (
               <PicturePreview
-                onDelete={() => handleDeletePicture(picture.id)}
                 key={key}
+                pictureId={picture.id}
+                onDelete={() => handleDeletePicture(picture.id)}
                 imageUrl={picture.imageUrl}
                 onClick={() => {
                   handlePlaceImage(getImageUrlOrFile(picture.imageUrl));
@@ -236,10 +237,12 @@ export default function Editor({ note }: NoteEditorType) {
 }
 
 const PicturePreview = ({
+  pictureId,
   imageUrl,
   onClick,
   onDelete,
 }: {
+  pictureId?: number | null;
   imageUrl: string;
   onClick: () => void;
   onDelete: () => void;
@@ -253,6 +256,7 @@ const PicturePreview = ({
         <IconX />
       </div>
       <div
+        data-testid={`picture-preview-${pictureId ?? 'default'}`}
         role="button"
         onClick={onClick}
         className="ratio ratio-1x1 rounded-4 overflow-hidden cursor-pointer"

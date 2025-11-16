@@ -8,7 +8,9 @@ import {
   deleteImage,
   getBoard,
   getBoards,
+  getBoardsCount,
   saveImage,
+  setUserBoardsSort,
   updateBoard,
 } from './actions';
 import getSorting from '@/utils/sorting';
@@ -93,6 +95,25 @@ describe('Board Actions', () => {
     expect(result).toEqual(board);
     expect(prismaMock.board.delete).toHaveBeenCalledWith({
       where: { id: board.id, userId: user.id },
+    });
+  });
+
+  it('should get boards count', async () => {
+    prismaMock.board.count.mockResolvedValue(1);
+    const result = await getBoardsCount();
+    expect(result).toBe(1);
+    expect(prismaMock.board.count).toHaveBeenCalledWith({
+      where: { userId: user.id },
+    });
+  });
+
+  it('should set user boards sort', async () => {
+    prismaMock.user.update.mockResolvedValue(user as User);
+    const result = await setUserBoardsSort('created_desc');
+    expect(result).toBeUndefined();
+    expect(prismaMock.user.update).toHaveBeenCalledWith({
+      where: { id: user.id },
+      data: { sortBoardsBy: 'created_desc' },
     });
   });
 

@@ -6,7 +6,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { Note } from '@/prisma/generated/client';
+import { Note, Picture } from '@/prisma/generated/client';
 import Editor from './Editor';
 
 const mocks = vi.hoisted(() => ({
@@ -39,6 +39,24 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
+vi.mock('@uiw/react-md-editor', () => {
+  const MDEditor = ({ value, onChange, ...props }: any) => {
+    return (
+      <textarea
+        data-testid="mocked-md-editor"
+        className="w-md-editor-text-input"
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        {...props}
+      />
+    );
+  };
+  return {
+    __esModule: true,
+    default: MDEditor,
+  };
+});
+
 describe('Editor', () => {
   const mockNote = {
     id: 1,
@@ -48,10 +66,17 @@ describe('Editor', () => {
     boardsId: 1,
   } as Note;
 
+  const mockPicture = {
+    id: 1,
+    notesId: mockNote.id,
+    imageUrl: 'https://example.com/image.jpg',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  } as Picture;
+
   beforeEach(() => {
     cleanup();
     vi.useFakeTimers({ toFake: ['setTimeout'], shouldAdvanceTime: true });
-    mocks.getPictures.mockResolvedValueOnce([]);
   });
 
   afterEach(() => {
@@ -108,10 +133,32 @@ describe('Editor', () => {
     fireEvent.change(editor, { target: { value: 'Second update' } });
     // skip 1s debounce time
     vi.advanceTimersByTime(1000);
+    await waitFor(() => {
+      expect(mocks.updateNote).toHaveBeenCalledWith({
+        ...mockNote,
+        content: 'Second update',
+      }); 
+    });
+  });
 
-    expect(mocks.updateNote).toHaveBeenCalledWith({
-      ...mockNote,
-      content: 'Second update',
+  it('places picture at cursor position', async () => {
+    mocks.getPictures.mockResolvedValue([mockPicture]);
+    render(<Editor note={mockNote} />);
+
+    await waitFor(() => {
+      expect(mocks.getPictures).toHaveBeenCalledWith(mockNote.id);
+    });
+
+    const picture = screen.getByTestId('picture-preview-1');
+
+    fireEvent.click(picture);
+    // skip 1s debounce time
+    vi.advanceTimersByTime(1000);
+    await waitFor(() => {
+      expect(mocks.updateNote).toHaveBeenCalledWith({
+        ...mockNote,
+        content: '![alt text](https://example.com/image.jpg)Initial content',
+      });
     });
   });
 });
