@@ -29,6 +29,6 @@ export function removeMarkdownTags(text: string) {
     .join(' ')
     .replace(/!\[.*?\]\(.*?\)/g, "")
     .replace(/\s+/g, ' ')
-    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
     .trim();
 }
