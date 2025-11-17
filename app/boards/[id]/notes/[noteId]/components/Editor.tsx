@@ -32,10 +32,10 @@ export default function Editor({ note }: NoteEditorType) {
 
   const { theme } = useTheme();
 
-  const loadPictures = async () => {
+  const loadPictures = useCallback(async () => {
     const pictures = (await getPictures(note.id)) ?? [];
     setPictures(pictures);
-  };
+  }, [note.id]);
 
   useEffect(() => {
     window.addEventListener('storage', (event) => {
@@ -47,7 +47,7 @@ export default function Editor({ note }: NoteEditorType) {
       }
     });
     loadPictures();
-  }, [note.id]);
+  }, [note.id, loadPictures]);
 
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null

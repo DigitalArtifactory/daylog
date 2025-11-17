@@ -17,7 +17,6 @@ import {
   updateNote,
 } from './actions';
 import getSorting from '@/utils/sorting';
-import { existsSync } from 'fs';
 
 // Mock S3 environment variables for tests
 process.env.S3_ENDPOINT = 'https://mock-s3-endpoint';
