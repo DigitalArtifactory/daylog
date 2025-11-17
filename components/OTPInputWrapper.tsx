@@ -7,6 +7,7 @@ export type OTPInputWrapperType = {
 export default function OTPInputWrapper({ ...props }: OTPInputWrapperType) {
   return (
     <OTPInput
+      autoFocus
       maxLength={6}
       containerClassName="w-full"
       onChange={(value) => props.onChange(value)}
