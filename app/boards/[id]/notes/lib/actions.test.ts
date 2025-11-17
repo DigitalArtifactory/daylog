@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma/client';
-import { Note } from '@/prisma/generated/client';
+import { Note, Picture } from '@/prisma/generated/client';
 import { prismaMock } from '@/prisma/singleton';
 import { removeFile, saveBase64File } from '@/utils/storage';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -7,12 +7,17 @@ import {
   createNote,
   deleteImage,
   deleteNote,
+  deletePicture,
   getNote,
   getNotes,
+  getNotesCount,
+  getPictures,
   saveImage,
+  savePicture,
   updateNote,
 } from './actions';
 import getSorting from '@/utils/sorting';
+import { existsSync } from 'fs';
 
 // Mock S3 environment variables for tests
 process.env.S3_ENDPOINT = 'https://mock-s3-endpoint';
@@ -32,6 +37,7 @@ const mocks = vi.hoisted(() => ({
     enableS3: false,
   })),
   uploadFileS3: vi.fn(),
+  existsSync: vi.fn(),
 }));
 
 vi.mock('@/app/api/v1/storage/lib/s3Storage', () => ({
@@ -56,6 +62,15 @@ vi.mock('@/utils/storage', () => ({
     contentLength: 6,
   }),
 }));
+
+vi.mock('fs', () => {
+  return {
+    __esModule: true,
+    default: {
+      existsSync: mocks.existsSync,
+    },
+  };
+});
 
 describe('Note Actions', () => {
   let user: { id: number };
@@ -151,6 +166,40 @@ describe('Note Actions', () => {
     });
   });
 
+  it('should get notes count', async () => {
+    const boardId = 1;
+    const notesCount = 2;
+
+    prismaMock.note.count.mockResolvedValue(notesCount);
+
+    const result = await getNotesCount(boardId);
+
+    expect(result).toBe(notesCount);
+    expect(prismaMock.note.count).toHaveBeenCalledWith({
+      where: { boardsId: boardId, boards: { userId: user.id } },
+    });
+  });
+
+  it('should get user notes sorted', async () => {
+    const boardId = 1;
+    const notes: Partial<Note>[] = [
+      { id: 1, title: 'Note 1', createdAt: new Date() },
+      { id: 2, title: 'Note 2', createdAt: new Date() },
+    ];
+
+    prismaMock.note.findMany.mockResolvedValue(notes as Note[]);
+
+    const result = await getNotes('created_desc', 10, boardId);
+
+    expect(result).toEqual(notes);
+    expect(prismaMock.note.findMany).toHaveBeenCalledWith({
+      where: { boardsId: boardId, boards: { userId: user.id } },
+      include: { boards: true },
+      orderBy: [getSorting('created_desc')],
+      take: 10,
+    });
+  });
+
   it('should save an image from file', async () => {
     const noteId = 1;
     const imageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA';
@@ -167,6 +216,23 @@ describe('Note Actions', () => {
       where: { id: noteId, boards: { userId: user.id } },
       data: { imageUrl: filepath },
     });
+  });
+
+  it('should not save image if is not an url or base64', async () => {
+    const noteId = 1;
+    const fileurl = 'bad-url-or-base64';
+    const result = await saveImage(noteId, fileurl);
+    expect(result).toBeNull();
+  });
+
+  it('should remove existent image when updating note', async () => {
+    mocks.existsSync.mockReturnValue(true);
+    const noteId = 1;
+    const filepath = 'http://example.com/image.jpg';
+    const existentFilePath = 'path/to/existent/image.jpg';
+    const result = await saveImage(noteId, filepath, existentFilePath);
+    expect(result).toBe(filepath);
+    expect(mocks.removeFile).toHaveBeenCalledWith(existentFilePath);
   });
 
   it('should save an image from url', async () => {
@@ -216,4 +282,91 @@ describe('Note Actions', () => {
       data: { imageUrl: null },
     });
   });
+
+  it('should save picture', async () => {
+    const noteId = 1;
+    const picture = {
+      id: 1,
+      notesId: noteId,
+      imageUrl: 'https://example.com/image.jpg',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as Picture;
+
+    prismaMock.note.findUnique.mockResolvedValue({ id: noteId } as Note);
+    prismaMock.picture.create.mockResolvedValue(picture);
+
+    const result = await savePicture(noteId, picture.imageUrl);
+
+    expect(result).toEqual(picture.imageUrl);
+    expect(prisma.picture.create).toHaveBeenCalledWith({
+      data: {
+        notesId: noteId,
+        imageUrl: picture.imageUrl,
+      },
+    });
+  });
+
+  it('should delete picture', async () => {
+    const noteId = 1;
+    const picture = {
+      id: 1,
+      notesId: noteId,
+      imageUrl: 'https://example.com/image.jpg',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as Picture;
+
+    mocks.removeFile.mockReturnValue(true);
+    prismaMock.note.findUnique.mockResolvedValue({ id: noteId } as Note);
+    prismaMock.picture.findUnique.mockResolvedValue(picture);
+
+    await deletePicture(noteId, picture.id);
+
+    expect(mocks.removeFile).toHaveBeenCalledWith(picture.imageUrl);
+    expect(prisma.picture.delete).toHaveBeenCalledWith({
+      where: { id: picture.id },
+    });
+  })
+
+  it('if picture is not removed should not delete picture', async () => {
+    const noteId = 1;
+    const picture = {
+      id: 1,
+      notesId: noteId,
+      imageUrl: 'https://example.com/image.jpg',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as Picture;
+
+    mocks.removeFile.mockReturnValue(false);
+    prismaMock.note.findUnique.mockResolvedValue({ id: noteId } as Note);
+    prismaMock.picture.findUnique.mockResolvedValue(picture);
+
+    await deletePicture(noteId, picture.id);
+
+    expect(mocks.removeFile).toHaveBeenCalledWith(picture.imageUrl);
+    expect(prisma.picture.delete).not.toHaveBeenCalled();
+  })
+
+  it('should get pictures', async () => {
+    const noteId = 1;
+    const picture = {
+      id: 1,
+      notesId: noteId,
+      imageUrl: 'https://example.com/image.jpg',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as Picture;
+
+    prismaMock.note.findUnique.mockResolvedValue({ id: noteId } as Note);
+    prismaMock.picture.findMany.mockResolvedValue([picture]);
+
+    const result = await getPictures(noteId);
+
+    expect(result).toEqual([picture]);
+    expect(prisma.picture.findMany).toHaveBeenCalledWith({
+      where: { notesId: noteId },
+    });
+  })
 });
