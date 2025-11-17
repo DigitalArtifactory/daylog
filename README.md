@@ -100,6 +100,7 @@ Your daylog application should now be running in a production environment.
 - [Zod](https://github.com/colinhacks/zod)
 - [Nodemailer](https://github.com/nodemailer/nodemailer)
 - [Crypto](https://nodejs.org/api/crypto.html)
+- [Sharp](https://github.com/lovell/sharp)
 
 ### External components
 
