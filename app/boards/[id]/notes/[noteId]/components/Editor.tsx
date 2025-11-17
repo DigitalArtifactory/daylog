@@ -145,7 +145,6 @@ export default function Editor({ note }: NoteEditorType) {
               data-testid="editor"
               height={480}
               minHeight={480}
-              autoFocusEnd={true}
               value={markdown}
               onChange={(value) => setMarkdown(value ?? '')}
               previewOptions={{
