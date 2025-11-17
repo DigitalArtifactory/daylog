@@ -6,7 +6,7 @@
 
 ✨ A board based note taking and markdown editor web app.
 
-### Estable version
+### Stable version
 If you want to use the stable version of daylog, you can find it [here](https://github.com/DigitalArtifactory/daylog/releases). Keep in mind that main branch is always in development and may not be stable.
 
 ### Features
