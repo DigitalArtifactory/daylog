@@ -19,7 +19,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: 'daylog',
   description: 'Your personal note taking and markdown editor web app.',
-  manifest: 'site.webmanifest',
+  manifest: '/site.webmanifest',
 };
 
 export default async function RootLayout({
