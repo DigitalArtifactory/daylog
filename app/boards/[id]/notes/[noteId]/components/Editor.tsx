@@ -32,6 +32,11 @@ export default function Editor({ note }: NoteEditorType) {
 
   const { theme } = useTheme();
 
+  const loadPictures = async () => {
+    const pictures = (await getPictures(note.id)) ?? [];
+    setPictures(pictures);
+  };
+
   useEffect(() => {
     window.addEventListener('storage', (event) => {
       if (event.key === `note-${note.id}`) {
@@ -41,12 +46,6 @@ export default function Editor({ note }: NoteEditorType) {
         }
       }
     });
-
-    const loadPictures = async () => {
-      const pictures = await getPictures(note.id) ?? [];
-      setPictures(pictures);
-    };
-
     loadPictures();
   }, [note.id]);
 
@@ -54,11 +53,14 @@ export default function Editor({ note }: NoteEditorType) {
     null
   );
 
-  const updateNoteHandler = useCallback(async (content: string) => {
-    if (!note) return;
-    note.content = content;
-    if (note) await updateNote(note);
-  }, [note]);
+  const updateNoteHandler = useCallback(
+    async (content: string) => {
+      if (!note) return;
+      note.content = content;
+      if (note) await updateNote(note);
+    },
+    [note]
+  );
 
   const debounceSave = useCallback(
     (content: string, callback: () => void) => {
@@ -118,8 +120,7 @@ export default function Editor({ note }: NoteEditorType) {
       resizeImage(file, 1920, 1080, async (resizedDataUrl) => {
         const imageUrl = await savePicture(note.id, resizedDataUrl);
         if (!imageUrl) return;
-        router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
-        router.refresh();
+        await loadPictures();
       });
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -129,8 +130,7 @@ export default function Editor({ note }: NoteEditorType) {
   const handleDeletePicture = async (pictureId: number) => {
     try {
       await deletePicture(note.id, pictureId);
-      router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
-      router.refresh();
+      await loadPictures();
     } catch (error) {
       console.error('Error deleting picture:', error);
     }
@@ -189,7 +189,6 @@ export default function Editor({ note }: NoteEditorType) {
                 },
                 onDelete: async () => {
                   await deleteImage(note.id, note.imageUrl);
-                  router.prefetch(`/boards/${note.boardsId}/notes/${note.id}`);
                   router.refresh();
                 },
               })}
@@ -245,7 +244,7 @@ const PicturePreview = ({
   pictureId?: number | null;
   imageUrl: string;
   onClick: () => void;
-  onDelete: () => void;
+  onDelete: () => Promise<void>;
 }) => {
   return (
     <div className="col position-relative">
