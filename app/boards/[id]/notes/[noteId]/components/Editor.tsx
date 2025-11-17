@@ -206,7 +206,7 @@ export default function Editor({ note }: NoteEditorType) {
             ))}
           </div>
 
-          {pictures.length === 0 && (
+          {pictures.length === 0 && note.imageUrl === null && (
             <div className="d-flex gap-2 align-items-center text-muted w-full">
               <div>No pictures</div>
             </div>
