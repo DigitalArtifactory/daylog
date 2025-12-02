@@ -30,7 +30,7 @@ export default async function Notes({
     return redirect('/login');
   }
   const { id } = await params;
-  const { sort = user.sortNotesBy, perPage = 10, openNew = 'false' } = await searchParams;
+  const { sort = user.sortNotesBy, perPage = 12, openNew = 'false' } = await searchParams;
   const board = await getBoard(parseInt(id));
   const currentSort = sort as string;
   const currentPerPage = perPage as string;
@@ -131,7 +131,7 @@ export default async function Notes({
               <p className="text-center">Showing {notes?.length} of {notesCount} notes</p>
               {parseInt(currentPerPage) < notesCount &&
                 <Link className="btn btn-ghost btn-primary mx-auto"
-                  href={`/boards/${id}/notes?perPage=${parseInt(currentPerPage) + 10}`}>
+                  href={`/boards/${id}/notes?perPage=${parseInt(currentPerPage) + perPage}`}>
                   Load more
                 </Link>}
             </div>

@@ -26,7 +26,7 @@ export default async function Boards({
   if (user === null) {
     return redirect('/login');
   }
-  const { sort = user.sortBoardsBy, perPage = 10, openNew = 'false' } = await searchParams;
+  const { sort = user.sortBoardsBy, perPage = 12, openNew = 'false' } = await searchParams;
   const currentSort = sort as string;
   const currentPage = perPage as string;
   const openNewBoard = openNew === 'true';
@@ -117,7 +117,7 @@ export default async function Boards({
               <p className="text-center">Showing {boards?.length} of {boardCount} boards</p>
               {parseInt(currentPage) < boardCount &&
                 <Link className="btn btn-ghost btn-primary mx-auto"
-                  href={`/boards?perPage=${parseInt(currentPage) + 10}`}>
+                  href={`/boards?perPage=${parseInt(currentPage) + perPage}`}>
                   Load more
                 </Link>}
             </div>
